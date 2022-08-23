@@ -14,6 +14,7 @@ const App = lazy(
 );
 ReactDOM.render(
 	<Suspense fallback={<Spinner />}>
+		{console.log("pipeline test")}
 		<App />
 	</Suspense>,
 	document.getElementById('root')
