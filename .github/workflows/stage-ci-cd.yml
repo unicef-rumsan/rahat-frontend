@@ -55,6 +55,7 @@ jobs:
   deploy:
     name: build docker image and push to docker hub
     runs-on: ubuntu-latest
+    needs: build-test
 
     steps:
       - uses: actions/setup-node@v3
