@@ -52,7 +52,6 @@ const Add = () => {
 		if (profileUpload) payload.photo = profileUpload;
 		if (govtIdImg) payload.govt_id_image = govtIdImg;
 		const sanitized = sanitizePayload(payload);
-		console.log({ sanitized });
 		setLoading(true);
 		addMobilizer(sanitized)
 			.then(() => {

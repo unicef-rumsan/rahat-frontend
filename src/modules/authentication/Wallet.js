@@ -54,6 +54,7 @@ const Wallet = () => {
 				callbackUrl: `${API_SERVER}/api/v1/auth/wallet`,
 				encryptionKey: tempIdentity.publicKey
 			};
+			console.log('QR_data', data);
 			setQrOptions(data);
 		},
 		[setTempIdentity]
