@@ -18,6 +18,9 @@ import DataService from '../../../services/db';
 import * as Service from '../../../services/aid';
 import useProjectCache from '../../../hooks/useProjectCache';
 
+import CONTRACT from '../../../constants/contracts';
+import { getContractByProvider } from '../../../blockchain/abi';
+
 // --------------------------------------------------------------
 
 export default function Index(props) {
@@ -78,10 +81,20 @@ export default function Index(props) {
 	// ------------------- useEffects ---------------------------
 	useEffect(fetchProjectDetails, []);
 
+	const listenChainEvents = async () => {
+		const { rahat_admin } = appSettings.agency.contracts;
+		const AdminContract = await getContractByProvider(rahat_admin, CONTRACT.RAHATADMIN);
+		AdminContract.on('ProjectERC20BudgetUpdated', a => {
+			totalBudget.request(id, rahat_admin);
+			availableBalance.request(id, rahat_admin);
+		});
+	};
+
 	useEffect(() => {
 		const { rahat_admin } = appSettings.agency.contracts;
 		totalBudget.request(id, rahat_admin);
 		availableBalance.request(id, rahat_admin);
+		listenChainEvents();
 	}, []);
 
 	return (
@@ -108,17 +121,6 @@ export default function Index(props) {
 								View Campaign
 							</button>
 						</>
-					)}
-					{projectDetails && projectDetails.campaignId == null && (
-						<button
-							onClick={handleClick}
-							type="button"
-							className="btn waves-effect waves-light btn-outline-info"
-							style={{ borderRadius: '8px' }}
-						>
-							{' '}
-							Add Campaign
-						</button>
 					)}
 				</Col>
 			</Row>
