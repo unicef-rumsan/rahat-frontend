@@ -16,13 +16,11 @@ export default function ProjectInfo({ projectDetails }) {
 
 	const [qrGenModal, setQrGenModal] = useState(false);
 	const [qrGenData, setQrGenData] = useState({ min: 0, max: 0, projectVersion: 0, amount: null });
-	// const [qrGenLoading, setQrGenLoading] = useState(false);
 
 	const toggleQrGen = () => {
 		setQrGenModal(!qrGenModal);
 		setQrGenData({ min: 0, max: 0, projectVersion: serial_index, amount: null });
 	};
-	// const toggleQrGenLoading = () => setQrGenLoading(!qrGenLoading);
 
 	const qrComponentRef = useRef();
 	const printRef = useRef();
@@ -31,11 +29,7 @@ export default function ProjectInfo({ projectDetails }) {
 		printRef.current.handleClick();
 	};
 
-	// useReactToPrint({
-	// 	content: () => qrComponentRef.current
-	// });
 	const handleQrGenData = e => {
-		console.log(e.target.name);
 		if (e.target.name === 'max' && e.target.value > MAX_QR_GEN) return;
 
 		setQrGenData({ ...qrGenData, [e.target.name]: e.target.value || null });
@@ -92,7 +86,7 @@ export default function ProjectInfo({ projectDetails }) {
 									onClick={toggleQrGen}
 									type="button"
 									className="btn waves-effect waves-light btn-outline-info"
-									style={{ borderRadius: '8px', marginRight: '20px' }}
+									style={{ borderRadius: '8px', marginRight: '20px', display: 'none' }}
 								>
 									Pre-Generate Qr code
 								</button>

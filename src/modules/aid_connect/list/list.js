@@ -29,9 +29,14 @@ const SEARCH_OPTIONS = { PHONE: 'phone', NAME: 'name' };
 const List = () => {
 	const { addToast } = useToasts();
 
-	const { listProject, listAidConnectBeneficiary, generateLink, addBeneficiaryInBulk, changeLinkStatus,archiveBeneficiary } = useContext(
-		AidConnectContext
-	);
+	const {
+		listProject,
+		listAidConnectBeneficiary,
+		generateLink,
+		addBeneficiaryInBulk,
+		changeLinkStatus,
+		archiveBeneficiary
+	} = useContext(AidConnectContext);
 	const [projects, setProjects] = useState();
 	const [projectList, setProjectList] = useState([]);
 
@@ -148,7 +153,6 @@ const List = () => {
 	};
 
 	const handleStatusChange = e => {
-		console.log({e})
 		const payload = {
 			isActive: e
 		};
@@ -185,10 +189,8 @@ const List = () => {
 	};
 
 	const handleCopyClick = () => {
-
 		navigator.clipboard.writeText(link);
-		addToast("Link Copied",TOAST.SUCCESS)
-
+		addToast('Link Copied', TOAST.SUCCESS);
 	};
 
 	const handleImportClick = () => {
@@ -217,7 +219,7 @@ const List = () => {
 			});
 	};
 
-	const handleBeneficiaryDelete = (benId) => {
+	const handleBeneficiaryDelete = benId => {
 		Swal.fire({
 			title: 'Are you sure?',
 			text: "You won't be able to revert this!",
@@ -228,7 +230,7 @@ const List = () => {
 			confirmButtonText: 'Yes, delete it!'
 		}).then(async result => {
 			if (result.isConfirmed) {
-				await archiveBeneficiary(aidConnectId,benId)
+				await archiveBeneficiary(aidConnectId, benId);
 				Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
 				fetchTotalRecords();
 			}
@@ -410,7 +412,7 @@ const List = () => {
 															<i className="fas fa-eye fa-lg"></i>
 														</Link>
 														{/* <Link> */}
-														<i className="fas fa-trash-alt fa-lg" onClick={()=>handleBeneficiaryDelete(d._id)}></i>
+														<i className="fas fa-trash-alt fa-lg" onClick={() => handleBeneficiaryDelete(d._id)}></i>
 														{/* </Link> */}
 													</td>
 												</tr>

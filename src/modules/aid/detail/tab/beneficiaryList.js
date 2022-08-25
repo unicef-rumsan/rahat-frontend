@@ -62,25 +62,25 @@ const List = ({ projectId }) => {
 		hiddenFileInput.current.click();
 	};
 
-		const appendBeneficiaryBalances = useCallback(({beneficiaries,balances}) => {
-		const beneficiariesWithTokens = beneficiaries.map((ben,i) => {
-			ben.tokenBalance = balances[i]
+	const appendBeneficiaryBalances = useCallback(({ beneficiaries, balances }) => {
+		const beneficiariesWithTokens = beneficiaries.map((ben, i) => {
+			ben.tokenBalance = balances[i];
 			return ben;
-		})
+		});
 		setBenList(beneficiariesWithTokens);
 		setfetchingBeneficiaryTokens(false);
+	}, []);
 
-	},[])
-
-	const fetchBeneficiariesBalances = useCallback(async({beneficiaries}) => {
-		console.log({beneficiaries})
-		if(!appSettings || !appSettings.agency || !appSettings.agency.contracts) return;
-		const { agency } = appSettings
-		setfetchingBeneficiaryTokens(true);
-		const balances = await getBeneficiariesBalances(beneficiaries,agency.contracts.rahat);
-		console.log({balances})
-		if(balances.length) await appendBeneficiaryBalances({beneficiaries,balances})
-	},[appSettings,getBeneficiariesBalances,appendBeneficiaryBalances])
+	const fetchBeneficiariesBalances = useCallback(
+		async ({ beneficiaries }) => {
+			if (!appSettings || !appSettings.agency || !appSettings.agency.contracts) return;
+			const { agency } = appSettings;
+			setfetchingBeneficiaryTokens(true);
+			const balances = await getBeneficiariesBalances(beneficiaries, agency.contracts.rahat);
+			if (balances.length) await appendBeneficiaryBalances({ beneficiaries, balances });
+		},
+		[appSettings, getBeneficiariesBalances, appendBeneficiaryBalances]
+	);
 
 	const handleUploadListSubmit = async e => {
 		e.preventDefault();
@@ -163,10 +163,10 @@ const List = ({ projectId }) => {
 			const query = { start, limit: PAGE_LIMIT };
 			const data = await beneficiaryByAid(projectId, query);
 			setBenList(data.data);
-			console.log(data.data)
-			fetchBeneficiariesBalances({beneficiaries:data.data})
+			console.log(data.data);
+			fetchBeneficiariesBalances({ beneficiaries: data.data });
 		},
-		[beneficiaryByAid, projectId,fetchBeneficiariesBalances]
+		[beneficiaryByAid, projectId, fetchBeneficiariesBalances]
 	);
 
 	const convertQrToImg = async data => {
