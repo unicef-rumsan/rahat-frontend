@@ -11,10 +11,17 @@ import MaskLoader from '../../../../global/MaskLoader';
 
 import { TOAST } from '../../../../../constants';
 import { formatBalanceAndCurrency } from '../../../../../utils';
+import * as Service from '../../../../../services/aid';
+import useProjectCache from '../../../../../hooks/useProjectCache';
 
 const Token = ({ projectId }) => {
 	const { addToast } = useToasts();
 	const history = useHistory();
+	const totalBudget = useProjectCache(Service.getProjectCapital, 'totalBudget', { id: projectId, defaultValue: 0 });
+	const availableBalance = useProjectCache(Service.getProjectBalance, 'availableBalance', {
+		id: projectId,
+		defaultValue: 0
+	});
 
 	const { total_tokens, available_tokens, addProjectBudget } = useContext(AidContext);
 
@@ -65,6 +72,12 @@ const Token = ({ projectId }) => {
 		submitProjectBudget();
 	}, [isVerified, submitProjectBudget]);
 
+	useEffect(() => {
+		const { rahat_admin } = appSettings.agency.contracts;
+		totalBudget.request(projectId, rahat_admin);
+		availableBalance.request(projectId, rahat_admin);
+	}, []);
+
 	return (
 		<>
 			<MaskLoader message="Adding token, please wait..." isOpen={masking} />
@@ -73,11 +86,11 @@ const Token = ({ projectId }) => {
 			<div className="spacing-budget">
 				<Row>
 					<Col md="6" sm="12">
-						<p className="card-font-bold">{formatBalanceAndCurrency(total_tokens)}</p>
+						<p className="card-font-bold">{formatBalanceAndCurrency(totalBudget.value)}</p>
 						<div className="sub-title">Project Token</div>
 					</Col>
 					<Col md="6" sm="12">
-						<p className="card-font-bold">{formatBalanceAndCurrency(available_tokens)}</p>
+						<p className="card-font-bold">{formatBalanceAndCurrency(availableBalance.value)}</p>
 						<div className="sub-title">Available Token</div>
 					</Col>
 				</Row>
