@@ -262,11 +262,34 @@ export async function getProjectsBalances(projectIds, rahatAddress, rahatAdminAd
 	}
 }
 
+export async function getProjectsERC20Balances(projectIds, rahatAddress) {
+	try {
+		const RahatContract = await getContractByProvider(rahatAddress, CONTRACT.RAHAT);
+		const projectIdHashs = projectIds.map(el => ethers.utils.solidityKeccak256(['string'], [el]));
+		const erc20BalanceCallData = projectIdHashs.map(project => {
+			return generateSignaturesWithInterface(['function getProjectBalance(bytes32 _projectId)'], 'getProjectBalance', [
+				project
+			]);
+		});
+
+		const data = await RahatContract.callStatic.multicall(erc20BalanceCallData);
+		const projectBalances = data.map(el => {
+			const data = abiCoder.decode(['uint256'], el);
+			return data[0].toNumber();
+		});
+		return projectBalances;
+	} catch (e) {
+		console.log(e);
+		return 0;
+	}
+}
+
 // Get available balance
 export async function loadAidBalance(aidId, contract_address) {
 	try {
 		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
 		const data = await contract.getProjecERC20Balance(aidId);
+		//console.log(data.balances);
 		return data.toNumber();
 	} catch (e) {
 		return 0;
@@ -278,8 +301,21 @@ export async function getProjectCapital(aidId, contract_address) {
 		const hashId = ethers.utils.solidityKeccak256(['string'], [aidId]);
 		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
 		const data = await contract.callStatic.projectERC20Capital(hashId);
+		console.log('project capital:', data.toNumber());
 		return data.toNumber();
 	} catch {
+		return 0;
+	}
+}
+
+export async function getProjectBalance(aidId, contract_address) {
+	try {
+		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
+		const data = await contract.getProjecERC20Balance(aidId);
+		console.log('project balance:', data.toNumber());
+		return data.toNumber();
+	} catch (e) {
+		console.log(e);
 		return 0;
 	}
 }
