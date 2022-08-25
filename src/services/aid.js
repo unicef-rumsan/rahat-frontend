@@ -289,7 +289,6 @@ export async function loadAidBalance(aidId, contract_address) {
 	try {
 		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
 		const data = await contract.getProjecERC20Balance(aidId);
-		//console.log(data.balances);
 		return data.toNumber();
 	} catch (e) {
 		return 0;
@@ -301,7 +300,6 @@ export async function getProjectCapital(aidId, contract_address) {
 		const hashId = ethers.utils.solidityKeccak256(['string'], [aidId]);
 		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
 		const data = await contract.callStatic.projectERC20Capital(hashId);
-		console.log('project capital:', data.toNumber());
 		return data.toNumber();
 	} catch {
 		return 0;
@@ -312,7 +310,6 @@ export async function getProjectBalance(aidId, contract_address) {
 	try {
 		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
 		const data = await contract.getProjecERC20Balance(aidId);
-		console.log('project balance:', data.toNumber());
 		return data.toNumber();
 	} catch (e) {
 		console.log(e);
