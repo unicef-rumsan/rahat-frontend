@@ -7,10 +7,10 @@ export default (apiFunc, field, props) => {
 	const [loading, setLoading] = useState(false);
 
 	const request = async (...args) => {
-		setLoading(true);
 		try {
 			let cacheValue = await DataService.getProject(props.id, field);
 			setValue(cacheValue);
+			setLoading(true);
 			const result = await apiFunc(...args);
 			let dataToCache = {};
 			dataToCache[field] = result;
