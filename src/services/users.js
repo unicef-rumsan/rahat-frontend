@@ -222,3 +222,27 @@ async function saveRoleToBlockchain({ role, rahat, rahat_admin, wallet, wallet_a
 		return my_admin_contract.addOwner(wallet_address);
 	}
 }
+
+export async function generateOTP(payload) {
+	try {
+		const res = await axios({
+			url: `${API.USERS}/otp_by_mail`,
+			method: 'post',
+			data: payload
+		});
+		return res.data;
+	} catch (e) {
+		console.log('Err', e);
+	}
+}
+
+export async function verifyOTP(payload) {
+	try {
+		const res = await axios({
+			url: `${API.USERS}/otp_verification`,
+			method: 'post',
+			data: payload
+		});
+		return res.data;
+	} catch {}
+}
