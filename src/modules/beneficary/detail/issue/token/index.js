@@ -54,7 +54,7 @@ const Token = ({ benfId, projectId }) => {
 		e.preventDefault();
 		setWalletActions(WALLET_ACTIONS.ISSUE_TOKEN);
 		if (inputTokens > available_tokens) return addToast(`Only ${available_tokens} tokens are available`, TOAST.ERROR);
-		togglePasscodeModal();
+		submitTokenRequest();
 	};
 
 	// const handleTokenSuspend  = () => {
@@ -100,8 +100,8 @@ const Token = ({ benfId, projectId }) => {
 		suspendBeneficiaryToken
 	]);
 
-	const submitTokenRequest = useCallback(async () => {
-		if (isVerified && wallet && currentBalanceTab === BALANCE_TABS.TOKEN) {
+	const submitTokenRequest = async () => {
+		if (wallet && currentBalanceTab === BALANCE_TABS.TOKEN) {
 			try {
 				setPasscodeModal(false);
 				setMasking(true);
@@ -126,20 +126,7 @@ const Token = ({ benfId, projectId }) => {
 				addToast(errMsg, TOAST.ERROR);
 			}
 		}
-	}, [
-		isVerified,
-		wallet,
-		currentBalanceTab,
-		getBeneficiaryById,
-		benfId,
-		addToast,
-		appSettings.agency,
-		inputTokens,
-		projectId,
-		issueBenfToken,
-		history,
-		sendTokenIssuedSms
-	]);
+	};
 
 	const fetchProjectBalance = useCallback(async () => {
 		setFetchingBlockchain(true);
@@ -154,10 +141,10 @@ const Token = ({ benfId, projectId }) => {
 	}, [fetchProjectBalance]);
 
 	// TODO: Effect called on package issue. Temporarily fixed!
-	useEffect(() => {
-		if (walletActions === WALLET_ACTIONS.ISSUE_TOKEN) submitTokenRequest();
-		if (walletActions === WALLET_ACTIONS.SUSPEND_TOKEN) submitTokenSuspend();
-	}, [isVerified, submitTokenRequest, walletActions, submitTokenSuspend]);
+	// useEffect(() => {
+	// 	if (walletActions === WALLET_ACTIONS.ISSUE_TOKEN) submitTokenRequest();
+	// 	if (walletActions === WALLET_ACTIONS.SUSPEND_TOKEN) submitTokenSuspend();
+	// }, [isVerified, submitTokenRequest, walletActions, submitTokenSuspend]);
 
 	return (
 		<>

@@ -40,48 +40,34 @@ const AddUser = () => {
 	};
 
 	const handleFormSubmit = e => {
+		console.log('sssss');
 		e.preventDefault();
 		if (!selectedRole) return addToast('Please select role', TOAST.ERROR);
 		if (!current_user.agency) return addToast('Agency not found', TOAST.ERROR);
 		setFormData({ ...formData, roles: [selectedRole], agency: current_user.agency });
-		togglePasscodeModal();
+		saveUserDetails();
 		return;
 	};
 
 	const handleCancelClick = () => History.push('/users');
 
-	const saveUserDetails = useCallback(() => {
-		if (!isVerified) return;
+	const saveUserDetails = () => {
 		if (!wallet) return addToast('Wallet not found', TOAST.ERROR);
 		setLoading(true);
 		const { rahat, rahat_admin } = appSettings.agency.contracts;
 		addUser({ payload: formData, rahat, rahat_admin, wallet })
 			.then(() => {
-				changeIsverified(false);
-				togglePasscodeModal();
 				setLoading(false);
 				History.push('/users');
 				addToast('User added successfully', TOAST.SUCCESS);
 			})
 			.catch(err => {
-				changeIsverified(false);
-				togglePasscodeModal();
 				setLoading(false);
 				addToast(err.message, TOAST.ERROR);
 			});
-	}, [
-		addToast,
-		addUser,
-		appSettings.agency.contracts,
-		changeIsverified,
-		formData,
-		isVerified,
-		setLoading,
-		togglePasscodeModal,
-		wallet
-	]);
+	};
 
-	useEffect(saveUserDetails, [isVerified]);
+	//useEffect(saveUserDetails, [isVerified]);
 
 	return (
 		<div>

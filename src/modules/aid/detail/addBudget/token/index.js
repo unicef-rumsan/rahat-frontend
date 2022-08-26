@@ -42,11 +42,11 @@ const Token = ({ projectId }) => {
 
 	const handleTokenSubmit = e => {
 		e.preventDefault();
-		togglePasscodeModal();
+		submitProjectBudget();
 	};
 
 	const submitProjectBudget = useCallback(async () => {
-		if (isVerified && wallet) {
+		if (wallet) {
 			try {
 				setPasscodeModal(false);
 				setMasking(true);
@@ -66,11 +66,11 @@ const Token = ({ projectId }) => {
 				addToast(err_msg, TOAST.ERROR);
 			}
 		}
-	}, [addProjectBudget, addToast, appSettings.agency, inputTokens, isVerified, projectId, wallet, history]);
+	}, [addProjectBudget, addToast, appSettings.agency, inputTokens, projectId, wallet, history]);
 
-	useEffect(() => {
-		submitProjectBudget();
-	}, [isVerified, submitProjectBudget]);
+	// useEffect(() => {
+	// 	submitProjectBudget();
+	// }, [isVerified, submitProjectBudget]);
 
 	useEffect(() => {
 		const { rahat_admin } = appSettings.agency.contracts;
