@@ -14,7 +14,6 @@ import BreadCrumb from '../../ui_components/breadcrumb';
 import { getUser } from '../../../utils/sessionManager';
 import { useHistory } from 'react-router-dom';
 import API from '../../../constants/api';
-import DataService from '../../../services/db';
 import * as Service from '../../../services/aid';
 import useProjectCache from '../../../hooks/useProjectCache';
 
@@ -26,21 +25,27 @@ import { getContractByProvider } from '../../../blockchain/abi';
 export default function Index(props) {
 	const { id } = props.match.params;
 
-	// ------------------- Contexts -----------------------------
+	//#region Contexts
 	const { getAidDetails, changeProjectStatus } = useContext(AidContext);
 	const { appSettings } = useContext(AppContext);
+	//#endregion
 
-	// ------------------- States -----------------------------
+	//#region States
 	const [toolTipOpen, setToolTipOpen] = useState(false);
 	const [projectDetails, setProjectDetails] = useState(null);
+	//#endregion
 
-	// ------------------- Hooks ------------------------------
+	//#region Hooks
+
 	const history = useHistory();
 	const { addToast } = useToasts();
 	const totalBudget = useProjectCache(Service.getProjectCapital, 'totalBudget', { id, defaultValue: 0 });
 	const availableBalance = useProjectCache(Service.getProjectBalance, 'availableBalance', { id, defaultValue: 0 });
 
-	// ------------------- Handlers ---------------------------
+	//#endregion
+
+	//#region Handlers
+
 	const handleStatusChange = status => {
 		const success_label = status === PROJECT_STATUS.CLOSED ? 'Closed' : 'Activated';
 		changeProjectStatus(id, status)
@@ -78,7 +83,10 @@ export default function Index(props) {
 		setToolTipOpen(!toolTipOpen);
 	};
 
-	// ------------------- useEffects ---------------------------
+	//#endregion
+
+	//#region useEffects
+
 	useEffect(fetchProjectDetails, []);
 
 	const listenChainEvents = async () => {
@@ -96,6 +104,8 @@ export default function Index(props) {
 		availableBalance.request(id, rahat_admin);
 		listenChainEvents();
 	}, []);
+
+	//#endregion
 
 	return (
 		<>
