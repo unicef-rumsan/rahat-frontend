@@ -169,10 +169,10 @@ export default function Details({ match }) {
 			const found = qrcodeImages.find(f => f.phone === d.phone);
 			if (i % 2 === 0) {
 				html += `
-			<div class="row" style="display:flex;">
-			  <div class="col-md-4" style="flex:1;height:75%;align-content:center;text-align:center;">
+			<div className="row" style="display:flex;">
+			  <div className="col-md-4" style="flex:1;height:75%;align-content:center;text-align:center;">
 				<img style="height:27%; width:30%" src='${found ? found.imgUrl : ''}'>
-				<div class="col-md-4" style="margin-top:5px;">
+				<div className="col-md-4" style="margin-top:5px;">
 				  <label>
 					<h3>${name}<h3>
 					<h4>${address}<h4>
@@ -183,9 +183,9 @@ export default function Details({ match }) {
 			  </div>`;
 			} else {
 				html += `
-			  <div class="col-md-4" style="flex:1;height:75%;align-content:center;text-align:center;">
+			  <div className="col-md-4" style="flex:1;height:75%;align-content:center;text-align:center;">
 				<img style="height:27%; width:30%" src='${found ? found.imgUrl : ''}'>
-				<div class="col-md-4" style="margin-top:5px;">
+				<div className="col-md-4" style="margin-top:5px;">
 				  <label>
 					<h3>${name}<h3>
 					<h4>${address}<h4>
@@ -199,7 +199,7 @@ export default function Details({ match }) {
 		});
 		if (data.length % 2 !== 0) {
 			html += ` 
-		  <div class="col-md-4" style="flex:1;height:75%;align-content:center;text-align:center;">
+		  <div className="col-md-4" style="flex:1;height:75%;align-content:center;text-align:center;">
 		  </div>
 		</div>`;
 		}

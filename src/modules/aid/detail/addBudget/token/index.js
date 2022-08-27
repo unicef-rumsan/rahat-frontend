@@ -81,8 +81,6 @@ const Token = ({ projectId }) => {
 	return (
 		<>
 			<MaskLoader message="Adding token, please wait..." isOpen={masking} />
-			<PasscodeModal isOpen={passcodeModal} toggleModal={togglePasscodeModal}></PasscodeModal>
-
 			<div className="spacing-budget">
 				<Row>
 					<Col md="6" sm="12">

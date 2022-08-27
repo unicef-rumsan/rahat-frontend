@@ -57,11 +57,7 @@ const BenefDetails = ({ params }) => {
 	};
 
 	const toggleProjectModal = () => {
-		// If opening modal, reset fields
 		if (!projectModal) {
-			// setShowAlert(false);
-			// setAvailableBalance('');
-			// setInputTokens('');
 			setSelectedProject('');
 		}
 		setProjectModal(!projectModal);
@@ -127,8 +123,8 @@ const BenefDetails = ({ params }) => {
 
 	const fetchCurrentBalance = useCallback(
 		async phone => {
-			const {agency} = appSettings
-			if(!agency || !agency.contracts) return;
+			const { agency } = appSettings;
+			if (!agency || !agency.contracts) return;
 			try {
 				const parsed_phone = parseInt(phone);
 				const { agency } = appSettings;
@@ -220,19 +216,6 @@ const BenefDetails = ({ params }) => {
 						data={allProjects}
 						placeholder="--Select Project--"
 					/>{' '}
-					{/* <br />
-					<Label>Recent projects</Label>
-					<br />
-					{benfProjects.map(project => (
-						<button
-							type="button"
-							className="btn waves-effect waves-light btn-outline-info"
-							style={{ borderRadius: '8px' }}
-							onClick={handleProjectClick}
-						>
-							{project.label || 'button'}
-						</button>
-					))} */}
 				</FormGroup>
 			</ModalWrapper>
 
@@ -278,7 +261,6 @@ const BenefDetails = ({ params }) => {
 						title="Balance"
 						button_name="Issue"
 						token_data={currentBalance}
-						package_data={totalPackageBalance}
 						fetching={fetching}
 						loading={loading}
 						handleIssueToken={handleIssueToken}
