@@ -39,66 +39,17 @@ const Token = ({ benfId, projectId }) => {
 	const [fetchingBlockchain, setFetchingBlockchain] = useState(false);
 
 	const [passcodeModal, setPasscodeModal] = useState(false);
-	const [walletActions, setWalletActions] = useState(WALLET_ACTIONS.DEFAULT);
 
 	const handleInputChange = e => {
 		let { value } = e.target;
 		setInputToken(value);
 	};
 
-	const togglePasscodeModal = useCallback(() => {
-		setPasscodeModal(!passcodeModal);
-	}, [passcodeModal]);
-
 	const handleTokenSubmit = e => {
 		e.preventDefault();
-		setWalletActions(WALLET_ACTIONS.ISSUE_TOKEN);
 		if (inputTokens > available_tokens) return addToast(`Only ${available_tokens} tokens are available`, TOAST.ERROR);
 		submitTokenRequest();
 	};
-
-	// const handleTokenSuspend  = () => {
-	// 	setWalletActions(WALLET_ACTIONS.SUSPEND_TOKEN);
-	// 	togglePasscodeModal();
-	// };
-
-	const submitTokenSuspend = useCallback(async () => {
-		if (isVerified && wallet && currentBalanceTab === BALANCE_TABS.TOKEN) {
-			try {
-				setPasscodeModal(false);
-				setMasking(true);
-				const benf = await getBeneficiaryById(benfId);
-				if (!benf) return addToast('Beneficiary not found!', TOAST.ERROR);
-				const { contracts } = appSettings.agency;
-				const payload = {
-					phone: Number(benf.phone),
-					projectId: projectId
-				};
-				const res = await suspendBeneficiaryToken(payload, wallet, contracts);
-				if (res) {
-					setMasking(false);
-					addToast(`${inputTokens} tokens assigend successfully`, TOAST.SUCCESS);
-					history.push(`/beneficiaries/${benfId}`);
-				}
-			} catch (err) {
-				setMasking(false);
-				const errMsg = err.message ? err.message : 'Could not assign tokens to beneficiary';
-				addToast(errMsg, TOAST.ERROR);
-			}
-		}
-	}, [
-		isVerified,
-		wallet,
-		currentBalanceTab,
-		getBeneficiaryById,
-		benfId,
-		addToast,
-		appSettings.agency,
-		inputTokens,
-		projectId,
-		history,
-		suspendBeneficiaryToken
-	]);
 
 	const submitTokenRequest = async () => {
 		if (wallet && currentBalanceTab === BALANCE_TABS.TOKEN) {
@@ -130,6 +81,7 @@ const Token = ({ benfId, projectId }) => {
 
 	const fetchProjectBalance = useCallback(async () => {
 		setFetchingBlockchain(true);
+		if (!appSettings.agency) return;
 		const { rahat_admin } = appSettings.agency && appSettings.agency.contracts;
 		await getProjectCapital(projectId, rahat_admin);
 		await getAidBalance(projectId, rahat_admin);
@@ -140,16 +92,9 @@ const Token = ({ benfId, projectId }) => {
 		fetchProjectBalance();
 	}, [fetchProjectBalance]);
 
-	// TODO: Effect called on package issue. Temporarily fixed!
-	// useEffect(() => {
-	// 	if (walletActions === WALLET_ACTIONS.ISSUE_TOKEN) submitTokenRequest();
-	// 	if (walletActions === WALLET_ACTIONS.SUSPEND_TOKEN) submitTokenSuspend();
-	// }, [isVerified, submitTokenRequest, walletActions, submitTokenSuspend]);
-
 	return (
 		<>
 			<MaskLoader message="Assigning tokens, please wait..." isOpen={masking} />
-			<PasscodeModal isOpen={passcodeModal} toggleModal={togglePasscodeModal}></PasscodeModal>
 
 			<div className="spacing-budget">
 				<Row>
