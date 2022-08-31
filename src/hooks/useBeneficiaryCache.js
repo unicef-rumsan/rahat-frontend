@@ -8,13 +8,13 @@ export default (apiFunc, field, props) => {
 
 	const request = async (...args) => {
 		try {
-			let cacheValue = await DataService.getProject(props.id, field);
+			let cacheValue = await DataService.getBeneficiary(props.id, field);
 			setValue(cacheValue);
 			setLoading(true);
 			const result = await apiFunc(...args);
 			let dataToCache = {};
 			dataToCache[field] = result;
-			await DataService.saveProject(props.id, dataToCache);
+			await DataService.saveBeneficiary(props.id, dataToCache);
 			setError(null);
 			setValue(result);
 		} catch (err) {
