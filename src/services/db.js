@@ -8,7 +8,9 @@ db.version(DB.VERSION).stores({
 	data: 'name,data',
 	documents: 'hash,type,name,file,createdAt',
 	assets: 'address,type,name,symbol,decimal,balance,network',
-	projects: 'id, data'
+	projects: 'id, data',
+	beneficiaries: 'id, data',
+	vendors: 'id, data'
 });
 
 export default {
@@ -105,7 +107,47 @@ export default {
 		return cacheData;
 	},
 
-	async listProjects(id, field) {
-		return db.documents.toArray();
+	async listProjects() {
+		return db.projects.toArray();
+	},
+
+	async saveBeneficiary(id, data) {
+		let cacheData = await db.beneficiaries.get(id);
+		if (!cacheData) {
+			data = data || {};
+			return db.beneficiaries.put({ id, ...data });
+		}
+		data = Object.assign(cacheData, data);
+		return db.beneficiaries.update(id, data);
+	},
+
+	async getBeneficiary(id, field) {
+		let cacheData = await db.beneficiaries.get(id);
+		if (field) return cacheData?.[field];
+		return cacheData;
+	},
+
+	async listBeneficiaries() {
+		return db.beneficiaries.toArray();
+	},
+
+	async saveVendor(id, data) {
+		let cacheData = await db.vendors.get(id);
+		if (!cacheData) {
+			data = data || {};
+			return db.vendors.put({ id, ...data });
+		}
+		data = Object.assign(cacheData, data);
+		return db.vendors.update(id, data);
+	},
+
+	async getVendor(id, field) {
+		let cacheData = await db.vendors.get(id);
+		if (field) return cacheData?.[field];
+		return cacheData;
+	},
+
+	async listVendors() {
+		return db.vendors.toArray();
 	}
 };

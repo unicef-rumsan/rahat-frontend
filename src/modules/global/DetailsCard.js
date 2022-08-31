@@ -18,6 +18,7 @@ export default function DetailsCard(props) {
 		imgUrl,
 		name_value,
 		total,
+		fetching,
 		total_value,
 		status,
 		handleStatusChange,
@@ -83,7 +84,11 @@ export default function DetailsCard(props) {
 							</div>
 						</Col>
 						<Col md="4" sm="12">
-							<p className="card-font-bold">{formatBalanceAndCurrency(total_value) || '0'}</p>
+							{fetching ? (
+								<Loading />
+							) : (
+								<p className="card-font-bold">{formatBalanceAndCurrency(total_value) || '0'}</p>
+							)}
 							<div className="sub-title">{total || 'No Label'}</div>
 						</Col>
 					</Row>
