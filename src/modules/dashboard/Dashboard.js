@@ -7,6 +7,7 @@ import { StatsCard } from '../ui_components/cards';
 import { TOAST } from '../../constants';
 import { UserContext } from '../../contexts/UserContext';
 import TransactionChart from '../ui_components/chart';
+import TransactionTable from '../global/TransactionTable';
 
 const Dashboard = () => {
 	const { addToast } = useToasts();
@@ -137,6 +138,7 @@ const Dashboard = () => {
 				</Col>
 			</Row>
 			<TransactionChart />
+			<TransactionTable />
 		</>
 	);
 };

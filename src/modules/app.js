@@ -17,33 +17,36 @@ import PassportControl from '../modules/passport';
 import SignUp from '../modules/authentication/SignUp';
 import Approval from '../modules/authentication/Approval';
 import { VendorContextProvider } from '../contexts/VendorContext';
+import { TransactionTableContextProvider } from '../contexts/TransactionTableContext';
 
 const App = () => {
 	return (
 		<AppContextProvider>
 			<ToastProvider>
-				<AidContextProvider>
-					<BeneficiaryContextProvider>
-						<VendorContextProvider>
-							<MobilizerContextProvider>
-							<UserContextProvider>
-								<Router history={History}>
-									<Switch>
-										<Route exact path="/auth/wallet" component={AuthWallet} />
-										<Route exact path="/sign_up" component={SignUp} />
-										<Route exact path="/approval" component={Approval} />
-										<Route path="/passport-control" component={PassportControl} />
-										<Route path="/setup" component={AgencyRegistration} />
-										{indexRoutes.map((prop, key) => {
-											return <PrivateRoute path={prop.path} key={key} component={prop.component} />;
-										})}
-									</Switch>
-								</Router>
-							</UserContextProvider>
-							</MobilizerContextProvider>
-						</VendorContextProvider>
-					</BeneficiaryContextProvider>
-				</AidContextProvider>
+				<TransactionTableContextProvider>
+					<AidContextProvider>
+						<BeneficiaryContextProvider>
+							<VendorContextProvider>
+								<MobilizerContextProvider>
+									<UserContextProvider>
+										<Router history={History}>
+											<Switch>
+												<Route exact path="/auth/wallet" component={AuthWallet} />
+												<Route exact path="/sign_up" component={SignUp} />
+												<Route exact path="/approval" component={Approval} />
+												<Route path="/passport-control" component={PassportControl} />
+												<Route path="/setup" component={AgencyRegistration} />
+												{indexRoutes.map((prop, key) => {
+													return <PrivateRoute path={prop.path} key={key} component={prop.component} />;
+												})}
+											</Switch>
+										</Router>
+									</UserContextProvider>
+								</MobilizerContextProvider>
+							</VendorContextProvider>
+						</BeneficiaryContextProvider>
+					</AidContextProvider>
+				</TransactionTableContextProvider>
 			</ToastProvider>
 		</AppContextProvider>
 	);
