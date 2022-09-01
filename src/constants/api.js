@@ -3,7 +3,10 @@ const FUNDRAISER_SERVER_URL = process.env.REACT_APP_API_FUNDRAISER;
 const FUNDRAISER_URL = process.env.REACT_APP_API_FUNDRAISER_SERVER;
 const API_PATH = SERVER_URL + '/api/v1';
 
+const REACT_APP_TRANSACTION_REPORT_SERVER = process.env.REACT_APP_TRANSACTION_REPORT_SERVER || 'http://localhost:4900';
+
 module.exports = {
+	REACT_APP_TRANSACTION_REPORT_SERVER: REACT_APP_TRANSACTION_REPORT_SERVER.replace('http', 'ws'),
 	FUNDRAISER_CAMPAIGN: FUNDRAISER_SERVER_URL + '/api/campaign',
 	FUNDRAISER_FUNDRAISE: FUNDRAISER_URL + '/fundraise',
 	FUNDRAISER_DONATION: FUNDRAISER_SERVER_URL + '/api/donation',
@@ -27,6 +30,5 @@ module.exports = {
 	Sms: API_PATH + '/sms',
 	CheckUserExistsURL: FUNDRAISER_SERVER_URL + '/api/user/checkUserExists',
 	CreateUserFundraiserURL: FUNDRAISER_SERVER_URL + '/api/user/register',
-	// TODO:make env file
-	TRANSACTION_TABLE_REPORT: 'http://localhost:4900/api/v1/transactions'
+	TRANSACTION_TABLE_REPORT: REACT_APP_TRANSACTION_REPORT_SERVER + '/api/v1/transactions'
 };

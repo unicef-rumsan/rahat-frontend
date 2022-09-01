@@ -1,5 +1,5 @@
-import React, { useContext, useReducer } from 'react';
-import { createContext } from 'react';
+import React, { useContext, createContext } from 'react';
+
 import { getTableData } from '../services/transactionReportTable';
 
 const initialState = {
@@ -15,7 +15,6 @@ export const TransactionTableContextProvider = ({ children }) => {
 
 	const getListData = async () => {
 		const data = await getTableData();
-		console.log('data', data);
 		return data.data;
 	};
 

@@ -1,15 +1,15 @@
-
-const API_SERVER = process.env.REACT_APP_API_SERVER
+const API_SERVER = process.env.REACT_APP_API_SERVER;
 
 module.exports = {
 	CURRENCY: {
 		NP_RUPEES: 'NPR'
-	},	
+	},
 	API_SERVER,
-	WSS_SERVER : API_SERVER.replace('http', 'ws'),
-	WSS_EVENTS:{
-		welcome:'welcome',
-		notification:'notification'
+	WSS_SERVER: API_SERVER.replace('http', 'ws'),
+	WSS_EVENTS: {
+		welcome: 'welcome',
+		notification: 'notification',
+		rahat_claimed: 'rahat_claimed'
 	},
 	BALANCE_TABS: { TOKEN: 'Token', PACKAGE: 'Package' },
 	TRANSACTION_TABS: { TOKEN: 'Token', PACKAGE: 'Package' },
