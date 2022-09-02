@@ -7,26 +7,15 @@ import { getUser } from '../../../utils/sessionManager';
 import { ROLES, PROJECT_STATUS, TOAST } from '../.../../../../constants';
 import { useToasts } from 'react-toast-notifications';
 
-export default function Chart({ available_tokens, total_tokens, total_package, available_package, fetching, projectStatus, projectId }) {
+export default function Chart({ available_tokens, total_tokens, projectStatus, projectId }) {
 	const history = useHistory();
 	const { addToast } = useToasts();
 
 	const pieDataToken = {
-		labels: ['Available', 'Issued', 'Used', 'Redeemed',],
+		labels: ['Available', 'Issued', 'Used', 'Redeemed'],
 		datasets: [
 			{
 				data: [available_tokens, total_tokens - available_tokens, 0, 0],
-				backgroundColor: ['#2b7ec1', '#fd7e14'],
-				hoverBackgroundColor: ['#2b7ec1', '#fd7e14']
-			}
-		]
-	};
-
-	const pieDataPackage = {
-		labels: ['Available','Issued'],
-		datasets: [
-			{
-				data: [available_package,total_package - available_package],
 				backgroundColor: ['#2b7ec1', '#fd7e14'],
 				hoverBackgroundColor: ['#2b7ec1', '#fd7e14']
 			}
@@ -59,52 +48,28 @@ export default function Chart({ available_tokens, total_tokens, total_package, a
 							</button>
 						</Col>
 					</Row>
-					{fetching ? (
-						<Loading />
-					) : (
-						<div>
-							<div
-								className="chart-wrapper"
-								style={{ width: '100%', marginBottom: '50px', marginTop: '10px', height: 160 }}
-							>
-								<Label style={{ marginBottom: '10px' }}>Tokens</Label>
-								<Pie
-									data={pieDataToken}
-									options={{
-										maintainAspectRatio: false,
-										legend: {
-											display: true,
-											position: 'bottom',
-											labels: {
-												fontFamily: 'Be Vietnam',
-												fontColor: '#9B9B9B'
-											}
+					<div>
+						<div
+							className="chart-wrapper"
+							style={{ width: '100%', marginBottom: '50px', marginTop: '10px', height: 160 }}
+						>
+							<Label style={{ marginBottom: '10px' }}>Tokens</Label>
+							<Pie
+								data={pieDataToken}
+								options={{
+									maintainAspectRatio: false,
+									legend: {
+										display: true,
+										position: 'bottom',
+										labels: {
+											fontFamily: 'Be Vietnam',
+											fontColor: '#9B9B9B'
 										}
-									}}
-								/>
-							</div>
-							<div
-								className="chart-wrapper"
-								style={{ width: '100%', marginBottom: '40px', marginTop: '40px', height: 160 }}
-							>
-								<Label style={{ marginBottom: '10px' }}>Packages</Label>
-								<Pie
-									data={pieDataPackage}
-									options={{
-										maintainAspectRatio: false,
-										legend: {
-											display: true,
-											position: 'bottom',
-											labels: {
-												fontFamily: 'Be Vietnam',
-												fontColor: '#9B9B9B'
-											}
-										}
-									}}
-								/>
-							</div>
+									}
+								}}
+							/>
 						</div>
-					)}
+					</div>
 				</CardBody>
 			</Card>
 		</div>

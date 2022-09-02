@@ -7,7 +7,10 @@ const db = new Dexie(DB.NAME);
 db.version(DB.VERSION).stores({
 	data: 'name,data',
 	documents: 'hash,type,name,file,createdAt',
-	assets: 'address,type,name,symbol,decimal,balance,network'
+	assets: 'address,type,name,symbol,decimal,balance,network',
+	projects: 'id, data',
+	beneficiaries: 'id, data',
+	vendors: 'id, data'
 });
 
 export default {
@@ -69,20 +72,15 @@ export default {
 	},
 
 	saveAddress(address) {
-		localStorage.setItem('address', address);
 		return this.save('address', address);
-  },
-  
-  savePrivateKey(privateKey) {
-    return this.save('privateKey', privateKey);
-  },
+	},
+
+	savePrivateKey(privateKey) {
+		return this.save('privateKey', privateKey);
+	},
 
 	getAddress() {
 		return this.get('address');
-	},
-
-	getAddressFromLocal() {
-		return localStorage.getItem('address');
 	},
 
 	async saveWallet(wallet) {
@@ -93,53 +91,63 @@ export default {
 		return this.get('wallet');
 	},
 
-	async saveDocuments(docs) {
-		if (!Array.isArray(docs)) docs = [docs];
-		return db.documents.bulkAdd(docs);
+	async saveProject(id, data) {
+		let cacheData = await db.projects.get(id);
+		if (!cacheData) {
+			data = data || {};
+			return db.projects.put({ id, ...data });
+		}
+		data = Object.assign(cacheData, data);
+		return db.projects.update(id, data);
 	},
 
-	getDocument(hash) {
-		return db.documents.get(hash);
+	async getProject(id, field) {
+		let cacheData = await db.projects.get(id);
+		if (field) return cacheData?.[field];
+		return cacheData;
 	},
 
-	async updateDocument(key, data) {
-		return db.documents.update(key, data);
+	async listProjects() {
+		return db.projects.toArray();
 	},
 
-	listDocuments() {
-		return db.documents.toArray();
+	async saveBeneficiary(id, data) {
+		let cacheData = await db.beneficiaries.get(id);
+		if (!cacheData) {
+			data = data || {};
+			return db.beneficiaries.put({ id, ...data });
+		}
+		data = Object.assign(cacheData, data);
+		return db.beneficiaries.update(id, data);
 	},
 
-	getAsset(address) {
-		return db.assets.get(address);
+	async getBeneficiary(id, field) {
+		let cacheData = await db.beneficiaries.get(id);
+		if (field) return cacheData?.[field];
+		return cacheData;
 	},
 
-	async getAssetBySymbol(symbol, network) {
-		if (!network) return db.assets.get({ symbol });
-		if (symbol.toUpperCase() === 'ETH') return db.assets.get({ symbol });
-		return db.assets.filter(a => a.symbol === symbol && a.network && a.network.name === network).first();
+	async listBeneficiaries() {
+		return db.beneficiaries.toArray();
 	},
 
-	async addDefaultAsset(symbol, name) {
-		let asset = await this.getAsset('default');
-		if (!asset) return db.assets.add({ address: 'default', symbol, name, decimal: 18, balance: 0 });
+	async saveVendor(id, data) {
+		let cacheData = await db.vendors.get(id);
+		if (!cacheData) {
+			data = data || {};
+			return db.vendors.put({ id, ...data });
+		}
+		data = Object.assign(cacheData, data);
+		return db.vendors.update(id, data);
 	},
 
-	async addMultiAssets(assets) {
-		if (!Array.isArray(assets)) assets = [assets];
-		return db.assets.bulkAdd(assets);
+	async getVendor(id, field) {
+		let cacheData = await db.vendors.get(id);
+		if (field) return cacheData?.[field];
+		return cacheData;
 	},
 
-	saveAsset(asset) {
-		return db.assets.put(asset);
-	},
-
-	async updateAsset(key, asset) {
-		return db.assets.update(key, asset);
-	},
-
-	listAssets(network) {
-		if (!network) return db.assets.toArray();
-		return db.assets.filter(a => a.network === undefined || a.network.name === network).toArray();
+	async listVendors() {
+		return db.vendors.toArray();
 	}
 };
