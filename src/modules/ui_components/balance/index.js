@@ -13,7 +13,6 @@ export default function Balance(props) {
 	const {
 		title,
 		token_data,
-		package_data,
 		button_name,
 		projectId,
 		fetching,
@@ -65,21 +64,6 @@ export default function Balance(props) {
 
 							<div style={{ marginTop: 0 }} className="sub-title">
 								Tokens
-							</div>
-						</Col>
-						<Col>
-							{fetching ? (
-								<Loading />
-							) : (
-								<p className="card-font-bold">
-									{package_data && package_data.grandTotal > 0
-										? formatBalanceAndCurrency(package_data.grandTotal, package_data.currency)
-										: '0'}
-								</p>
-							)}
-
-							<div style={{ marginTop: 0 }} className="sub-title">
-								Package
 							</div>
 						</Col>
 					</Row>

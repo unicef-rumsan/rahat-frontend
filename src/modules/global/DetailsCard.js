@@ -12,13 +12,13 @@ const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
 export default function DetailsCard(props) {
 	const {
-		fetching,
 		title,
 		button_name,
 		name,
 		imgUrl,
 		name_value,
 		total,
+		fetching,
 		total_value,
 		status,
 		handleStatusChange,
@@ -89,7 +89,6 @@ export default function DetailsCard(props) {
 							) : (
 								<p className="card-font-bold">{formatBalanceAndCurrency(total_value) || '0'}</p>
 							)}
-
 							<div className="sub-title">{total || 'No Label'}</div>
 						</Col>
 					</Row>

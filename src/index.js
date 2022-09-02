@@ -5,13 +5,14 @@ import './assets/scss/style.scss';
 import './assets/css/custom.css';
 import './assets/css/responsive.css';
 
-//const App = lazy(() => import("./app"));
+//const App = lazy(() => import('./modules/app'));
 const App = lazy(
 	() =>
 		new Promise(resolve => {
 			setTimeout(() => resolve(import('./modules/app')), 0);
 		})
 );
+
 ReactDOM.render(
 	<Suspense fallback={<Spinner />}>
 		<App />
