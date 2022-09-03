@@ -1,15 +1,14 @@
-
-const API_SERVER = process.env.REACT_APP_API_SERVER
+const API_SERVER = process.env.REACT_APP_API_SERVER;
 
 module.exports = {
 	CURRENCY: {
 		NP_RUPEES: 'NPR'
-	},	
+	},
 	API_SERVER,
-	WSS_SERVER : API_SERVER.replace('http', 'ws'),
-	WSS_EVENTS:{
-		welcome:'welcome',
-		notification:'notification'
+	WSS_SERVER: API_SERVER.replace('http', 'ws'),
+	WSS_EVENTS: {
+		welcome: 'welcome',
+		notification: 'notification'
 	},
 	BALANCE_TABS: { TOKEN: 'Token', PACKAGE: 'Package' },
 	TRANSACTION_TABS: { TOKEN: 'Token', PACKAGE: 'Package' },
@@ -21,7 +20,7 @@ module.exports = {
 		FETCH_LIMIT: 100,
 		PAGE_LIMIT: 10
 	},
-	ROLES: { ADMIN: 'Admin', MANAGER: 'Manager', MOBILIZER: 'Mobilizer' },
+	ROLES: { ADMIN: 'Admin', MANAGER: 'Manager', MOBILIZER: 'Mobilizer', PALIKA: 'Palika' },
 	DEFAULT_TOKEN: {
 		NAME: 'Ether',
 		SYMBOL: 'ETH'

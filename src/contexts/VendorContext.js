@@ -117,7 +117,7 @@ export const VendorContextProvider = ({ children }) => {
 	// }
 
 	async function changeVendorStatus(vendorId, status) {
-		const res = await Service.changeVendorStaus(vendorId, status);
+		const res = await Service.changeVendorStatus(vendorId, status);
 		setVendor(res.data);
 		return res.data;
 	}

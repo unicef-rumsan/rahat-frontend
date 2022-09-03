@@ -1,9 +1,9 @@
 import axios from 'axios';
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 import API from '../constants/api';
 import { getUserToken } from '../utils/sessionManager';
 import CONTRACT from '../constants/contracts';
-import { getContractByProvider,generateMultiCallData } from '../blockchain/abi';
+import { getContractByProvider, generateMultiCallData } from '../blockchain/abi';
 import { calculateTotalPackageBalance } from './aid';
 
 const abiCoder = new ethers.utils.AbiCoder();
@@ -24,17 +24,17 @@ export async function getVendorBalance(contract_address, wallet_addr) {
 }
 
 export async function getVendorsBalances(contract_address, vendorAddresses) {
-	const contract  = await getContractByProvider(contract_address,CONTRACT.RAHAT_ERC20);
-	const callData = vendorAddresses.map((address) => generateMultiCallData(CONTRACT.RAHAT_ERC20,"balanceOf",[address]))
+	const contract = await getContractByProvider(contract_address, CONTRACT.RAHAT_ERC20);
+	const callData = vendorAddresses.map(address => generateMultiCallData(CONTRACT.RAHAT_ERC20, 'balanceOf', [address]));
 	const data = await contract.callStatic.multicall(callData);
-    const decodedData = data.map((el) => abiCoder.decode(['uint256'],el));
-	const vendorBalances = decodedData.map((el) => el[0].toNumber());
-	return vendorBalances
+	const decodedData = data.map(el => abiCoder.decode(['uint256'], el));
+	const vendorBalances = decodedData.map(el => el[0].toNumber());
+	return vendorBalances;
 }
 
-export async function getTotalVendorsBalances(contract_address,vendorAddresses){
-	const balances = await getVendorsBalances(contract_address,vendorAddresses);
-	return balances.reduce((prev,curr) => prev+curr,0);
+export async function getTotalVendorsBalances(contract_address, vendorAddresses) {
+	const balances = await getVendorsBalances(contract_address, vendorAddresses);
+	return balances.reduce((prev, curr) => prev + curr, 0);
 }
 
 export async function getVendorPackageBalance(contract_address, wallet_addresses, tokenIds) {
@@ -52,7 +52,7 @@ export async function approveVendor(wallet, payload, contract_address) {
 		const myContract = mapTestContract(signerContract);
 		const data = await myContract.addVendor(payload.wallet_address);
 		if (!data) return 'Vendor approve failed!';
-		const res = await changeVendorStaus(payload.vendorId, payload.status);
+		const res = await changeVendorStatus(payload.vendorId, payload.status);
 		getEth({ address: payload.wallet_address });
 		return res;
 	} catch (e) {
@@ -73,7 +73,7 @@ export async function getTokenIdsByProjects(projects) {
 	} catch {}
 }
 
-export async function changeVendorStaus(vendorId, status) {
+export async function changeVendorStatus(vendorId, status) {
 	try {
 		return axios.patch(
 			`${API.VENDORS}/${vendorId}/status/`,

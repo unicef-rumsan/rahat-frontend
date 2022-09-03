@@ -10,6 +10,7 @@
 		"react-test": "react-scripts test",
 		"eject": "react-scripts eject",
 		"test": "jest --coverage",
+		"preinstall": "npx npm-force-resolutions",
 		"send-coverage": "jest --coverage && cat ./coverage/lcov.info | coveralls"
 	},
 	"keywords": [],
@@ -28,6 +29,9 @@
 		"type": "git",
 		"url": "https://github.com/esatya/rahat-agency.git"
 	},
+	"resolutions": {
+		"react-error-overlay": "6.0.9"
+	},
 	"devDependencies": {
 		"@babel/preset-env": "^7.16.5",
 		"@babel/preset-react": "^7.16.5",
@@ -43,6 +47,7 @@
 		"mixin-deep": "^2.0.1",
 		"node": "^8.15.0",
 		"prettier": "2.2.1",
+		"react-error-overlay": "6.0.9",
 		"react-test-renderer": "^17.0.2",
 		"regenerator-runtime": "^0.13.9",
 		"ts-jest": "^27.0.7"
