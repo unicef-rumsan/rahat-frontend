@@ -32,39 +32,39 @@ export const getContractByProvider = (contractAddress, contractName) => {
 	return new ethers.Contract(contractAddress, abi, provider);
 };
 
-export const getUncheckedProvider = (contractAddress,contractName) => {
+export const getUncheckedProvider = (contractAddress, contractName) => {
 	const abi = getAbi(contractName);
 	const provider = new ethers.providers.JsonRpcProvider(NETWORK_URL);
 	const unchecked = provider.getUncheckedSigner();
-	console.log({unchecked});
+	console.log({ unchecked });
 	return new ethers.Contract(contractAddress, abi, unchecked);
-}
+};
 
 export const getContractInstance = async (contractAddress, contractName, wallet) => {
 	const contract = getContractByProvider(contractAddress, contractName);
 	return contract.connect(wallet);
 };
 
-export const getContractInterface = (contractName) => {
+export const getContractInterface = contractName => {
 	const abi = getAbi(contractName);
 	return new ethers.utils.Interface(abi);
-}
+};
 
-export const generateMultiCallData = (contractName,functionName,params) => {
+export const generateMultiCallData = (contractName, functionName, params) => {
 	const iface = getContractInterface(contractName);
-	return iface.encodeFunctionData(functionName,params)
-}
+	return iface.encodeFunctionData(functionName, params);
+};
 
 // hri = human readable interface
-export const generateSignaturesWithInterface = (hri,functionName,params) => {
+export const generateSignaturesWithInterface = (hri, functionName, params) => {
 	const iface = new ethers.utils.Interface(hri);
-	return iface.encodeFunctionData(functionName,params)
-}
+	return iface.encodeFunctionData(functionName, params);
+};
 
-export const getBalance = async (walletAddress) => {
+export const getBalance = async walletAddress => {
 	const provider = new ethers.providers.JsonRpcProvider(NETWORK_URL);
 	const balance = await provider.getBalance(walletAddress);
-	const etherBalance = ethers.utils.formatUnits(balance)
-	if(etherBalance.length > 5) return etherBalance.slice(0,5);
+	const etherBalance = ethers.utils.formatUnits(balance);
+	if (etherBalance.length > 5) return etherBalance.slice(0, 5);
 	return etherBalance;
-}
+};

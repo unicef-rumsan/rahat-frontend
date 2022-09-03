@@ -6,6 +6,7 @@ const DEF_SHOW_CHARS = 20;
 export const renderSingleRole = roles => {
 	if (roles.includes(ROLES.ADMIN)) return ROLES.ADMIN;
 	if (roles.includes(ROLES.MANAGER)) return ROLES.MANAGER;
+	if (roles.includes(ROLES.PALIKA)) return ROLES.PALIKA;
 	if (roles.includes(ROLES.MOBILIZER)) return ROLES.MOBILIZER;
 	return '-';
 };

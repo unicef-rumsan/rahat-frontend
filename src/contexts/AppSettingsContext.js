@@ -63,8 +63,8 @@ export const AppContextProvider = ({ children }) => {
 	// },[])
 
 	const getAppSettings = useCallback(async () => {
-		const res = await Service.getSettings();
-		dispatch({ type: ACTION.GET_APP_SUCCESS, res });
+		const { data } = await Service.getSettings();
+		dispatch({ type: ACTION.GET_APP_SUCCESS, data });
 	}, [dispatch]);
 
 	function setPasscodeModal(flag) {

@@ -5,16 +5,17 @@ import { getUserToken } from '../utils/sessionManager';
 const access_token = getUserToken();
 
 export function getSettings() {
-	return new Promise((resolve, reject) => {
-		axios
-			.get(`${API.APP}/settings`)
-			.then(res => {
-				resolve(res.data);
-			})
-			.catch(() => {
-				reject({ statusText: 'FAIL', data: {} });
-			});
-	});
+	return axios.get(`${API.APP}/settings`);
+	// return new Promise((resolve, reject) => {
+	// 	axios
+	// 		.get(`${API.APP}/settings`)
+	// 		.then(res => {
+	// 			resolve(res.data);
+	// 		})
+	// 		.catch(() => {
+	// 			reject({ statusText: 'FAIL', data: {} });
+	// 		});
+	// });
 }
 export async function setKobotoolbox(payload) {
 	return new Promise((resolve, reject) => {
