@@ -21,7 +21,8 @@ import StatusBox from './statusBox';
 import MaskLoader from '../../global/MaskLoader';
 import { getBalance } from '../../../blockchain/abi';
 import { BC } from '../../../services/ChainService';
-import { changeVendorStatus } from '../../../services/vendor';
+import { changeVendorStatus, getVendorBalance } from '../../../services/vendor';
+import useVendorCache from '../../../hooks/useVendorCache';
 
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
@@ -30,14 +31,9 @@ const Index = ({ params }) => {
 	const { id } = params;
 	const history = useHistory();
 
-	const {
-		getVendorDetails,
-		getVendorTransactions,
-		getVendorBalance,
-		approveVendor,
-		listProjects,
-		addVendorToProject
-	} = useContext(VendorContext);
+	const { getVendorDetails, getVendorTransactions, approveVendor, listProjects, addVendorToProject } = useContext(
+		VendorContext
+	);
 	const { wallet, appSettings } = useContext(AppContext);
 
 	const [basicInfo, setBasicInfo] = useState({});
@@ -47,7 +43,6 @@ const Index = ({ params }) => {
 
 	const [fetchingTokenTransaction, setFetchingTokenTransaction] = useState(false);
 	const [fetchingBalance, setFetchingBalance] = useState(false);
-	const [vendorBalance, setVendorBalance] = useState(null);
 	const [vendorStatus, setVendorStatus] = useState('');
 	const [addProjectModal, setAddProjectModal] = useState(false);
 	const [allProjects, setAllProjects] = useState([]);
@@ -55,7 +50,9 @@ const Index = ({ params }) => {
 
 	// WIP
 	const [vendorApproveModal, setVendorApproveModal] = useState(false);
-	const [vendorEtherBalance, setVendorEtherBalance] = useState(null);
+
+	const vendorBalance = useVendorCache(getVendorBalance, 'balance', { id, defaultValue: 0 });
+	const ethBalance = useVendorCache(getBalance, 'ethBalance', { id, defaultValue: 0 });
 
 	const toggleVendorApproveModal = () => setVendorApproveModal(!vendorApproveModal);
 	// END WIP
@@ -157,10 +154,8 @@ const Index = ({ params }) => {
 		async wallet_address => {
 			setFetchingBalance(true);
 			const { rahat_erc20 } = appSettings.agency.contracts;
-			const balance = await getVendorBalance(rahat_erc20, wallet_address);
-			setVendorBalance(balance);
-			const etherBalance = await getBalance(wallet_address);
-			setVendorEtherBalance(etherBalance);
+			vendorBalance.request(rahat_erc20, wallet_address);
+			ethBalance.request(wallet_address);
 			setFetchingBalance(false);
 		},
 		[appSettings, getVendorBalance]
@@ -196,7 +191,6 @@ const Index = ({ params }) => {
 		} catch (err) {
 			console.log(err.message);
 			setFetchingBalance(false);
-			setVendorBalance(0);
 		}
 	}, [appSettings, wallet, fetchVendorBalance, getVendorDetails, id, listProjects, sanitizeSelectOptions]);
 
@@ -329,18 +323,11 @@ const Index = ({ params }) => {
 					</Card>
 				</Col>
 				<Col md="5">
-					<Balance
-						action=""
-						title="Balance"
-						button_name=""
-						token_data={vendorBalance}
-						fetching={fetchingBalance}
-						handleIssueToken=""
-					/>
+					<Balance action="" title="Balance" button_name="" token_data={vendorBalance.value} handleIssueToken="" />
 				</Col>
 			</Row>
 
-			<VendorInfo information={basicInfo} etherBalance={vendorEtherBalance} />
+			<VendorInfo information={basicInfo} etherBalance={ethBalance.value} />
 			<ProjectInvovled projects={projectList} handleAddBtnClick={handleAddBtnClick} showAddBtn={true} />
 			<TransactionHistory fetching={fetchingTokenTransaction} transactions={transactionList} vendorId={id} />
 		</>

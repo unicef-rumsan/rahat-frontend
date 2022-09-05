@@ -9,7 +9,8 @@ export default function MaskLoader(props) {
 			<Modal isOpen={isOpen} className={props.className || ''} size={size ? size : ''} centered>
 				<ModalBody>
 					<div style={{ padding: 10 }}>
-						{message || 'Please wait...'} <span style={{ fontSize: 12 }}>This may take a while</span>
+						{message || 'Please wait...'} <br />
+						<span style={{ fontSize: 12 }}>This may take a moment...</span>
 					</div>
 					<div className="spinner-grow text-primary" role="status">
 						<span className="sr-only">Loading...</span>
