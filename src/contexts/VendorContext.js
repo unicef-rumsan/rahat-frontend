@@ -47,6 +47,7 @@ export const VendorContextProvider = ({ children }) => {
 				const { agency } = appSettings;
 				const vendorAddresses = payload.data.map(vendor => vendor.wallet_address);
 				const vendorBalances = await Service.getVendorsBalances(agency.contracts.rahat_erc20, vendorAddresses);
+				console.log(vendorBalances);
 				payload.data = appendVendorBalances(payload.data, vendorBalances);
 				dispatch({
 					type: ACTION.LIST,
@@ -55,6 +56,7 @@ export const VendorContextProvider = ({ children }) => {
 				setfetchingVendorBalances(false);
 				return vendorBalances;
 			} catch (e) {
+				console.log(e);
 				setfetchingVendorBalances(false);
 				return e;
 			}
@@ -163,7 +165,7 @@ export const VendorContextProvider = ({ children }) => {
 					type: ACTION.LIST,
 					data: res
 				});
-				getVendorsBalances(res);
+				//getVendorsBalances(res);
 				return res;
 			}
 		},

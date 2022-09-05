@@ -1,14 +1,12 @@
-import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Col, Label, Row } from 'reactstrap';
 import confirm from 'reactstrap-confirm';
 import MaskLoader from '../../global/MaskLoader';
-import { getUser } from '../../../utils/sessionManager';
 import { useToasts } from 'react-toast-notifications';
 import { BC } from '../../../services/ChainService';
 import { AppContext } from '../../../contexts/AppSettingsContext';
 import { getAdmins } from '../../../services/appSettings';
-import BootstrapSwitchButton from 'bootstrap-switch-button-react';
 
 const truncateEthAddress = address => {
 	if (!address) return '';
@@ -19,8 +17,6 @@ const truncateEthAddress = address => {
 };
 
 export default function MultiSigTrigger({ projectId }) {
-	const history = useHistory();
-	const { addToast } = useToasts();
 	const { wallet, appSettings } = useContext(AppContext);
 
 	const [isTriggered, setIsTriggered] = useState(false);
@@ -28,8 +24,6 @@ export default function MultiSigTrigger({ projectId }) {
 	const [activated, setActivated] = useState(false);
 	const [admins, setAdmins] = useState([]);
 	const [loading, setLoading] = useState(false);
-
-	const triggerButtonRef = useRef(null);
 
 	const activateResponse = () => changeResponseStatus(true);
 	const deactivateResponse = () => changeResponseStatus(false);
@@ -44,32 +38,44 @@ export default function MultiSigTrigger({ projectId }) {
 			confirmColor: 'danger',
 			cancelText: 'Cancel',
 			confirmText: 'Yes, I am sure, proceed!',
-			size: 'sm'
+			size: 'md'
 		});
 		if (result) {
-			if (isActivate) {
-				await BC.activateResponse(projectId, {
-					contractAddress: appSettings.agency.contracts.rahat_trigger,
-					wallet
-				});
-			} else {
-				await BC.deactivateResponse(projectId, {
-					contractAddress: appSettings.agency.contracts.rahat_trigger,
-					wallet
-				});
+			setLoading(true);
+			try {
+				if (isActivate) {
+					await BC.activateResponse(projectId, {
+						contractAddress: appSettings.agency.contracts.rahat_trigger,
+						wallet
+					});
+				} else {
+					await BC.deactivateResponse(projectId, {
+						contractAddress: appSettings.agency.contracts.rahat_trigger,
+						wallet
+					});
+				}
+				await fetchProjectStatus();
+			} catch (e) {
+			} finally {
+				setLoading(false);
 			}
-			fetchProjectStatus();
 		}
 	};
 
-	const fetchConsentStatus = async () => {
+	const fetchProjectStatus = useCallback(async () => {
 		if (!(appSettings.agency?.contracts?.rahat_trigger && wallet)) return;
-		console.log(wallet.address);
+		setLoading(true);
 		BC.listTriggerConfirmations(projectId, {
 			contractAddress: appSettings.agency.contracts.rahat_trigger,
 			wallet
 		})
 			.then(async data => {
+				let isLive = await BC.isProjectResponseLive({
+					contractAddress: appSettings.agency.contracts.rahat_trigger,
+					wallet
+				});
+				setActivated(isLive);
+
 				let { data: dbAdmins } = await getAdmins();
 				data = data.map(d => {
 					const withAdminName = dbAdmins.find(ad => ad.address === d.address);
@@ -86,20 +92,8 @@ export default function MultiSigTrigger({ projectId }) {
 				}
 				setAdmins(data);
 			})
-			.catch(e => console.log(e.message));
-	};
-
-	const fetchProjectStatus = useCallback(async () => {
-		if (appSettings.agency?.contracts?.rahat_trigger && wallet) {
-			setLoading(true);
-			let isLive = await BC.isProjectResponseLive({
-				contractAddress: appSettings.agency.contracts.rahat_trigger,
-				wallet
-			});
-			setActivated(isLive);
-			fetchConsentStatus();
-			setLoading(false);
-		}
+			.catch(e => console.log(e.message))
+			.finally(e => setLoading(false));
 	}, [appSettings, wallet]);
 
 	useEffect(() => {
@@ -184,7 +178,7 @@ export default function MultiSigTrigger({ projectId }) {
 						</Col>
 					</Row>
 					<div className="mt-3">
-						<small>At least two Admins must consent to trigger, before this response can be activated. </small>
+						<small>Response is activated when at least two admins have triggered. </small>
 					</div>
 				</CardBody>
 			</Card>

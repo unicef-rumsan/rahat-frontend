@@ -194,7 +194,7 @@ const Vendor = () => {
 									<th className="border-0">Phone</th>
 									<th className="border-0">Address</th>
 									<th className="border-0">Registration Date </th>
-									<th className="border-0">Balance </th>
+									{/* <th className="border-0">Balance </th> */}
 									<th className="border-0">Action</th>
 								</tr>
 							</thead>
@@ -219,7 +219,7 @@ const Vendor = () => {
 
 											<td>{dottedString(e.address)}</td>
 											<td>{moment(e.created_at).format('MMM Do YYYY')}</td>
-											<td>
+											{/* <td>
 												{fetchingVendorBalances ? (
 													<MiniSpinner />
 												) : e.tokenBalance ? (
@@ -227,7 +227,7 @@ const Vendor = () => {
 												) : (
 													'0'
 												)}
-											</td>
+											</td> */}
 											<td className="blue-grey-text  text-darken-4 font-medium">
 												<Link to={`/vendors/${e._id}`}>
 													<i className="fas fa-eye fa-lg"></i>
