@@ -20,7 +20,7 @@ import SelectWrapper from '../../global/SelectWrapper';
 import StatusBox from './statusBox';
 import MaskLoader from '../../global/MaskLoader';
 import { getBalance } from '../../../blockchain/abi';
-import { VCS } from '../../../services/chain/vendor';
+import { BC } from '../../../services/ChainService';
 import { changeVendorStatus } from '../../../services/vendor';
 
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
@@ -35,8 +35,6 @@ const Index = ({ params }) => {
 		getVendorTransactions,
 		getVendorBalance,
 		approveVendor,
-		getVendorPackageBalance,
-		getTokenIdsByProjects,
 		listProjects,
 		addVendorToProject
 	} = useContext(VendorContext);
@@ -51,7 +49,6 @@ const Index = ({ params }) => {
 	const [fetchingBalance, setFetchingBalance] = useState(false);
 	const [vendorBalance, setVendorBalance] = useState(null);
 	const [vendorStatus, setVendorStatus] = useState('');
-	const [vendorPackageBalance, setVendorPackageBalance] = useState(null);
 	const [addProjectModal, setAddProjectModal] = useState(false);
 	const [allProjects, setAllProjects] = useState([]);
 	const [selectedProject, setSelectedProject] = useState('');
@@ -99,7 +96,7 @@ const Index = ({ params }) => {
 		const _status = flag === true ? VENDOR_STATUS.ACTIVE : VENDOR_STATUS.SUSPENDED;
 		setLoading(true);
 		try {
-			await VCS.changeVendorStatus(basicInfo.wallet_address, flag, {
+			await BC.changeVendorStatus(basicInfo.wallet_address, flag, {
 				contractAddress: appSettings.agency.contracts.rahat,
 				wallet
 			});
@@ -132,30 +129,6 @@ const Index = ({ params }) => {
 			addToast(err.message, TOAST.ERROR);
 		}
 	};
-
-	// const handleApproveVendor = useCallback(async () => {
-	// 	setPasscodeModal(false);
-	// 	const { wallet_address } = basicInfo;
-	// 	try {
-	// 		if (!inputStatus) return addToast('No status supplied', TOAST.ERROR);
-	// 		const payload = {
-	// 			status: inputStatus,
-	// 			wallet_address: wallet_address,
-	// 			vendorId: id
-	// 		};
-	// 		setLoading(true);
-	// 		const approved = await approveVendor(payload);
-	// 		if (selectedProject) await addVendorToProject(id, selectedProject);
-	// 		if (approved) {
-	// 			setLoading(false);
-	// 			addToast('Vendor status updated successfully', TOAST.SUCCESS);
-	// 			History.push('/vendors');
-	// 		}
-	// 	} catch (err) {
-	// 		setLoading(false);
-	// 		addToast(err.message, TOAST.ERROR);
-	// 	}
-	// }, [addToast, addVendorToProject, approveVendor, basicInfo, id, inputStatus, selectedProject]);
 
 	const openApprovalModal = () => {
 		toggleVendorApproveModal();
@@ -203,7 +176,7 @@ const Index = ({ params }) => {
 	const fetchVendorStatus = useCallback(async () => {
 		let isVendor = false;
 		if (appSettings.agency?.contracts?.rahat && wallet && basicInfo?.wallet_address) {
-			isVendor = await VCS.isVendor(basicInfo.wallet_address, {
+			isVendor = await BC.isVendor(basicInfo.wallet_address, {
 				contractAddress: appSettings.agency.contracts.rahat,
 				wallet
 			});
@@ -238,17 +211,6 @@ const Index = ({ params }) => {
 		}
 	}, [getVendorTransactions, id]);
 
-	// const fetchVendorPackageTransactions = useCallback(async () => {
-	// 	try {
-	// 		setFetchingBlockChain(true);
-	// 		const transactions = await getVendorTransactions(id);
-	// 		if (transactions) setTransactionList(transactions);
-	// 		setFetchingBlockChain(false);
-	// 	} catch (err) {
-	// 		setFetchingBlockChain(false);
-	// 	}
-	// }, [getVendorTransactions, id]);
-
 	useEffect(() => {
 		fetchVendorDetails();
 	}, [fetchVendorDetails]);
@@ -260,12 +222,6 @@ const Index = ({ params }) => {
 	useEffect(() => {
 		fetchVendorTokenTransactions();
 	}, [fetchVendorTokenTransactions]);
-
-	// useEffect(() => {
-	// 	if (isVerified && wallet) {
-	// 		handleApproveVendor();
-	// 	}
-	// }, [handleApproveVendor, isVerified, wallet]);
 
 	return (
 		<>
