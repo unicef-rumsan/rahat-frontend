@@ -6,7 +6,6 @@ import { useHistory } from 'react-router-dom';
 import { AppContext } from '../../../../../contexts/AppSettingsContext';
 import { AidContext } from '../../../../../contexts/AidContext';
 
-import PasscodeModal from '../../../../global/PasscodeModal';
 import MaskLoader from '../../../../global/MaskLoader';
 
 import { TOAST } from '../../../../../constants';
@@ -23,9 +22,9 @@ const Token = ({ projectId }) => {
 		defaultValue: 0
 	});
 
-	const { total_tokens, available_tokens, addProjectBudget } = useContext(AidContext);
+	const { addProjectBudget } = useContext(AidContext);
 
-	const { wallet, isVerified, appSettings } = useContext(AppContext);
+	const { wallet, appSettings } = useContext(AppContext);
 	const [inputTokens, setInputToken] = useState('');
 
 	const [passcodeModal, setPasscodeModal] = useState(false);
