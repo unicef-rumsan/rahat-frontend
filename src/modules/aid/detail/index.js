@@ -7,6 +7,7 @@ import { AppContext } from '../../../contexts/AppSettingsContext';
 import DetailsCard from '../../global/DetailsCard';
 import ProjectInfo from './projectInfo';
 import PieChart from './pieChart';
+import MultiSigTrigger from './multiSigTrigger';
 // import BarChart from './barChart';
 import Tabs from './tab';
 import { TOAST, PROJECT_STATUS, ROLES } from '../../../constants';
@@ -151,6 +152,7 @@ export default function Index(props) {
 					{projectDetails && <ProjectInfo projectDetails={projectDetails} />}
 				</Col>
 				<Col md="5">
+					{projectDetails && <MultiSigTrigger projectId={id} />}
 					{projectDetails && (
 						<PieChart
 							available_tokens={availableBalance.value}
