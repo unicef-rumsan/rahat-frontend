@@ -17,6 +17,11 @@ export function getSettings() {
 	// 		});
 	// });
 }
+
+export function getAdmins() {
+	return axios.get(`${API.APP}/admins`);
+}
+
 export async function setKobotoolbox(payload) {
 	return new Promise((resolve, reject) => {
 		axios

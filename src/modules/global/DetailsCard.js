@@ -42,7 +42,7 @@ export default function DetailsCard(props) {
 						</Col>
 						<Col>
 							<div style={{ float: 'right' }}>
-								{title === 'Project Details' ? (
+								{/* {title === 'Project Details' ? (
 									<BootstrapSwitchButton
 										checked={status === PROJECT_STATUS.CLOSED ? false : true}
 										onlabel="Activated"
@@ -50,6 +50,7 @@ export default function DetailsCard(props) {
 										width={140}
 										height={30}
 										onstyle="success"
+										offstyle="outline-danger"
 										onChange={handleSwitchChange}
 									/>
 								) : (
@@ -61,7 +62,7 @@ export default function DetailsCard(props) {
 									>
 										{button_name || 'button'}
 									</button>
-								)}
+								)} */}
 							</div>
 						</Col>
 					</Row>

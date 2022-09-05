@@ -5,12 +5,12 @@ import { useHistory } from 'react-router-dom';
 
 import { AppContext } from '../../../../../contexts/AppSettingsContext';
 import { AidContext } from '../../../../../contexts/AidContext';
-import PasscodeModal from '../../../../global/PasscodeModal';
 import { TOAST } from '../../../../../constants';
 import Loading from '../../../../global/Loading';
 import { BALANCE_TABS } from '../../../../../constants';
 import MaskLoader from '../../../../global/MaskLoader';
 import { formatBalanceAndCurrency } from '../../../../../utils';
+import { BC } from '../../../../../services/ChainService';
 
 const WALLET_ACTIONS = {
 	DEFAULT: null,
@@ -28,11 +28,10 @@ const Token = ({ benfId, projectId }) => {
 		getBeneficiaryById,
 		getProjectCapital,
 		getAidBalance,
-		suspendBeneficiaryToken,
 		sendTokenIssuedSms
 	} = useContext(AidContext);
 
-	const { wallet, isVerified, appSettings, currentBalanceTab } = useContext(AppContext);
+	const { wallet, appSettings, currentBalanceTab } = useContext(AppContext);
 	const [inputTokens, setInputToken] = useState('');
 	const [masking, setMasking] = useState(false);
 
@@ -64,6 +63,12 @@ const Token = ({ benfId, projectId }) => {
 					phone: Number(benf.phone),
 					projectId: projectId
 				};
+
+				// await BC.issueTokenToBeneficiary(projectId, Number(benf.phone), Number(inputTokens), {
+				// 	wallet,
+				// 	contractAddress: contracts.rahat
+				// });
+
 				await sendTokenIssuedSms(Number(benf.phone), Number(inputTokens));
 				const res = await issueBenfToken(payload, wallet, contracts);
 				if (res) {
