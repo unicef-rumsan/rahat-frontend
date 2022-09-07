@@ -17,6 +17,7 @@ import { useHistory } from 'react-router-dom';
 import API from '../../../constants/api';
 import * as Service from '../../../services/aid';
 import useProjectCache from '../../../hooks/useProjectCache';
+import MaskLoader from '../../global/MaskLoader';
 
 import CONTRACT from '../../../constants/contracts';
 import { getContractByProvider } from '../../../blockchain/abi';
@@ -34,6 +35,7 @@ export default function Index(props) {
 	//#region States
 	const [toolTipOpen, setToolTipOpen] = useState(false);
 	const [projectDetails, setProjectDetails] = useState(null);
+	const [loading, showLoading] = useState(false);
 	//#endregion
 
 	//#region Hooks
@@ -100,6 +102,7 @@ export default function Index(props) {
 	};
 
 	useEffect(() => {
+		if (!appSettings?.agency?.contracts) return;
 		const { rahat_admin } = appSettings.agency.contracts;
 		totalBudget.request(id, rahat_admin);
 		availableBalance.request(id, rahat_admin);
@@ -110,6 +113,7 @@ export default function Index(props) {
 
 	return (
 		<>
+			<MaskLoader message="Loading data from Blockchain, please wait..." isOpen={loading} />
 			<Row>
 				<Col md="9">
 					<p className="page-heading">Projects</p>
@@ -152,7 +156,7 @@ export default function Index(props) {
 					{projectDetails && <ProjectInfo projectDetails={projectDetails} />}
 				</Col>
 				<Col md="5">
-					{projectDetails && <MultiSigTrigger projectId={id} />}
+					{projectDetails && <MultiSigTrigger projectId={id} showLoading={showLoading} />}
 					{projectDetails && (
 						<PieChart
 							available_tokens={availableBalance.value}
