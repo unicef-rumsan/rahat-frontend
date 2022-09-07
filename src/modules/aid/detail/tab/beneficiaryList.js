@@ -314,7 +314,7 @@ const List = ({ projectId }) => {
 			<div>
 				<div className="row">
 					<div style={{ flex: 1, padding: 10 }}>
-						<button
+						{/* <button
 							onClick={() => toggleAmountModal(ACTION.BULK_ISSUE)}
 							type="button"
 							className="btn waves-effect waves-light btn-outline-info"
@@ -329,10 +329,10 @@ const List = ({ projectId }) => {
 							style={{ borderRadius: '8px' }}
 						>
 							Bulk Generate QR Code
-						</button>
+						</button> */}
 					</div>
 					<div style={{ padding: 10, float: 'right' }}>
-						<button
+						{/* <button
 							type="button"
 							onClick={handleFileUploadClick}
 							className="btn waves-effect waves-light btn-outline-info"
@@ -346,7 +346,7 @@ const List = ({ projectId }) => {
 							onChange={handleFileChange}
 							accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 							style={{ display: 'none' }}
-						/>
+						/> */}
 					</div>
 				</div>
 

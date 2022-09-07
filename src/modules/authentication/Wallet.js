@@ -13,7 +13,7 @@ import { saveUser, saveUserToken } from '../../utils/sessionManager';
 const Wallet = () => {
 	const [showHide, setShowHide] = useState('d-none');
 	const [message, setMessage] = useState('');
-	const [email, setEmail] = useState('unicef-np@rumsan.com');
+	const [email, setEmail] = useState('unicef-np@mailinator.com');
 	const [isWalletLogin, setIsWalletLogin] = useState(false);
 	const [tempIdentity, setTempIdentity] = useState(null);
 	const [otpLogin, setOtpLogin] = useState(false);
@@ -22,6 +22,13 @@ const Wallet = () => {
 	const toggleLogin = e => {
 		e.preventDefault();
 		setIsWalletLogin(!isWalletLogin);
+	};
+
+	const handleEnterKey = event => {
+		event.preventDefault();
+		if (event.key === 'Enter') {
+			getOtpAndLogin(event);
+		}
 	};
 
 	const getOtpAndLogin = async e => {
@@ -79,7 +86,7 @@ const Wallet = () => {
 							</p>
 						</div>
 					</div>
-					<p className="text-copyright">Copyright © 2021 Rumsan Group of Companies | All Rights Reserved.</p>
+					<p className="text-copyright">Copyright © 2021 Rumsan | All Rights Reserved.</p>
 				</Col>
 				<Col className="right-content">
 					{/* <p className="text-signup">
@@ -89,7 +96,7 @@ const Wallet = () => {
 						</Link>
 					</p> */}
 					<div className=" text-center">
-						<p className="text-title">Rahat Palika App</p>
+						<p className="text-title">Rahat - UNICEF Nepal</p>
 						{!isWalletLogin && !otpLogin && (
 							<div className="mt-4">
 								<Row>
@@ -108,6 +115,7 @@ const Wallet = () => {
 														name="email"
 														placeholder="Your Email"
 														value={email}
+														onKeyDown={handleEnterKey}
 														onChange={e => setEmail(e.target.value)}
 													/>
 												</FormGroup>

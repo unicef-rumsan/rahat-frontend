@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Col, Label, Row } from 'reactstrap';
 import confirm from 'reactstrap-confirm';
-import MaskLoader from '../../global/MaskLoader';
 import { useToasts } from 'react-toast-notifications';
 import { BC } from '../../../services/ChainService';
 import { AppContext } from '../../../contexts/AppSettingsContext';
@@ -16,14 +15,13 @@ const truncateEthAddress = address => {
 	return `${match[1]}…${match[2]}`;
 };
 
-export default function MultiSigTrigger({ projectId }) {
+export default function MultiSigTrigger({ projectId, showLoading }) {
 	const { wallet, appSettings } = useContext(AppContext);
 
 	const [isTriggered, setIsTriggered] = useState(false);
 	const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false);
 	const [activated, setActivated] = useState(false);
 	const [admins, setAdmins] = useState([]);
-	const [loading, setLoading] = useState(false);
 
 	const activateResponse = () => changeResponseStatus(true);
 	const deactivateResponse = () => changeResponseStatus(false);
@@ -41,7 +39,7 @@ export default function MultiSigTrigger({ projectId }) {
 			size: 'md'
 		});
 		if (result) {
-			setLoading(true);
+			showLoading(true);
 			try {
 				if (isActivate) {
 					await BC.activateResponse(projectId, {
@@ -56,15 +54,13 @@ export default function MultiSigTrigger({ projectId }) {
 				}
 				await fetchProjectStatus();
 			} catch (e) {
-			} finally {
-				setLoading(false);
+				showLoading(false);
 			}
 		}
 	};
 
 	const fetchProjectStatus = useCallback(async () => {
-		if (!(appSettings.agency?.contracts?.rahat_trigger && wallet)) return;
-		setLoading(true);
+		showLoading(true);
 		BC.listTriggerConfirmations(projectId, {
 			contractAddress: appSettings.agency.contracts.rahat_trigger,
 			wallet
@@ -93,16 +89,16 @@ export default function MultiSigTrigger({ projectId }) {
 				setAdmins(data);
 			})
 			.catch(e => console.log(e.message))
-			.finally(e => setLoading(false));
+			.finally(e => showLoading(false));
 	}, [appSettings, wallet]);
 
 	useEffect(() => {
+		if (!(appSettings.agency?.contracts && wallet)) return;
 		fetchProjectStatus();
 	}, [fetchProjectStatus]);
 
 	return (
 		<div>
-			<MaskLoader message="Loading data from Blockchain, please wait..." isOpen={loading} />
 			<Card>
 				<CardBody>
 					<Row>

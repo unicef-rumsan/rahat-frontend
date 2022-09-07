@@ -177,7 +177,7 @@ const Beneficiary = () => {
 									>
 										<option value="phone">Search By Phone</option>
 										<option value="name">By Name</option>
-										<option value="project">By Project</option>
+										{/* <option value="project">By Project</option> */}
 									</CustomInput>
 									<div style={{ display: 'inline-flex' }}>
 										{filter.searchBy === SEARCH_OPTIONS.PROJECT ? (
