@@ -13,7 +13,7 @@ import { saveUser, saveUserToken } from '../../utils/sessionManager';
 const Wallet = () => {
 	const [showHide, setShowHide] = useState('d-none');
 	const [message, setMessage] = useState('');
-	const [email, setEmail] = useState('unicef-np@mailinator.com');
+	const [email, setEmail] = useState('');
 	const [isWalletLogin, setIsWalletLogin] = useState(false);
 	const [tempIdentity, setTempIdentity] = useState(null);
 	const [otpLogin, setOtpLogin] = useState(false);
@@ -25,8 +25,8 @@ const Wallet = () => {
 	};
 
 	const handleEnterKey = event => {
-		event.preventDefault();
 		if (event.key === 'Enter') {
+			event.preventDefault();
 			getOtpAndLogin(event);
 		}
 	};
