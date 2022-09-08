@@ -224,16 +224,12 @@ async function saveRoleToBlockchain({ role, rahat, rahat_admin, wallet, wallet_a
 }
 
 export async function generateOTP(payload) {
-	try {
-		const res = await axios({
-			url: `${API.USERS}/otp_by_mail`,
-			method: 'post',
-			data: payload
-		});
-		return res.data;
-	} catch (e) {
-		console.log('Err', e);
-	}
+	const res = await axios({
+		url: `${API.USERS}/otp_by_mail`,
+		method: 'post',
+		data: payload
+	});
+	return res.data;
 }
 
 export async function verifyOTP(payload) {

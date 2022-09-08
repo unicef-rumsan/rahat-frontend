@@ -11,8 +11,7 @@ import DataService from '../../services/db';
 import { saveUser, saveUserToken } from '../../utils/sessionManager';
 
 const Wallet = () => {
-	const [showHide, setShowHide] = useState('d-none');
-	const [message, setMessage] = useState('');
+	const [errMessage, setErrMessage] = useState('');
 	const [email, setEmail] = useState('');
 	const [isWalletLogin, setIsWalletLogin] = useState(false);
 	const [tempIdentity, setTempIdentity] = useState(null);
@@ -33,14 +32,17 @@ const Wallet = () => {
 
 	const getOtpAndLogin = async e => {
 		e.preventDefault();
-		setMessage('');
-		setShowHide('d-none');
-		const result = await generateOTP({ address: email, encryptionKey: tempIdentity.publicKey });
-		if (result?.msg && !result?.status) {
-			setMessage(result.msg);
-			setShowHide('');
+		setErrMessage('');
+		try {
+			const result = await generateOTP({ address: email, encryptionKey: tempIdentity.publicKey });
+
+			if (result?.msg && !result?.status) {
+				setErrMessage(result.msg);
+			}
+			if (result.status) setOtpLogin(true);
+		} catch (e) {
+			setErrMessage('Server Error: Please contact admin.');
 		}
-		if (result.status) setOtpLogin(true);
 	};
 
 	useEffect(() => {
@@ -52,8 +54,7 @@ const Wallet = () => {
 		if (otp) {
 			const isOTPValid = await verifyOTP({ otp, encryptionKey: tempIdentity.publicKey });
 			if (!isOTPValid) {
-				setMessage('Invalid OTP. Please enter again');
-				setShowHide('');
+				setErrMessage('Invalid OTP. Please enter again');
 				return;
 			}
 			saveUser(isOTPValid.user);
@@ -70,7 +71,7 @@ const Wallet = () => {
 	};
 
 	const handleOtpInput = e => {
-		setShowHide('d-none');
+		setErrMessage('');
 		setOtp(e.target.value);
 	};
 
@@ -105,8 +106,8 @@ const Wallet = () => {
 											<CardTitle className="text-left">
 												<h5>Sign In</h5>
 											</CardTitle>
-											<p className={`mt-2 ${showHide}`} style={{ color: 'red' }}>
-												{message}
+											<p className={`mt-2 ${errMessage ? '' : 'd-none'}`} style={{ color: 'red' }}>
+												{errMessage}
 											</p>
 											<Form>
 												<FormGroup className="mt-2">
@@ -149,8 +150,8 @@ const Wallet = () => {
 							<>
 								<Card style={{ padding: '20px', width: '23rem' }}>
 									<p>Please check your email for code and enter here.</p>
-									<p className={`mt-2 ${showHide}`} style={{ color: 'red' }}>
-										{message}
+									<p className={`mt-2 ${errMessage ? '' : 'd-none'}`} style={{ color: 'red' }}>
+										{errMessage}
 									</p>
 									<div className="p-2">
 										<Input className="mt-2 custom-number-input" onChange={handleOtpInput} type="text" name="number" />
