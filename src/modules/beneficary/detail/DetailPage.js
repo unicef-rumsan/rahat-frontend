@@ -16,7 +16,7 @@ import { useHistory } from 'react-router-dom';
 import * as Service from '../../../services/beneficiary';
 import useBeneficiaryCache from '../../../hooks/useBeneficiaryCache';
 
-import BeneficiaryInfo from './BeneficiaryInfo';
+import BeneficiaryInfo from './BeneficiaryInfoCard';
 import ProjectSelector from './ProjectSelector';
 import BeneficiaryActions from './ActionMenu';
 import NameCard from './NameCard';
