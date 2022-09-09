@@ -42,12 +42,12 @@ export default function MultiSigTrigger({ projectId, showLoading }) {
 			showLoading(true);
 			try {
 				if (isActivate) {
-					await BC.activateResponse(projectId, {
+					await BC.activateResponse(appSettings.agency.id, {
 						contractAddress: appSettings.agency.contracts.rahat_trigger,
 						wallet
 					});
 				} else {
-					await BC.deactivateResponse(projectId, {
+					await BC.deactivateResponse(appSettings.agency.id, {
 						contractAddress: appSettings.agency.contracts.rahat_trigger,
 						wallet
 					});
@@ -61,7 +61,7 @@ export default function MultiSigTrigger({ projectId, showLoading }) {
 
 	const fetchProjectStatus = useCallback(async () => {
 		showLoading(true);
-		BC.listTriggerConfirmations(projectId, {
+		BC.listTriggerConfirmations(appSettings.agency.id, {
 			contractAddress: appSettings.agency.contracts.rahat_trigger,
 			wallet
 		})
