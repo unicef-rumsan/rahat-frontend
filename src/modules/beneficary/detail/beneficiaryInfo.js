@@ -4,14 +4,11 @@ import { Card, CardTitle, Col, Row } from 'reactstrap';
 import '../../../assets/css/project.css';
 import IdImgPlaceholder from '../../../assets/images/id-icon-1.png';
 import { formatWord } from '../../../utils';
-import { History } from '../../../utils/History';
 import moment from 'moment';
 
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
 export default function BeneficiaryInfo({ basicInfo, extras }) {
-	const handleEditClick = () => History.push(`/edit-beneficiary/${basicInfo._id}`);
-
 	return (
 		<div>
 			<Card>
@@ -20,16 +17,6 @@ export default function BeneficiaryInfo({ basicInfo, extras }) {
 						<CardTitle className="title" style={{ flexBasis: '90%' }}>
 							More Information
 						</CardTitle>
-						<div style={{ flexBasis: '10%' }}>
-							<button
-								type="button"
-								onClick={handleEditClick}
-								className="btn waves-effect waves-light btn-info"
-								style={{ borderRadius: '8px' }}
-							>
-								Edit
-							</button>
-						</div>
 					</div>
 					<Row>
 						<Col>
@@ -75,7 +62,6 @@ export default function BeneficiaryInfo({ basicInfo, extras }) {
 								<p className="card-font-medium">{extras && extras.child ? extras.child : '-'}</p>
 								<div className="sub-title">Number of family member(Child)</div>
 							</div>
-
 						</Col>
 						<Col>
 							<img
@@ -85,8 +71,8 @@ export default function BeneficiaryInfo({ basicInfo, extras }) {
 								height="60%"
 								className="card-data"
 							/>
-								<div className="card-data ">
-								<p className="card-font-medium">{ moment(extras.created_at).format('MMM Do YYYY, hh:mm A') || '-'}</p>
+							<div className="card-data ">
+								<p className="card-font-medium">{moment(extras.created_at).format('MMM Do YYYY, hh:mm A') || '-'}</p>
 								<div className="sub-title">Registration Date</div>
 							</div>
 						</Col>

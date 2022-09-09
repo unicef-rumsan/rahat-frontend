@@ -2,7 +2,8 @@ import { ethers } from 'ethers';
 import CONTRACT from '../constants/contracts';
 import { getContractInstance, generateMultiCallData } from '../blockchain/abi';
 
-const vendorRole = ethers.utils.keccak256(ethers.utils.toUtf8Bytes('VENDOR'));
+const keccak256 = txt => ethers.utils.keccak256(ethers.utils.toUtf8Bytes(txt));
+const vendorRole = keccak256('VENDOR');
 
 const TriggerResponseContract = (contractAddress, wallet) =>
 	getContractInstance(contractAddress, CONTRACT.RAHAT_TRIGGER_RESPONSE, wallet);
@@ -59,5 +60,10 @@ export const BC = {
 	async issueTokenToBeneficiary(projectId, phone, amount, { contractAddress, wallet }) {
 		const contract = await RahatContract(contractAddress, wallet);
 		await contract.issueERC20ToBeneficiary(projectId, phone, amount);
+	},
+
+	async suspendBeneficiary(phone, projectId, { contractAddress, wallet }) {
+		const contract = await RahatContract(contractAddress, wallet);
+		return contract.suspendBeneficiary(phone, keccak256(projectId));
 	}
 };
