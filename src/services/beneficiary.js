@@ -226,6 +226,16 @@ export async function updateBeneficiary(id, body) {
 	return res.data;
 }
 
+export async function removeBeneficiary(id) {
+	return axios({
+		url: `${API.BENEFICARIES}/${id}`,
+		method: 'delete',
+		headers: {
+			access_token
+		}
+	});
+}
+
 export async function importBeneficiary(body) {
 	const { data } = await axios({
 		url: API.BENEFICARIES + `/import`,

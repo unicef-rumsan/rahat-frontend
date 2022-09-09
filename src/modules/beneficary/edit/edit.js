@@ -84,7 +84,7 @@ const Edit = ({ beneficiaryId }) => {
 				setLoading(false);
 
 				addToast('Beneficiary updated successfully', TOAST.SUCCESS);
-				History.push('/beneficiaries');
+				History.push(`/beneficiaries/${beneficiaryId}`);
 			})
 			.catch(err => {
 				setLoading(false);
@@ -217,6 +217,7 @@ const Edit = ({ beneficiaryId }) => {
 											onChange={handleProjectChange}
 											maxMenuHeight={130}
 											data={projectList}
+											isDisabled={true}
 											placeholder="--Select Project--"
 										/>
 									)}
@@ -227,6 +228,7 @@ const Edit = ({ beneficiaryId }) => {
 											onChange={handleProjectChange}
 											maxMenuHeight={130}
 											data={projectList}
+											isDisabled={true}
 											placeholder="--Select Project--"
 										/>
 									)}
@@ -302,7 +304,12 @@ const Edit = ({ beneficiaryId }) => {
 									<Col md="6" sm="12">
 										<FormGroup>
 											<Label>Education</Label>
-											<Input type="text" value={extras.education || ''} name="education" onChange={handleExtraInfoChange} />
+											<Input
+												type="text"
+												value={extras.education || ''}
+												name="education"
+												onChange={handleExtraInfoChange}
+											/>
 										</FormGroup>
 									</Col>
 									<Col md="6" sm="12">
@@ -329,7 +336,7 @@ const Edit = ({ beneficiaryId }) => {
 											<br />
 											<Input
 												name="govt_id"
-												value={formData.govt_id ||''}
+												value={formData.govt_id || ''}
 												type="number"
 												className="form-field"
 												onChange={handleInputChange}

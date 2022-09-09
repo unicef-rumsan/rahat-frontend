@@ -1,11 +1,11 @@
 import React from 'react';
 import { BeneficiaryContextProvider } from '../../../contexts/BeneficiaryContext';
-import Detail from './detail';
+import DetailPage from './DetailPage';
 
 const index = props => {
 	return (
 		<BeneficiaryContextProvider>
-			<Detail params={props.match.params} />
+			<DetailPage params={props.match.params} />
 		</BeneficiaryContextProvider>
 	);
 };
