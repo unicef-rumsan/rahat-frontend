@@ -7,6 +7,7 @@ import { StatsCard } from '../ui_components/cards';
 import { TOAST } from '../../constants';
 import { UserContext } from '../../contexts/UserContext';
 import TransactionChart from '../ui_components/chart';
+import MultiSigTrigger from './MultiSigTrigger';
 
 const Dashboard = () => {
 	const { addToast } = useToasts();
@@ -124,10 +125,8 @@ const Dashboard = () => {
 				</Col>
 			</Row>
 			<Row>
-				<Col md="8">
+				<Col md="7">
 					<TokenByProject data={stats.tokensByProject} exportData={exportData.tokens_by_project || []} />
-				</Col>
-				<Col md="4">
 					<BeneficiaryByProject
 						releasedToken={stats.totalAllocation}
 						redeemedTokens={stats.redeemedTokens}
@@ -135,8 +134,10 @@ const Dashboard = () => {
 						exportData={exportData.benef_by_project || []}
 					/>
 				</Col>
+				<Col md="5">
+					<MultiSigTrigger />
+				</Col>
 			</Row>
-			<TransactionChart />
 		</>
 	);
 };
