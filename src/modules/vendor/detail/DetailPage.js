@@ -31,11 +31,7 @@ const Index = ({ params }) => {
 	const { wallet, appSettings } = useContext(AppContext);
 
 	const [basicInfo, setBasicInfo] = useState({});
-	const [transactionList, setTransactionList] = useState([]);
 	const [loading, showLoading] = useState(false);
-
-	const [fetchingTokenTransaction, setFetchingTokenTransaction] = useState(false);
-	const [fetchingBalance, setFetchingBalance] = useState(false);
 	const [vendorStatus, setVendorStatus] = useState('');
 
 	const [showProjectSelector, setShowProjectSelector] = useState(false);
@@ -53,43 +49,40 @@ const Index = ({ params }) => {
 					contractAddress: appSettings.agency.contracts.rahat,
 					wallet
 				});
-				fetchVendorDetails();
-				fetchVendorStatus();
 			}
-		}
-	};
-
-	const onProjectSelect = async e => {
-		e.preventDefault();
-		try {
-			showLoading(true);
-			if (!selectedProject) throw new Error('Please select a project');
-			if (projectSelectorContext === 'approve-vendor') {
-				await handlers.approveVendor();
-			}
-			if (projectSelectorContext === 'add-project') {
-				await addVendorToProject(id, selectedProject);
-				addToast('Vendor added to the project', TOAST.SUCCESS);
-			}
-		} catch (e) {
-			addToast(e.message, TOAST.ERROR);
-		} finally {
-			setSelectedProject(null);
-			setShowProjectSelector(false);
-			showLoading(false);
-		}
-	};
-
-	const fetchVendorBalance = useCallback(
-		async wallet_address => {
-			setFetchingBalance(true);
-			const { rahat_erc20 } = appSettings.agency.contracts;
-			vendorBalance.request(rahat_erc20, wallet_address);
-			ethBalance.request(wallet_address);
-			setFetchingBalance(false);
 		},
-		[appSettings, getVendorBalance]
-	);
+
+		async onProjectSelect(e) {
+			e.preventDefault();
+			try {
+				showLoading(true);
+				if (!selectedProject) throw new Error('Please select a project');
+				if (projectSelectorContext === 'approve-vendor') {
+					await handlers.approveVendor();
+				}
+				if (projectSelectorContext === 'add-project') {
+					await addVendorToProject(id, selectedProject);
+					addToast('Vendor added to the project', TOAST.SUCCESS);
+				}
+				await fetchVendorDetails();
+			} catch (e) {
+				addToast(e.message, TOAST.ERROR);
+			} finally {
+				setSelectedProject(null);
+				setShowProjectSelector(false);
+				showLoading(false);
+			}
+		}
+	};
+
+	const fetchVendorBalance = useCallback(async () => {
+		if (appSettings.agency?.contracts?.rahat && wallet && basicInfo?.wallet_address) {
+			const { rahat_erc20 } = appSettings.agency.contracts;
+			vendorBalance.request(rahat_erc20, basicInfo.wallet_address);
+			ethBalance.request(basicInfo.wallet_address);
+		}
+	}, [appSettings, wallet]);
+
 	const fetchVendorStatus = useCallback(async () => {
 		let isVendor = false;
 		if (appSettings.agency?.contracts?.rahat && wallet && basicInfo?.wallet_address) {
@@ -100,42 +93,26 @@ const Index = ({ params }) => {
 			if (!basicInfo.projects.length) setVendorStatus(VENDOR_STATUS.NEW);
 			else setVendorStatus(isVendor ? VENDOR_STATUS.ACTIVE : VENDOR_STATUS.SUSPENDED);
 		}
-	}, [basicInfo, wallet, appSettings]);
+	}, [appSettings, wallet]);
 
 	const fetchVendorDetails = useCallback(async () => {
 		try {
+			showLoading(true);
 			const details = await getVendorDetails(id);
 			if (!details) return;
 			setBasicInfo(details);
-			await fetchVendorBalance(details.wallet_address);
+			await fetchVendorBalance();
+			await fetchVendorStatus();
 		} catch (err) {
-			console.log(err.message);
-			setFetchingBalance(false);
+			addToast(err.message, TOAST.ERROR);
+		} finally {
+			showLoading(false);
 		}
-	}, [appSettings, wallet, fetchVendorBalance, getVendorDetails, id]);
-
-	const fetchVendorTokenTransactions = useCallback(async () => {
-		try {
-			setFetchingTokenTransaction(true);
-			const transactions = await getVendorTransactions(id);
-			if (transactions) setTransactionList(transactions);
-			setFetchingTokenTransaction(false);
-		} catch (err) {
-			setFetchingTokenTransaction(false);
-		}
-	}, [getVendorTransactions, id]);
+	}, [appSettings, wallet, id]);
 
 	useEffect(() => {
 		fetchVendorDetails();
 	}, [fetchVendorDetails]);
-
-	useEffect(() => {
-		fetchVendorStatus();
-	}, [fetchVendorStatus]);
-
-	useEffect(() => {
-		fetchVendorTokenTransactions();
-	}, [fetchVendorTokenTransactions]);
 
 	return (
 		<>
@@ -144,7 +121,7 @@ const Index = ({ params }) => {
 				showProjectSelector={showProjectSelector}
 				setShowProjectSelector={setShowProjectSelector}
 				setSelectedProject={setSelectedProject}
-				onProjectSelect={onProjectSelect}
+				onProjectSelect={handlers.onProjectSelect}
 			/>
 
 			<Row>

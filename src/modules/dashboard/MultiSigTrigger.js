@@ -1,15 +1,16 @@
 import React, { useState, useEffect, useCallback, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Card, CardBody, CardTitle, Col, Label, Row } from 'reactstrap';
 import confirm from 'reactstrap-confirm';
-import { truncateEthAddress } from '../../../utils';
-import { BC } from '../../../services/ChainService';
-import { AppContext } from '../../../contexts/AppSettingsContext';
-import { getAdmins } from '../../../services/appSettings';
+import { truncateEthAddress } from '../../utils';
+import { BC } from '../../services/ChainService';
+import { AppContext } from '../../contexts/AppSettingsContext';
+import { getAdmins } from '../../services/appSettings';
+import MaskLoader from '../global/MaskLoader';
 
-export default function MultiSigTrigger({ projectId, showLoading }) {
+export default function MultiSigTrigger() {
 	const { wallet, appSettings } = useContext(AppContext);
 
+	const [loading, showLoading] = useState(false);
 	const [isTriggered, setIsTriggered] = useState(false);
 	const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false);
 	const [activated, setActivated] = useState(false);
@@ -90,7 +91,8 @@ export default function MultiSigTrigger({ projectId, showLoading }) {
 	}, [fetchProjectStatus]);
 
 	return (
-		<div>
+		<>
+			<MaskLoader message="Loading data from Blockchain, please wait..." isOpen={loading} />
 			<Card>
 				<CardBody>
 					<Row>
@@ -170,6 +172,6 @@ export default function MultiSigTrigger({ projectId, showLoading }) {
 					</div>
 				</CardBody>
 			</Card>
-		</div>
+		</>
 	);
 }

@@ -38,7 +38,7 @@ export default function Index(props) {
 
 	return (
 		<div>
-			<Card>
+			{/* <Card>
 				<div style={{ padding: 20 }}>
 					<span className="custom-label">Tokens</span>
 					<br />
@@ -55,7 +55,7 @@ export default function Index(props) {
 						</div>
 					</div>
 				</div>
-			</Card>
+			</Card> */}
 			<Card>
 				<CardBody>
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
