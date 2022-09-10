@@ -1,13 +1,13 @@
-import React from "react";
-import { VendorContextProvider } from "../../../contexts/VendorContext";
-import Detail from "./detail";
+import React from 'react';
+import { VendorContextProvider } from '../../../contexts/VendorContext';
+import DetailPage from './DetailPage';
 
 const index = props => {
-  return (
-    <VendorContextProvider>
-      <Detail params={props.match.params} />
-    </VendorContextProvider>
-  );
+	return (
+		<VendorContextProvider>
+			<DetailPage params={props.match.params} />
+		</VendorContextProvider>
+	);
 };
 
 export default index;

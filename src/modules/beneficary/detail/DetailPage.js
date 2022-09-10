@@ -17,7 +17,7 @@ import * as Service from '../../../services/beneficiary';
 import useBeneficiaryCache from '../../../hooks/useBeneficiaryCache';
 
 import BeneficiaryInfo from './BeneficiaryInfoCard';
-import ProjectSelector from './ProjectSelector';
+import ProjectSelector from '../../ui_components/projects/ProjectSelector';
 import BeneficiaryActions from './ActionMenu';
 import NameCard from './NameCard';
 import TokenInfoCard from './TokenInfoCard';
@@ -27,8 +27,8 @@ const BenefDetails = ({ params }) => {
 	const { addToast } = useToasts();
 	const history = useHistory();
 
-	const { getBeneficiaryDetails, listProject, addBenfToProject } = useContext(BeneficiaryContext);
-	const { loading, appSettings } = useContext(AppContext);
+	const { getBeneficiaryDetails, addBenfToProject } = useContext(BeneficiaryContext);
+	const { appSettings } = useContext(AppContext);
 
 	const [basicInfo, setBasicInfo] = useState({});
 	const [extras, setExtras] = useState({});

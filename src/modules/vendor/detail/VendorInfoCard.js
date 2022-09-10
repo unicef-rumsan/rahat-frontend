@@ -7,7 +7,7 @@ import moment from 'moment';
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
 export default function VendorInfo(props) {
-	const { information ,etherBalance} = props;
+	const { information } = props;
 	const { id } = props.information;
 	const handleEditClick = () => History.push(`/edit-vendor/${id}`);
 
@@ -17,18 +17,8 @@ export default function VendorInfo(props) {
 				<div className="stat-card-body" style={{ minHeight: 120 }}>
 					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 						<CardTitle className="title" style={{ flexBasis: '90%' }}>
-							More Information
+							Profile Information
 						</CardTitle>
-						<div style={{ flexBasis: '10%' }}>
-							<button
-								type="button"
-								className="btn waves-effect waves-light btn-info"
-								onClick={handleEditClick}
-								style={{ borderRadius: '8px' }}
-							>
-								Edit
-							</button>
-						</div>
 					</div>
 					<Row>
 						<Col md="4" sm="12">
@@ -42,10 +32,9 @@ export default function VendorInfo(props) {
 								<div className="sub-title">Email</div>
 							</div>
 							<div className="card-data">
-								<p className="card-font-medium">{`${information.wallet_address  || '-'} (${etherBalance}) `}</p>
-								<div className="sub-title">Wallet address</div>
+								<p className="card-font-medium">{information.pan_number || '-'}</p>
+								<div className="sub-title">PAN number</div>
 							</div>
-
 							<div className="card-data ">
 								<p className="card-font-medium">
 									{moment(information.created_at).format('MMM Do YYYY, hh:mm A') || '-'}
@@ -66,10 +55,6 @@ export default function VendorInfo(props) {
 							<div className="card-data">
 								<p className="card-font-medium">{information.address || '-'}</p>
 								<div className="sub-title">Address</div>
-							</div>
-							<div className="card-data">
-								<p className="card-font-medium">{information.pan_number || '-'}</p>
-								<div className="sub-title">PAN number</div>
 							</div>
 						</Col>
 						<Col md="4" sm="12">

@@ -4,7 +4,7 @@ import { Card, CardTitle, Col, Row } from 'reactstrap';
 import '../../../assets/css/project.css';
 
 export default function TokenInfoCard(props) {
-	const { balance, totalIssued } = props;
+	const { balance, ethBalance } = props;
 
 	return (
 		<div>
@@ -23,9 +23,9 @@ export default function TokenInfoCard(props) {
 							</div>
 						</Col>
 						<Col>
-							<p className="card-font-bold">{totalIssued || '0'}</p>
+							<p className="card-font-bold">{ethBalance || '0'}</p>
 							<div style={{ marginTop: 0 }} className="sub-title">
-								Total Issued
+								Credit Balance (for fees)
 							</div>
 						</Col>
 					</Row>
