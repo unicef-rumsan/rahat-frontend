@@ -50,7 +50,7 @@ const Edit = ({ vendorId }) => {
 	const handleInputChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
-	const handleCancelClick = () => History.push('/vendors');
+	const handleCancelClick = () => History.goBack();
 
 	const handleGenderChange = e => {
 		setSelectedGender(e.target.value);
@@ -95,7 +95,7 @@ const Edit = ({ vendorId }) => {
 			.then(() => {
 				setLoading(false);
 				addToast('Vendor updated successfully', TOAST.SUCCESS);
-				History.push('/vendors');
+				History.push(`/vendors/${vendorId}`);
 			})
 			.catch(err => {
 				setLoading(false);

@@ -74,15 +74,13 @@ export async function getTokenIdsByProjects(projects) {
 }
 
 export async function changeVendorStatus(vendorId, status) {
-	try {
-		return axios.patch(
-			`${API.VENDORS}/${vendorId}/status/`,
-			{ status: status },
-			{
-				headers: { access_token: access_token }
-			}
-		);
-	} catch {}
+	return axios.patch(
+		`${API.VENDORS}/${vendorId}/status/`,
+		{ status: status },
+		{
+			headers: { access_token: access_token }
+		}
+	);
 }
 
 export async function list(params) {
@@ -196,17 +194,14 @@ export async function approve({ vendorId }) {
 }
 
 export async function addVendorToProject(vendorId, projectId) {
-	try {
-		const res = await axios({
-			url: `${API.VENDORS}/${vendorId}/add-to-project`,
-			method: 'post',
-			headers: {
-				access_token
-			},
-			data: { projectId }
-		});
-		return res.data;
-	} catch {}
+	axios({
+		url: `${API.VENDORS}/${vendorId}/add-to-project`,
+		method: 'post',
+		headers: {
+			access_token
+		},
+		data: { projectId }
+	});
 }
 
 export async function getEth({ address }) {
