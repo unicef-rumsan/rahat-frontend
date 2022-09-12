@@ -5,6 +5,7 @@ import { AppContext } from '../../../contexts/AppSettingsContext';
 import confirm from 'reactstrap-confirm';
 import { VENDOR_STATUS } from '../../../constants';
 import { BC } from '../../../services/ChainService';
+import { changeVendorStatus } from '../../../services/vendor';
 import MaskLoader from '../../global/MaskLoader';
 
 export default function ActionMenu({
@@ -42,6 +43,7 @@ export default function ActionMenu({
 							contractAddress: appSettings.agency.contracts.rahat,
 							wallet
 						});
+						await changeVendorStatus(vendorInfo.id, _status);
 						fetchVendorStatus(vendorInfo);
 					}
 				} catch (e) {
