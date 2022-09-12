@@ -328,7 +328,7 @@ let AppRoutes = [
 	{
 		path: '/gallery',
 		name: 'Photo Gallery',
-		icon: 'gallery',
+		icon: 'camera',
 		component: Gallery,
 		showInSidebar: true
 	},
