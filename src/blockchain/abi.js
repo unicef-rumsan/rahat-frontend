@@ -42,6 +42,7 @@ export const getUncheckedProvider = (contractAddress, contractName) => {
 
 export const getContractInstance = async (contractAddress, contractName, wallet) => {
 	const contract = getContractByProvider(contractAddress, contractName);
+	if (!wallet) return contract;
 	return contract.connect(wallet);
 };
 

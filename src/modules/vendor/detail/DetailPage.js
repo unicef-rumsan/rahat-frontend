@@ -75,25 +75,30 @@ const Index = ({ params }) => {
 		}
 	};
 
-	const fetchVendorBalance = useCallback(async () => {
-		if (appSettings.agency?.contracts?.rahat && wallet && basicInfo?.wallet_address) {
-			const { rahat_erc20 } = appSettings.agency.contracts;
-			vendorBalance.request(rahat_erc20, basicInfo.wallet_address);
-			ethBalance.request(basicInfo.wallet_address);
-		}
-	}, [appSettings, wallet]);
+	const fetchVendorBalance = useCallback(
+		async wallet_address => {
+			if (appSettings.agency?.contracts?.rahat && wallet_address) {
+				const { rahat_erc20 } = appSettings.agency.contracts;
+				vendorBalance.request(rahat_erc20, wallet_address);
+				ethBalance.request(wallet_address);
+			}
+		},
+		[appSettings]
+	);
 
-	const fetchVendorStatus = useCallback(async () => {
-		let isVendor = false;
-		if (appSettings.agency?.contracts?.rahat && wallet && basicInfo?.wallet_address) {
-			isVendor = await BC.isVendor(basicInfo.wallet_address, {
-				contractAddress: appSettings.agency.contracts.rahat,
-				wallet
-			});
-			if (!basicInfo.projects.length) setVendorStatus(VENDOR_STATUS.NEW);
-			else setVendorStatus(isVendor ? VENDOR_STATUS.ACTIVE : VENDOR_STATUS.SUSPENDED);
-		}
-	}, [appSettings, wallet]);
+	const fetchVendorStatus = useCallback(
+		async details => {
+			let isVendor = false;
+			if (appSettings.agency?.contracts?.rahat && details.wallet_address) {
+				isVendor = await BC.isVendor(details.wallet_address, {
+					contractAddress: appSettings.agency.contracts.rahat
+				});
+				if (!details.projects.length) setVendorStatus(VENDOR_STATUS.NEW);
+				else setVendorStatus(isVendor ? VENDOR_STATUS.ACTIVE : VENDOR_STATUS.SUSPENDED);
+			}
+		},
+		[appSettings]
+	);
 
 	const fetchVendorDetails = useCallback(async () => {
 		try {
@@ -101,14 +106,14 @@ const Index = ({ params }) => {
 			const details = await getVendorDetails(id);
 			if (!details) return;
 			setBasicInfo(details);
-			await fetchVendorBalance();
-			await fetchVendorStatus();
+			fetchVendorBalance(details.wallet_address);
+			fetchVendorStatus(details);
 		} catch (err) {
 			addToast(err.message, TOAST.ERROR);
 		} finally {
 			showLoading(false);
 		}
-	}, [appSettings, wallet, id]);
+	}, [appSettings, id]);
 
 	useEffect(() => {
 		fetchVendorDetails();

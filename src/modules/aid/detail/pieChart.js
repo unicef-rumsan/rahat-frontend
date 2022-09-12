@@ -51,9 +51,8 @@ export default function Chart({ available_tokens, total_tokens, projectStatus, p
 					<div>
 						<div
 							className="chart-wrapper"
-							style={{ width: '100%', marginBottom: '50px', marginTop: '10px', height: 160 }}
+							style={{ width: '100%', marginBottom: '30px', marginTop: '10px', height: 340 }}
 						>
-							<Label style={{ marginBottom: '10px' }}>Tokens</Label>
 							<Pie
 								data={pieDataToken}
 								options={{
