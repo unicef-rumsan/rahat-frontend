@@ -345,6 +345,12 @@ let AppRoutes = [
 			// 	component: CampaignList
 			// },
 			{
+				path: '/campaigns',
+				name: 'Campaigns',
+				icon: 'mdi mdi-adjust',
+				component: CampaignList
+			},
+			{
 				path: '/users',
 				name: 'Users',
 				icon: 'mdi mdi-adjust',
