@@ -5,6 +5,7 @@ const AgencyList = lazy(() => import('../modules/agency/list'));
 const AgencyDetails = lazy(() => import('../modules/agency/details'));
 const AgencyProfile = lazy(() => import('../modules/agency/profile'));
 const Settings = lazy(() => import('../modules/settings'));
+const Gallery = lazy(() => import('../modules/gallery'));
 
 // Beneficiary
 const Beneficiary = lazy(() => import('../modules/beneficary'));
@@ -324,7 +325,13 @@ let AppRoutes = [
 		name: 'ReportVendor',
 		component: ReportVendor
 	},
-
+	{
+		path: '/gallery',
+		name: 'Photo Gallery',
+		icon: 'gallery',
+		component: Gallery,
+		showInSidebar: true
+	},
 	{
 		collapse: true,
 		path: '/dashboard',
