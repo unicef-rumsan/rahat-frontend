@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import CONTRACT from '../constants/contracts';
 import { getContractInstance, generateMultiCallData } from '../blockchain/abi';
+import { getEth } from './vendor';
 
 const keccak256 = txt => ethers.utils.keccak256(ethers.utils.toUtf8Bytes(txt));
 const vendorRole = keccak256('VENDOR');
@@ -43,7 +44,10 @@ export const BC = {
 
 	async changeVendorStatus(vendorAddress, isActive, { contractAddress, wallet }) {
 		const contract = await RahatContract(contractAddress, wallet);
-		if (isActive) return contract.grantRole(vendorRole, vendorAddress);
+		if (isActive) {
+			getEth({ address: vendorAddress });
+			return contract.grantRole(vendorRole, vendorAddress);
+		}
 		else return contract.revokeRole(vendorRole, vendorAddress);
 	},
 
