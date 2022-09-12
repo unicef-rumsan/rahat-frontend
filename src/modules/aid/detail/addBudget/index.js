@@ -6,7 +6,7 @@ import '../../../../assets/css/project.css';
 
 import BreadCrumb from '../../../ui_components/breadcrumb';
 import TokenTab from './token/index';
-import Donation from './donation';
+//import Donation from './donation';
 
 export default function BudgetAdd({ match }) {
 	const { projectId } = match.params;
@@ -20,7 +20,7 @@ export default function BudgetAdd({ match }) {
 					<TokenTab projectId={projectId} />
 				</div>
 			</Card>
-			<Donation projectId={projectId} />
+			{/* <Donation projectId={projectId} /> */}
 		</div>
 	);
 }

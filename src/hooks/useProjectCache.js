@@ -15,6 +15,7 @@ export default (apiFunc, field, props) => {
 			let dataToCache = {};
 			dataToCache[field] = result;
 			await DataService.saveProject(props.id, dataToCache);
+			if (props.callback) props.callback(result);
 			setError(null);
 			setValue(result);
 		} catch (err) {
