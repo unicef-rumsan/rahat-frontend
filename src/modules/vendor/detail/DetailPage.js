@@ -11,7 +11,7 @@ import { VENDOR_STATUS } from '../../../constants';
 import MaskLoader from '../../global/MaskLoader';
 import { getBalance } from '../../../blockchain/abi';
 import { BC } from '../../../services/ChainService';
-import { getVendorBalance, addVendorToProject } from '../../../services/vendor';
+import { getVendorBalance, addVendorToProject, changeVendorStatus } from '../../../services/vendor';
 import useVendorCache from '../../../hooks/useVendorCache';
 
 import ProjectSelector from '../../ui_components/projects/ProjectSelector';
@@ -49,6 +49,7 @@ const Index = ({ params }) => {
 					contractAddress: appSettings.agency.contracts.rahat,
 					wallet
 				});
+				await changeVendorStatus(id, VENDOR_STATUS.ACTIVE);
 			}
 		},
 
