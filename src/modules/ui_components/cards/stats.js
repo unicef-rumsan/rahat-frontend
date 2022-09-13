@@ -5,7 +5,7 @@ import { formatBalanceAndCurrency } from '../../../utils';
 import './cards.css';
 
 export default function Stats(props) {
-	const { title, title_color, data, icon_name, icon_color } = props;
+	const { title, title_color, subtitle, data, icon_name, icon_color } = props;
 	return (
 		<div>
 			<Card>
@@ -19,7 +19,7 @@ export default function Stats(props) {
 						</h2>
 					</div>
 					<div style={{ marginTop: 0, textAlign: 'right' }} className="sub-title">
-						Total {title}
+						{subtitle || ''}
 					</div>
 				</div>
 				{/* <div className="earningsbox mt-1"></div> */}

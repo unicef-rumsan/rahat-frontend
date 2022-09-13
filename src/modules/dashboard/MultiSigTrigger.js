@@ -93,11 +93,11 @@ export default function MultiSigTrigger() {
 	return (
 		<>
 			<MaskLoader message="Loading data from Blockchain, please wait..." isOpen={loading} />
-			<Card>
+			<Card style={{ height: 300 }}>
 				<CardBody>
 					<Row>
 						<Col>
-							<CardTitle className="title">Multi-Sig Trigger Response</CardTitle>
+							<CardTitle className="title mb-3">Multi-Sig Trigger Response</CardTitle>
 						</Col>
 						<Col>
 							{!activated ? (
@@ -124,7 +124,7 @@ export default function MultiSigTrigger() {
 					{admins.length ? (
 						admins.map((d, i) => {
 							return (
-								<Row className="mt-2" key={d.address}>
+								<Row className="mt-3" key={d.address}>
 									<Col sm="1"></Col>
 									<Col sm="3" className="sub-title">
 										{d.name}
@@ -167,8 +167,8 @@ export default function MultiSigTrigger() {
 								))}
 						</Col>
 					</Row>
-					<div className="mt-3">
-						<small>Response is activated when at least two admins have triggered. </small>
+					<div className="mt-5 text-right">
+						<small>Note: Response is activated when at least two admins have triggered. </small>
 					</div>
 				</CardBody>
 			</Card>
