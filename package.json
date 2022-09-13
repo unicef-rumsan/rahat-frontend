@@ -65,6 +65,7 @@
 		"feather-icons-react": "^0.4.1",
 		"file-saver": "^2.0.5",
 		"history": "4.7.2",
+		"mapbox-gl": "^2.9.2",
 		"moment": "^2.29.2",
 		"node-sass": "4.14.1",
 		"prop-types": "^15.7.2",
