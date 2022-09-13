@@ -24,7 +24,7 @@ const Map = ({ height }) => {
 					description: ''
 				},
 				geometry: {
-					coordinates: [d.extras.geo_longitude, d.extras.geo_latitude],
+					coordinates: [d.extras?.geo_longitude, d.extras?.geo_latitude],
 					type: 'Point'
 				}
 			});
