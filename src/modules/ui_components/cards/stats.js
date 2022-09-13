@@ -10,19 +10,15 @@ export default function Stats(props) {
 		<div>
 			<Card>
 				<div className="card-body">
-					<CardTitle style={{ color: title_color || '#222' }} className="title">
-						{title || 'No Title'}
+					<CardTitle style={{ color: title_color || '#222', marginLeft: -4 }} className="title">
+						<i style={{ color: icon_color || '#222', marginRight: 4 }} className={icon_name}></i> {title || 'No Title'}
 					</CardTitle>
-					<br />
-					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-						<h2 style={{ flexBasis: '70%' }} className="card-font-medium">
+					<div style={{ display: 'flex', justifyContent: 'space-between', textAlign: 'right' }}>
+						<h2 style={{ flexBasis: '100%' }} className="card-font-medium">
 							{formatBalanceAndCurrency(data) || '0'}
 						</h2>
-						<h2 style={{ flexBasis: '30%' }} className="card-font-medium">
-							<i style={{ color: icon_color || '#222' }} className={icon_name}></i>
-						</h2>
 					</div>
-					<div style={{ marginTop: 0 }} className="sub-title">
+					<div style={{ marginTop: 0, textAlign: 'right' }} className="sub-title">
 						Total {title}
 					</div>
 				</div>

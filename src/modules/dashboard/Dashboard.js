@@ -87,41 +87,68 @@ const Dashboard = () => {
 	return (
 		<>
 			<Row>
-				<Col md="3">
-					<StatsCard
-						title="Projects"
-						title_color="#2b7ec1"
-						icon_color="#2b7ec1"
-						icon_name="fas fa-clone"
-						data={stats.totalProjects}
-					/>
+				<Col md="6">
+					<Row>
+						<Col md="4">
+							<StatsCard
+								title="Projects"
+								title_color="#2b7ec1"
+								icon_color="#2b7ec1"
+								icon_name="fas fa-clone"
+								data={stats.totalProjects}
+							/>
+						</Col>
+						<Col md="4">
+							<StatsCard
+								title="Beneficiaries"
+								title_color="#80D5AA"
+								icon_color="#80D5AA"
+								icon_name="fas fa-users"
+								data={stats.totalBeneficiaries}
+							/>
+						</Col>
+						<Col md="4">
+							<StatsCard
+								title="Vendors"
+								title_color="#F49786"
+								icon_color="#F49786"
+								icon_name="fas fa-money-bill-alt"
+								data={stats.totalVendors}
+							/>
+						</Col>
+					</Row>
+					<Row>
+						<Col md="4">
+							<StatsCard
+								title="Mobilizers"
+								title_color="#F49786"
+								icon_color="#F49786"
+								icon_name="fas fa-user-plus"
+								data={stats.totalMobilizers}
+							/>
+						</Col>
+						<Col md="4">
+							<StatsCard
+								title="Token Issued"
+								title_color="#F7C087"
+								icon_color="#F7C087"
+								icon_name="fas fa-microchip"
+								data={stats.totalMobilizers}
+							/>
+						</Col>
+						<Col md="4">
+							<StatsCard
+								title="Token Redeem"
+								title_color="#80D5AA"
+								icon_color="#80D5AA"
+								icon_name="fas fa-dollar-sign"
+								data={stats.totalMobilizers}
+							/>
+						</Col>
+					</Row>
 				</Col>
-				<Col md="3">
-					<StatsCard
-						title="Beneficiaries"
-						title_color="#80D5AA"
-						icon_color="#80D5AA"
-						icon_name="fas fa-users"
-						data={stats.totalBeneficiaries}
-					/>
-				</Col>
-				<Col md="3">
-					<StatsCard
-						title="Vendors"
-						title_color="#F49786"
-						icon_color="#F49786"
-						icon_name="fas fa-anchor"
-						data={stats.totalVendors}
-					/>
-				</Col>
-				<Col md="3">
-					<StatsCard
-						title="Mobilizers"
-						title_color="#F7C087"
-						icon_color="#F7C087"
-						icon_name="fas fa-dollar-sign"
-						data={stats.totalMobilizers}
-					/>
+				<Col md="6">
+					<MultiSigTrigger />
 				</Col>
 			</Row>
 			<Row>
@@ -134,9 +161,7 @@ const Dashboard = () => {
 						exportData={exportData.benef_by_project || []}
 					/>
 				</Col>
-				<Col md="5">
-					<MultiSigTrigger />
-				</Col>
+				<Col md="5"></Col>
 			</Row>
 		</>
 	);
