@@ -8,6 +8,7 @@ import { TOAST } from '../../constants';
 import { UserContext } from '../../contexts/UserContext';
 import TransactionChart from '../ui_components/chart';
 import MultiSigTrigger from './MultiSigTrigger';
+import Map from '../../views/map/Map';
 
 const Dashboard = () => {
 	const { addToast } = useToasts();
@@ -136,6 +137,11 @@ const Dashboard = () => {
 				</Col>
 				<Col md="5">
 					<MultiSigTrigger />
+				</Col>
+			</Row>
+			<Row>
+				<Col md="12">
+					<Map />
 				</Col>
 			</Row>
 		</>
