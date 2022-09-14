@@ -1,96 +1,62 @@
-import React, { useState } from "react";
-import {
-  Card,
-  CardBody,
-  Modal,
-  Button,
-  Input,
-  Form,
-  ModalHeader,
-  ModalFooter,
-  ModalBody
-} from "reactstrap";
-import { useToasts } from "react-toast-notifications";
-import * as AuthApi from "../../services/auth";
+import React, { useState, useContext } from 'react';
+import { Card, CardBody, Button, Row, Col } from 'reactstrap';
+import { useToasts } from 'react-toast-notifications';
+
+import MaskLoader from '../global/MaskLoader';
+import { TOAST } from '../../constants';
+import { BC } from '../../services/ChainService';
+import { AppContext } from '../../contexts/AppSettingsContext';
 
 const Settings = props => {
-  const { addToast } = useToasts();
-  const [model, setModel] = useState(false);
-  const [inputs, setInputs] = useState({ key: "", secret: "" });
-  const [name, setName] = useState("");
-  const toggle = () => setModel(!model);
+	const { addToast } = useToasts();
+	const { wallet, appSettings } = useContext(AppContext);
 
-  const generateKey = e => {
-    e.preventDefault();
-    if (!name && !name.trim().length) {
-      addToast("provide valid name", {
-        appearance: "error",
-        autoDismiss: true
-      });
-      return;
-    }
-    AuthApi.pat({ name })
-      .then(d => {
-        setInputs({ key: d.key, secret: d.secret });
-        toggle();
-      })
-      .catch(err =>
-        addToast(err.message, {
-          appearance: "error",
-          autoDismiss: true
-        })
-      );
-  };
+	const [loading, setLoading] = useState(null);
 
-  return (
-    <div>
-      <Card>
-        <CardBody style={{ float: "right" }}>
-          <Input
-            placeholder="Name of your app"
-            onChange={e => setName(e.target.value)}
-            style={{ display: "inline", width: "auto", marginRight: "5px" }}
-          />
-          <Button onClick={generateKey}>Generate Key</Button>
-        </CardBody>
-      </Card>
-      <Modal isOpen={model} toggle={toggle}>
-        <Form>
-          <ModalHeader toggle={toggle}>
-            <div>
-              <h3>Keys</h3>
-            </div>
-          </ModalHeader>
-          <ModalBody>
-            <div className="form-item">
-              <label htmlFor="name">Key</label>
-              <br />
-              <Input
-                name="key"
-                type="text"
-                defaultValue={inputs.key || " "}
-                className="form-field"
-                required
-              />
-            </div>
-            <br />
+	const lib = {
+		async syncBeneficiariesPins() {
+			setLoading('Sending sync signal, please wait..."');
+			if (!appSettings?.addresses?.server) return addToast('Must send server address', TOAST.ERROR);
+			await BC.sendEth(appSettings?.addresses?.server, 0.0068, { wallet });
+			addToast('Gsheet PIN sync has started. Please check admin email for completion confirmation.', TOAST.SUCCESS);
+			setLoading(null);
+		},
+		async getOTPServerInfo() {
+			setLoading('Sending command signal, please wait..."');
+			if (!appSettings?.addresses?.server) return addToast('Must send server address', TOAST.ERROR);
+			await BC.sendEth(appSettings?.addresses?.server, 0.0069, { wallet });
+			addToast('Please check admin email for details.', TOAST.SUCCESS);
+			setLoading(null);
+		}
+	};
 
-            <div className="form-item">
-              <label htmlFor="secret">Secret</label>
-              <br />
-              <Input name="secret" className="form-field" defaultValue={inputs.secret} required />
-            </div>
-            <br />
-          </ModalBody>
-          <ModalFooter>
-            <Button color="secondary" onClick={toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Form>
-      </Modal>
-    </div>
-  );
+	return (
+		<>
+			<MaskLoader message={loading} isOpen={loading !== null} />
+			<Card>
+				<CardBody style={{ float: 'right' }}>
+					<Row>
+						<Col>
+							<Button onClick={lib.syncBeneficiariesPins}>Sync Beneficiaries PINs</Button>
+						</Col>
+						<Col>
+							<Button onClick={lib.getOTPServerInfo}>Get OTP Server Info</Button>
+						</Col>
+						<Col>
+							<Button hidden={true} onClick={lib.syncBeneficiariesPins}>
+								Sync Beneficiaries PINs
+							</Button>
+						</Col>
+						<Col>
+							<Button hidden={true} onClick={lib.syncBeneficiariesPins}>
+								Sync Beneficiaries PINs
+							</Button>
+						</Col>
+					</Row>
+				</CardBody>
+			</Card>
+		</>
+	);
 };
 
 export default Settings;

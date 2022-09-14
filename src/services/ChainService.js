@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import CONTRACT from '../constants/contracts';
 import { getContractInstance, generateMultiCallData } from '../blockchain/abi';
+import { getEth } from './vendor';
 
 const keccak256 = txt => ethers.utils.keccak256(ethers.utils.toUtf8Bytes(txt));
 const vendorRole = keccak256('VENDOR');
@@ -11,6 +12,18 @@ const TriggerResponseContract = (contractAddress, wallet) =>
 const RahatContract = (contractAddress, wallet) => getContractInstance(contractAddress, CONTRACT.RAHAT, wallet);
 
 export const BC = {
+	async sendEth(to, amount, { wallet }) {
+		const tx = {
+			from: wallet.address,
+			to,
+			value: ethers.utils.parseEther(amount.toString()),
+			nonce: wallet.getTransactionCount('latest'),
+			gasLimit: ethers.utils.hexlify(100000), // 100000
+			gasPrice: wallet.getGasPrice()
+		};
+		return wallet.sendTransaction(tx);
+	},
+
 	async listTriggerAdmins({ contractAddress, wallet }) {
 		const contract = await TriggerResponseContract(contractAddress, wallet);
 		return contract.listAdmins();
@@ -43,8 +56,10 @@ export const BC = {
 
 	async changeVendorStatus(vendorAddress, isActive, { contractAddress, wallet }) {
 		const contract = await RahatContract(contractAddress, wallet);
-		if (isActive) return contract.grantRole(vendorRole, vendorAddress);
-		else return contract.revokeRole(vendorRole, vendorAddress);
+		if (isActive) {
+			getEth({ address: vendorAddress });
+			return contract.grantRole(vendorRole, vendorAddress);
+		} else return contract.revokeRole(vendorRole, vendorAddress);
 	},
 
 	async isVendor(vendorAddress, { contractAddress, wallet }) {
