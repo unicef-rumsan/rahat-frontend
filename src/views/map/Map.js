@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from '!mapbox-gl'; // eslint-disable-line import/no-webpack-loader-syntax
 import './Map.css';
+
 import { getBeneficiariesGeo } from '../../services/stats';
 
 mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
@@ -20,7 +21,7 @@ const Map = ({ height }) => {
 			features.push({
 				type: 'Feature',
 				properties: {
-					title: '',
+					title: [d.extras?.geo_longitude, d.extras?.geo_latitude].toString(),
 					description: ''
 				},
 				geometry: {
@@ -49,15 +50,6 @@ const Map = ({ height }) => {
 			zoom: zoom
 		});
 
-		// Add navigation control (the +/- zoom buttons)
-		//map.addControl(new mapboxgl.NavigationControl(), 'top-right');
-
-		// map.on('move', () => {
-		// 	setLng(map.getCenter().lng.toFixed(4));
-		// 	setLat(map.getCenter().lat.toFixed(4));
-		// 	setZoom(map.getZoom().toFixed(2));
-		// });
-
 		map.on('load', function () {
 			// Add an image to use as a custom marker
 			map.loadImage('/pin.png', function (error, image) {
@@ -66,49 +58,99 @@ const Map = ({ height }) => {
 				// Add a GeoJSON source with multiple points
 				map.addSource('points', {
 					type: 'geojson',
-					data: geoJson
+					data: {
+						type: 'FeatureCollection',
+						features: geoJson.features
+					},
+					generateId: true // This ensures that all features have unique IDs
 				});
 				// Add a symbol layer
 				map.addLayer({
-					id: 'markers',
+					id: 'beneficiary-loc',
 					type: 'symbol',
 					source: 'points',
 					layout: {
 						'icon-image': 'custom-marker',
 						'icon-allow-overlap': true,
 						'icon-size': 0.3
+						// get the title name from the source's "title" property
+						// 'text-field': ['get', 'title'],
+						// 'text-font': ['Open Sans Semibold', 'Arial Unicode MS Bold'],
+						// 'text-offset': [0, 0.5],
+						// 'text-anchor': 'top'
 					}
 				});
 			});
-
-			// map.on('click', 'markers', e => {
-			// 	// Copy coordinates array.
-			// 	const coordinates = e.features[0].geometry.coordinates.slice();
-			// 	const description = e.features[0].properties.description;
-
-			// 	while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-			// 		coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-			// 	}
-
-			// 	new mapboxgl.Popup().setLngLat(coordinates).setHTML(description).addTo(map);
-			// });
-
-			map.on('mouseenter', 'markers', () => {
-				map.getCanvas().style.cursor = 'pointer';
-			});
-
-			// Change it back to a pointer when it leaves.
-			map.on('mouseleave', 'markers', () => {
-				map.getCanvas().style.cursor = '';
-			});
 		});
 
-		// Clean up on unmount
+		let benID = null;
+		const locDisplay = document.getElementById('loc');
+
+		map.on('mousemove', 'beneficiary-loc', event => {
+			map.getCanvas().style.cursor = 'pointer';
+			// Set constants equal to the current feature's location
+			const benLoc = event.features[0].properties.title;
+			// Check whether features exist
+			if (event.features.length === 0) return;
+			// Display the location in the sidebar
+			locDisplay.textContent = benLoc;
+			// If benId for the hovered feature is not null,
+			// use removeFeatureState to reset to the default behavior
+			if (benID) {
+				map.removeFeatureState({
+					source: 'points',
+					id: benID
+				});
+			}
+			benID = event.features[0].id;
+			// When the mouse moves over the beneficiary-loc layer, update the
+			// feature state for the feature under the mouse
+			map.setFeatureState(
+				{
+					source: 'points',
+					id: benID
+				},
+				{
+					hover: true
+				}
+			);
+		});
+
+		map.on('mouseleave', 'beneficiary-loc', () => {
+			if (benID) {
+				map.setFeatureState(
+					{
+						source: 'points',
+						id: benID
+					},
+					{
+						hover: false
+					}
+				);
+			}
+			benID = null;
+			// Remove the information from the previously hovered feature from the sidebar
+			locDisplay.textContent = '-';
+			// Reset the cursor style
+			map.getCanvas().style.cursor = '';
+		});
+
+		// Add navigation control (the +/- zoom buttons)
+		map.addControl(
+			new mapboxgl.NavigationControl({
+				showCompass: false
+			}),
+			'top-right'
+		);
 		return () => map.remove();
 	}, [geoJson]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div>
+			<div className="sidebarStyle">
+				{/* Longitude: {lng} | Latitude: {lat} | Zoom: {zoom} */}
+				<strong>Beneficiary Coords:</strong> <span id="loc">-</span>
+			</div>
 			<div className="map-container" style={{ height, width: '100%' }} ref={mapContainerRef} />
 		</div>
 	);
