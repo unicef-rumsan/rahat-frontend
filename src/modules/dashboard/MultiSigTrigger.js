@@ -167,7 +167,7 @@ export default function MultiSigTrigger() {
 								))}
 						</Col>
 					</Row>
-					<div className="mt-5 text-right">
+					<div className="mt-4 text-right">
 						<small>Note: Response is activated when at least two admins have triggered. </small>
 					</div>
 				</CardBody>
