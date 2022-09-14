@@ -2,9 +2,7 @@ import React from 'react';
 import { Card, CardTitle, Col, Row, Button } from 'reactstrap';
 
 import '../../../assets/css/project.css';
-import Loading from '../../global/Loading';
 import displayPic from '../../../assets/images/users/user_avatar.svg';
-import { formatBalanceAndCurrency } from '../../../utils';
 
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
@@ -24,7 +22,7 @@ export default function DetailsCard(props) {
 						<Col>
 							<div style={{ float: 'right' }}>
 								<Button outline={true} color={isActive ? 'success' : 'danger'} size="sm">
-									{isActive ? 'ACTIVE' : 'SUSPENDED'}
+									{isActive ? 'ACTIVE' : 'NOT ACTIVE'}
 								</Button>
 							</div>
 						</Col>
