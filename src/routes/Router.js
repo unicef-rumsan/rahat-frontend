@@ -4,6 +4,8 @@ import { lazy } from 'react';
 const AgencyList = lazy(() => import('../modules/agency/list'));
 const AgencyDetails = lazy(() => import('../modules/agency/details'));
 const AgencyProfile = lazy(() => import('../modules/agency/profile'));
+const Settings = lazy(() => import('../modules/settings'));
+const Gallery = lazy(() => import('../modules/gallery'));
 
 // Beneficiary
 const Beneficiary = lazy(() => import('../modules/beneficary'));
@@ -92,6 +94,13 @@ let AppRoutes = [
 		name: 'My Profile',
 		icon: 'monitor',
 		component: AgencyProfile,
+		showInSidebar: false
+	},
+	{
+		path: '/settings',
+		name: 'Settings',
+		icon: 'monitor',
+		component: Settings,
 		showInSidebar: false
 	},
 	{
@@ -316,7 +325,13 @@ let AppRoutes = [
 		name: 'ReportVendor',
 		component: ReportVendor
 	},
-
+	{
+		path: '/gallery',
+		name: 'Photo Gallery',
+		icon: 'camera',
+		component: Gallery,
+		showInSidebar: true
+	},
 	{
 		collapse: true,
 		path: '/dashboard',
