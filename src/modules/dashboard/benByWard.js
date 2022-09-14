@@ -42,8 +42,10 @@ const Index = props => {
 		let locData = await getBeneficiariesByWard();
 		if (locData && locData.length) {
 			for (let d of locData) {
-				bar_labels.push(d._id);
-				bar_data.push(d.count);
+				if (d._id !== null) {
+					bar_labels.push(d._id);
+					bar_data.push(d.count);
+				}
 			}
 		}
 

@@ -22,11 +22,13 @@ export default function Chart(props) {
 		let resData = await getBeneficiariesByPhone();
 		if (resData && resData.length) {
 			for (let d of resData) {
-				let label = 'Unknown';
-				if (d._id) label = `Yes Phone (${d.count})`;
-				if (!d._id) label = `No Phone (${d.count})`;
-				labels.push(label);
-				data.push(d.count);
+				if (d._id !== null) {
+					let label = 'Unknown';
+					if (d._id) label = `Yes Phone (${d.count})`;
+					if (!d._id) label = `No Phone (${d.count})`;
+					labels.push(label);
+					data.push(d.count);
+				}
 			}
 		}
 		pieDataToken.labels = labels;
