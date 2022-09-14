@@ -1,7 +1,7 @@
 import React, { useCallback, useState, useContext, useEffect } from 'react';
 import { useToasts } from 'react-toast-notifications';
 import { Card, CardBody, CardTitle, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
-
+import Swal from "sweetalert2";
 import { TOAST } from '../../../constants';
 import { getUser } from '../../../utils/sessionManager';
 import { UserContext } from '../../../contexts/UserContext';
@@ -9,6 +9,11 @@ import { AppContext } from '../../../contexts/AppSettingsContext';
 import { History } from '../../../utils/History';
 import WalletUnlock from '../../global/walletUnlock';
 import GrowSpinner from '../../global/GrowSpinner';
+import { ROLES } from '../../../constants'
+import SelectWrapper from '../../global/SelectWrapper';
+import { isAddress } from 'ethers/lib/utils';
+import { createRandomIdentity } from '../../../utils';
+
 
 const current_user = getUser();
 
@@ -29,32 +34,51 @@ const AddUser = () => {
 		phone: '',
 		wallet_address: ''
 	});
-	const [selectedRole, setSelectedRole] = useState('');
+	const roles = Object.values(ROLES).map((el) => { return { label: el, value: el } })
+	const confirmAndCreateWallet = async () => {
+		const res = await Swal.fire({
+			title: "Wallet Address not found",
+			text: "Should We will create a wallet for you?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, proceed!",
+		})
+		if (res.isConfirmed) {
+			const identity = createRandomIdentity();
+			saveUserDetails(identity.address)
+		}
 
+	}
 	const handleInputChange = e => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		setFormData({ ...formData, [e.target.name]: e.target.value, agency: current_user.agency });
 	};
 
-	const handleRoleChange = e => {
-		setSelectedRole(e.target.value);
+	const handleRoleChange = data => {
+		const values = data.map(d => d.value);
+		setFormData({ ...formData, roles: values })
 	};
 
 	const handleFormSubmit = e => {
-		console.log('sssss');
 		e.preventDefault();
-		if (!selectedRole) return addToast('Please select role', TOAST.ERROR);
+		console.log(formData.wallet_address)
+		if (!formData?.roles?.length) return addToast('Please select role', TOAST.ERROR);
 		if (!current_user.agency) return addToast('Agency not found', TOAST.ERROR);
-		setFormData({ ...formData, roles: [selectedRole], agency: current_user.agency });
-		saveUserDetails();
+		if (!formData.wallet_address) confirmAndCreateWallet()
+		if (!isAddress(formData.wallet_address)) return addToast("Invalid Wallet Address", TOAST.ERROR)
+		confirmAndCreateWallet();
+		//saveUserDetails();
 		return;
 	};
 
 	const handleCancelClick = () => History.push('/users');
 
-	const saveUserDetails = () => {
+	const saveUserDetails = (wallet_address) => {
 		if (!wallet) return addToast('Wallet not found', TOAST.ERROR);
 		setLoading(true);
 		const { rahat, rahat_admin } = appSettings.agency.contracts;
+		if (wallet_address) formData.wallet_address = wallet_address
 		addUser({ payload: formData, rahat, rahat_admin, wallet })
 			.then(() => {
 				setLoading(false);
@@ -62,12 +86,11 @@ const AddUser = () => {
 				addToast('User added successfully', TOAST.SUCCESS);
 			})
 			.catch(err => {
+				console.log(err)
 				setLoading(false);
 				addToast(err.message, TOAST.ERROR);
 			});
 	};
-
-	//useEffect(saveUserDetails, [isVerified]);
 
 	return (
 		<div>
@@ -109,7 +132,6 @@ const AddUser = () => {
 												value={formData.wallet_address}
 												name="wallet_address"
 												onChange={handleInputChange}
-												required
 											/>
 										</FormGroup>
 									</Col>
@@ -118,11 +140,18 @@ const AddUser = () => {
 									<Col md="6">
 										<FormGroup>
 											<Label>Role</Label>
-											<Input type="select" name="roles" onChange={handleRoleChange}>
+											<SelectWrapper
+												multi={true}
+												onChange={handleRoleChange}
+												maxMenuHeight={150}
+												data={roles}
+												placeholder="--Select Project--"
+											/>
+											{/* <Input type="select" name="roles" onChange={handleRoleChange}>
 												<option value="">--Select Role--</option>
 												<option value="Admin">Admin</option>
 												<option value="Manager">Manager</option>
-											</Input>
+											</Input> */}
 										</FormGroup>
 									</Col>
 									<Col md="6"></Col>

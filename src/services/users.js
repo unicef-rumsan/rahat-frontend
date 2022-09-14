@@ -19,7 +19,7 @@ export async function dashboardStats() {
 			headers: { access_token }
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export function verifyToken(token) {
@@ -101,7 +101,7 @@ export async function listUsers(params) {
 			params
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export async function listUsersByRole(role) {
@@ -114,7 +114,7 @@ export async function listUsersByRole(role) {
 			}
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export async function getUserById(userId) {
@@ -127,7 +127,7 @@ export async function getUserById(userId) {
 			}
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
 
 export async function updateUser(userId, payload) {
@@ -213,7 +213,7 @@ async function saveRoleToBlockchain({ role, rahat, rahat_admin, wallet, wallet_a
 		const my_contract = mapContractToMethod(signed_contract);
 		return my_contract.addAdmin(wallet_address);
 	}
-	if (role === ROLES.ADMIN) {
+	if (role === ROLES.ADMIN || ROLES.PALIKA) {
 		const sign_admin_contract = admin_contract.connect(wallet);
 		const sign_rahat_contract = rahat_contract.connect(wallet);
 		const my_admin_contract = mapContractToMethod(sign_admin_contract);
@@ -240,5 +240,5 @@ export async function verifyOTP(payload) {
 			data: payload
 		});
 		return res.data;
-	} catch {}
+	} catch { }
 }
