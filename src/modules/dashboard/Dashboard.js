@@ -49,7 +49,7 @@ const Dashboard = () => {
 						<Col md="4">
 							<StatsCard
 								title="Beneficiaries"
-								subtitle="persons"
+								subtitle="households"
 								title_color="#2b7ec1"
 								icon_color="#2b7ec1"
 								icon_name="fas fa-clone"
@@ -110,9 +110,7 @@ const Dashboard = () => {
 						</Col>
 					</Row>
 				</Col>
-				<Col md="6">
-					<MultiSigTrigger />
-				</Col>
+				<Col md="6">{/* <MultiSigTrigger /> */}</Col>
 			</Row>
 			<Row>
 				<Col md="4">
