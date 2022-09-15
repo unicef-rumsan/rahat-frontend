@@ -5,12 +5,11 @@ import { truncateEthAddress } from '../../utils';
 import { BC } from '../../services/ChainService';
 import { AppContext } from '../../contexts/AppSettingsContext';
 import { getAdmins } from '../../services/appSettings';
-import MaskLoader from '../global/MaskLoader';
 
 export default function MultiSigTrigger() {
 	const { wallet, appSettings } = useContext(AppContext);
 
-	const [loading, showLoading] = useState(false);
+	const [loading, showLoading] = useState(true);
 	const [isTriggered, setIsTriggered] = useState(false);
 	const [isCurrentUserAdmin, setIsCurrentUserAdmin] = useState(false);
 	const [activated, setActivated] = useState(false);
@@ -92,9 +91,26 @@ export default function MultiSigTrigger() {
 
 	return (
 		<>
-			<MaskLoader message="Loading data from Blockchain, please wait..." isOpen={loading} />
 			<Card style={{ height: 300 }}>
-				<CardBody>
+				<CardBody hidden={!loading} centered>
+					<div className="mb-2">{'Loading trigger status from blockchain. Please wait...'}</div>
+					<div className="spinner-grow text-primary" role="status">
+						<span className="sr-only">Loading...</span>
+					</div>
+					<div className="spinner-grow text-secondary" role="status">
+						<span className="sr-only">Loading...</span>
+					</div>
+					<div className="spinner-grow text-success" role="status">
+						<span className="sr-only">Loading...</span>
+					</div>
+					<div className="spinner-grow text-danger" role="status">
+						<span className="sr-only">Loading...</span>
+					</div>
+					<div className="spinner-grow text-warning" role="status">
+						<span className="sr-only">Loading...</span>
+					</div>
+				</CardBody>
+				<CardBody hidden={loading}>
 					<Row>
 						<Col>
 							<CardTitle className="title mb-3">Multi-Sig Trigger Response</CardTitle>

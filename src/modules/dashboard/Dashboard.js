@@ -7,6 +7,7 @@ import { TOAST } from '../../constants';
 import { UserContext } from '../../contexts/UserContext';
 import MultiSigTrigger from './MultiSigTrigger';
 import Map from '../../views/map/Map';
+import MaskLoader from '../global/MaskLoader';
 
 import { getBeneficiariesSummary } from '../../services/stats';
 
@@ -18,6 +19,7 @@ import BenByBank from './benByBank';
 const Dashboard = () => {
 	const { addToast } = useToasts();
 
+	const [loading, showLoading] = useState(true);
 	const [stats, setStats] = useState({
 		total_children: 0,
 		total_persons: 0,
@@ -28,6 +30,7 @@ const Dashboard = () => {
 	});
 
 	const fetchDashboardStats = () => {
+		showLoading(true);
 		getBeneficiariesSummary()
 			.then(d => {
 				d.total_tokens = 0;
@@ -36,6 +39,9 @@ const Dashboard = () => {
 			})
 			.catch(() => {
 				addToast('Internal server error!', TOAST.ERROR);
+			})
+			.finally(() => {
+				showLoading(false);
 			});
 	};
 
@@ -43,13 +49,14 @@ const Dashboard = () => {
 
 	return (
 		<>
+			<MaskLoader message="Loading data, please wait..." isOpen={loading} />
 			<Row>
 				<Col md="6">
 					<Row>
 						<Col md="4">
 							<StatsCard
 								title="Beneficiaries"
-								subtitle="persons"
+								subtitle="households"
 								title_color="#2b7ec1"
 								icon_color="#2b7ec1"
 								icon_name="fas fa-clone"
