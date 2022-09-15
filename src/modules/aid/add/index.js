@@ -139,17 +139,7 @@ const AddProject = () => {
 									<Input type="text" value={formData.location} name="location" onChange={handleInputChange} required />
 								</FormGroup>
 
-								<FormGroup>
-									<Label>Financial Institution</Label>
-									<SelectWrapper
-										multi={true}
-										onChange={handleInstitutionChange}
-										maxMenuHeight={130}
-										currentValue={[]}
-										data={financialInstitutions}
-										placeholder="--Select Institution--"
-									/>
-								</FormGroup>
+
 								<FormGroup>
 									<Label htmlFor="benefUpload">Beneficiary Upload(.xlxs file)</Label>
 									<Input

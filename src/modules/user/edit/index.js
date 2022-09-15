@@ -12,10 +12,7 @@ import WalletUnlock from '../../global/walletUnlock';
 import Loading from '../../global/Loading';
 import Swal from 'sweetalert2';
 
-const ROLES_LIST = [
-	{ label: ROLES.ADMIN, value: ROLES.ADMIN },
-	{ label: ROLES.MANAGER, value: ROLES.MANAGER }
-];
+const ROLES_LIST = Object.values(ROLES).map((el) => { return { label: el, value: el } })
 
 const UserDetails = props => {
 	const { addToast } = useToasts();
