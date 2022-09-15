@@ -41,6 +41,7 @@ const Index = props => {
 		let bar_data = [];
 		let locData = await getBeneficiariesByWard();
 		if (locData && locData.length) {
+			locData.sort((a, b) => a._id - b._id);
 			for (let d of locData) {
 				if (d._id !== null) {
 					bar_labels.push(d._id);
@@ -49,7 +50,7 @@ const Index = props => {
 			}
 		}
 
-		bar_labels.sort((a, b) => a - b);
+		//bar_labels.sort((a, b) => a - b);
 
 		barChartData.labels = bar_labels;
 		barChartData.datasets[0].data = bar_data;

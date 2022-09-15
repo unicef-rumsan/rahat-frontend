@@ -3,10 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { AppContext } from '../../../contexts/AppSettingsContext';
 import confirm from 'reactstrap-confirm';
-import { VENDOR_STATUS } from '../../../constants';
+import { VENDOR_STATUS, ROLES } from '../../../constants';
 import { BC } from '../../../services/ChainService';
 import { changeVendorStatus } from '../../../services/vendor';
 import MaskLoader from '../../global/MaskLoader';
+import { isAdminOrPalika } from '../../../utils/checkRoles';
 
 export default function ActionMenu({
 	vendorInfo,
@@ -79,7 +80,7 @@ export default function ActionMenu({
 								Suspend Vendor
 							</DropdownItem>
 							<DropdownItem
-								hidden={vendorStatus === VENDOR_STATUS.ACTIVE}
+								hidden={vendorStatus === VENDOR_STATUS.ACTIVE || !isAdminOrPalika()}
 								onClick={() => handlers.changeStatus(true)}
 								style={{ color: 'green' }}
 							>
