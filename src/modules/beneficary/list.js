@@ -9,7 +9,7 @@ import moment from 'moment';
 import displayPic from '../../assets/images/users/user_avatar.svg';
 import { History } from '../../utils/History';
 import AdvancePagination from '../global/AdvancePagination';
-import { APP_CONSTANTS } from '../../constants';
+import { APP_CONSTANTS, TOAST } from '../../constants';
 import { dottedString, renderSingleRole, formatBalanceAndCurrency } from '../../utils';
 import MiniSpinner from '../global/MiniSpinner';
 
@@ -151,7 +151,13 @@ const Beneficiary = () => {
 		[getQueryParams, listBeneficiary, fetchBeneficiariesBalances]
 	);
 
-	const handleAddClick = () => History.push('/add-beneficiary');
+	const handleAddClick = () => {
+		addToast(
+			'This beneficiary for this project is managed through KoboToolbox. Please use Kobo tool to add new beneficiary.',
+			TOAST.WARNING
+		);
+		//History.push('/add-beneficiary');
+	};
 
 	return (
 		<div className="main">
