@@ -1,5 +1,6 @@
 import { ROLES } from '../constants';
 import EthCrypto from 'eth-crypto';
+import { ethers } from 'ethers';
 
 const DEF_SHOW_CHARS = 20;
 
@@ -96,3 +97,7 @@ export const truncateText = address => {
 	if (!match) return address;
 	return `${match[1]}…${match[2]}`;
 };
+
+export const isAddress = address => {
+	return ethers.utils.isAddress(address)
+}

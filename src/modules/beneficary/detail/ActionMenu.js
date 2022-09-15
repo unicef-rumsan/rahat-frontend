@@ -1,14 +1,18 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Toast } from 'reactstrap';
+import { useToasts } from 'react-toast-notifications';
+
 import { AppContext } from '../../../contexts/AppSettingsContext';
 import confirm from 'reactstrap-confirm';
 import { BC } from '../../../services/ChainService';
 import { removeBeneficiary } from '../../../services/beneficiary';
 import MaskLoader from '../../global/MaskLoader';
+import { TOAST } from '../../../constants';
 
 export default function BeneficiaryActions({ benInfo, handleIssueToken, handleAddToProject, refreshBeneficiaryData }) {
 	const history = useHistory();
+	const { addToast } = useToasts();
 
 	const { appSettings, wallet } = useContext(AppContext);
 	const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -44,6 +48,13 @@ export default function BeneficiaryActions({ benInfo, handleIssueToken, handleAd
 				}
 			}
 		},
+		async editBeneficiary() {
+			addToast(
+				'This beneficiary is added through KoboToolbox. Please use Kobo app to update this beneficiary.',
+				TOAST.WARNING
+			);
+			//history.push(`/edit-beneficiary/${benInfo.id}`);
+		},
 		async deleteBeneficiary() {
 			const result = await confirm({
 				title: 'Delete Beneficiary',
@@ -78,7 +89,7 @@ export default function BeneficiaryActions({ benInfo, handleIssueToken, handleAd
 				</DropdownToggle>
 				<DropdownMenu>
 					<DropdownItem onClick={handleIssueToken}>Issue Token</DropdownItem>
-					<DropdownItem onClick={() => history.push(`/edit-beneficiary/${benInfo.id}`)}>Edit Beneficiary</DropdownItem>
+					<DropdownItem onClick={handlers.editBeneficiary}>Edit Beneficiary</DropdownItem>
 					<DropdownItem onClick={handleAddToProject}>Switch Project</DropdownItem>
 					<DropdownItem divider />
 					<DropdownItem hidden={!benInfo.balance} onClick={handlers.suspendBeneficiary} style={{ color: 'red' }}>
