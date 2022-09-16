@@ -278,13 +278,9 @@ export default () => {
 										<p className=" mb-0">{currentUser && currentUser.email ? currentUser.email : ''}</p>
 									</div>
 								</div>
-								<DropdownItem onClick={handleProfileLink}>
-									<i className="ti-wallet mr-1 ml-1" /> My Balance
-								</DropdownItem>
-
 								<DropdownItem divider />
 								<DropdownItem onClick={handleProfileLink}>
-									<i className="ti-settings mr-1 ml-1" /> My Account
+									<i className="ti-settings mr-1 ml-1" /> Agency Profile
 								</DropdownItem>
 								<DropdownItem divider />
 								<DropdownItem onClick={handleLogout}>
