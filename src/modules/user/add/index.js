@@ -122,7 +122,7 @@ const AddUser = () => {
 									<Col md="6">
 										<FormGroup>
 											<Label>Phone</Label>
-											<Input type="text" value={formData.phone} name="phone" onChange={handleInputChange} required />
+											<Input type="text" value={formData.phone} name="phone" onChange={handleInputChange} />
 										</FormGroup>
 									</Col>
 									<Col md="6">
