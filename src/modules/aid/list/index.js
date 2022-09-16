@@ -12,6 +12,7 @@ import { APP_CONSTANTS } from '../../../constants';
 import { dottedString } from '../../../utils';
 import MiniSpinner from '../../global/MiniSpinner';
 import * as Service from '../../../services/aid';
+import { isAdminOrPalika } from '../../../utils/checkRoles';
 
 const { PAGE_LIMIT } = APP_CONSTANTS;
 
@@ -186,7 +187,7 @@ const List = () => {
 								</CustomInput>
 							</div>
 							<div className="flex-item">
-								<Button onClick={handleAddProjectClick} className="btn" color="info">
+								<Button hidden={!isAdminOrPalika()} onClick={handleAddProjectClick} className="btn" color="info">
 									Add New
 								</Button>
 							</div>
