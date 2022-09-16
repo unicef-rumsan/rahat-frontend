@@ -161,7 +161,7 @@ const Sidebar = props => {
 								);
 							}
 						})}
-						<NavItem style={{ marginTop: 200, marginLeft: 40 }}>
+						<NavItem style={{ marginTop: 100, marginLeft: 40 }}>
 							<img src="/unicef-logo.png" style={{ width: 150 }} />
 						</NavItem>
 					</Nav>
