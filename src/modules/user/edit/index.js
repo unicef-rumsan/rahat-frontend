@@ -11,13 +11,15 @@ import SelectWrapper from '../../global/SelectWrapper';
 import WalletUnlock from '../../global/walletUnlock';
 import Loading from '../../global/Loading';
 import Swal from 'sweetalert2';
+import MaskLoader from '../../global/MaskLoader';
+
 
 const ROLES_LIST = Object.values(ROLES).map((el) => { return { label: el, value: el } })
 
 const UserDetails = props => {
 	const { addToast } = useToasts();
 	const { updateUser, getUserById, updateRole, deleteRole } = useContext(UserContext);
-	const { wallet, appSettings, isVerified, loading, setLoading, changeIsverified } = useContext(AppContext);
+	const { wallet, appSettings, loading, setLoading } = useContext(AppContext);
 
 	const { id } = props.match.params;
 
@@ -29,13 +31,14 @@ const UserDetails = props => {
 	});
 	const [selectedRole, setSelectedRole] = useState('');
 	const [existingRoles, setExsitingRoles] = useState([]);
-	const [passcodeModal, setPasscodeModal] = useState(false);
 	const [roleProcess, setRoleProcess] = useState(false);
+	const [loadingMessage, setLoadingMessage] = useState('Please Wait...');
 
-	const togglePasscodeModal = useCallback(() => {
-		setPasscodeModal(!passcodeModal);
-	}, [passcodeModal]);
-
+	const showLoading = (message) => {
+		setLoading(true)
+		setLoadingMessage(message)
+	}
+	const hideLoading = () => setLoading(false)
 	const handleInputChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
@@ -47,7 +50,7 @@ const UserDetails = props => {
 	const handleSubmitRoles = e => {
 		e.preventDefault();
 		if (!selectedRole) return addToast('Please selecte role', TOAST.ERROR);
-		togglePasscodeModal();
+		updateUserRole();
 	};
 
 	const handleFormSubmit = e => {
@@ -117,11 +120,11 @@ const UserDetails = props => {
 	};
 
 	const updateUserRole = useCallback(() => {
-		if (!isVerified) return;
 		if (!wallet) return addToast('Wallet not found', TOAST.ERROR);
+		showLoading("Updating User Role")
 		setRoleProcess(true);
 		const { agency } = appSettings;
-		if (!agency && !agency.contracts) return;
+		if (!agency?.contracts) return;
 		const { rahat, rahat_admin } = agency.contracts;
 		updateRole({
 			userId: id,
@@ -131,37 +134,31 @@ const UserDetails = props => {
 			wallet
 		})
 			.then(() => {
-				changeIsverified(false);
-				togglePasscodeModal();
+				hideLoading()
 				setRoleProcess(false);
 				History.push('/users');
 				addToast('User role updated successfully', TOAST.SUCCESS);
 			})
 			.catch(err => {
-				changeIsverified(false);
-				togglePasscodeModal();
+				hideLoading()
 				setRoleProcess(false);
 				addToast(err.message, TOAST.ERROR);
 			});
 	}, [
 		addToast,
 		appSettings,
-		changeIsverified,
 		formData.wallet_address,
 		id,
-		isVerified,
 		selectedRole,
-		togglePasscodeModal,
 		updateRole,
 		wallet
 	]);
 
 	useEffect(fetchUserDetails, []);
-	useEffect(updateUserRole, [isVerified]);
 
 	return (
 		<div>
-			<WalletUnlock open={passcodeModal} onClose={e => setPasscodeModal(e)}></WalletUnlock>
+			<MaskLoader message={loadingMessage} isOpen={loading} />
 			<Row>
 				<Col md="12">
 					<Card>
