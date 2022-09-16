@@ -77,34 +77,45 @@ const Wallet = () => {
 
 	return (
 		<>
-			<Row style={{ height: '100vh' }}>
-				<Col className="left-content">
-					<div className="text-center">
-						<img src={Logo} height="200" width="460" alt="rahat logo"></img>
-						<div style={{ width: '410px' }}>
-							<p className="description">
-								Supporting vulnerable communities with a simple and efficient relief distribution platform.
-							</p>
-						</div>
-					</div>
-					<p className="text-copyright">Copyright © 2021 Rumsan | All Rights Reserved.</p>
+			<Row style={{ height: '100vh', overflow: 'hidden' }}>
+				<Col className="left-content d-none d-md-block d-lg-block">
+					<span
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							flexWrap: 'wrap',
+							alignItems: 'center',
+							justifyContent: 'center',
+							marginTop: '350px'
+						}}
+					>
+						<Row style={{ display: 'flex', alignSelf: 'center', alignItems: 'center', justifyItems: 'center' }}>
+							<img src={Logo} width="300" alt="rahat logo"></img>
+						</Row>
+						<Row>
+							<div style={{ maxWidth: '410px' }}>
+								<p className="description">
+									Supporting vulnerable communities with a simple and efficient relief distribution platform.
+								</p>
+							</div>
+						</Row>
+					</span>
+					<p className="text-copyright  d-none d-sm-block">Copyright © 2021 Rumsan | All Rights Reserved.</p>
 				</Col>
 				<Col className="right-content">
-					{/* <p className="text-signup">
-						Haven't registered?{' '}
-						<Link to={`/sign_up`}>
-							<span style={{ color: '#3F9EEB' }}>Sign up</span>
-						</Link>
-					</p> */}
 					<div className=" text-center">
-						<p className="text-title">Rahat - UNICEF Nepal</p>
+						<p>
+							<img src="/img/unicef-logo-white.png" width="100" />
+							<br />
+							<small style={{ color: 'white' }}>Nepal</small>
+						</p>
 						{!isWalletLogin && !otpLogin && (
 							<div className="mt-4">
 								<Row>
 									<Col>
-										<Card style={{ padding: '20px', width: '23rem' }}>
+										<Card style={{ padding: '20px', maxWidth: '23rem' }}>
 											<CardTitle className="text-left">
-												<h5>Sign In</h5>
+												<h4>Sign In</h4>
 											</CardTitle>
 											<p className={`mt-2 ${errMessage ? '' : 'd-none'}`} style={{ color: 'red' }}>
 												{errMessage}
@@ -114,7 +125,7 @@ const Wallet = () => {
 													<Input
 														type="email"
 														name="email"
-														placeholder="Your Email"
+														placeholder="Your email address"
 														value={email}
 														onKeyDown={handleEnterKey}
 														onChange={e => setEmail(e.target.value)}
@@ -178,11 +189,16 @@ const Wallet = () => {
 						)}
 					</div>
 					<p className="text-privacy">
-						By signing up you acknowledge the{' '}
+						<img
+							src="https://rahat.io/images/logo-white.png"
+							width="150"
+							className="d-xs-block d-sm-block d-md-none d-lg-none"
+						/>
+						<br />
+						By signing up you acknowledge the
 						<a href="https://docs.rahat.io/privacy-policy" className="privacy-policy">
 							Privacy Policy
-						</a>{' '}
-						.
+						</a>
 					</p>
 				</Col>
 			</Row>
