@@ -186,7 +186,6 @@ const Mobilizer = () => {
 													</div>
 													<div className="">
 														<h5 className="mb-0 font-16 font-medium">{dottedString(e.name)}</h5>
-														<span>{e.email ? e.email : '-'}</span>
 													</div>
 												</div>
 											</td>

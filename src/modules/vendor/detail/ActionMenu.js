@@ -7,7 +7,7 @@ import { VENDOR_STATUS, ROLES } from '../../../constants';
 import { BC } from '../../../services/ChainService';
 import { changeVendorStatus } from '../../../services/vendor';
 import MaskLoader from '../../global/MaskLoader';
-import { isAdminOrPalika } from '../../../utils/checkRoles';
+import { isManager } from '../../../utils/checkRoles';
 
 export default function ActionMenu({
 	vendorInfo,
@@ -29,7 +29,7 @@ export default function ActionMenu({
 		async changeStatus(status) {
 			const result = await confirm({
 				title: 'Suspend Beneficiary',
-				message: `This will remove all the issued tokens from the beneficiary. Are you sure?`,
+				message: `This will disable vendor and cannot charge from Vendor App. Are you sure?`,
 				confirmColor: 'danger',
 				cancelText: 'Cancel',
 				confirmText: 'Yes, I am sure',
@@ -80,7 +80,7 @@ export default function ActionMenu({
 								Suspend Vendor
 							</DropdownItem>
 							<DropdownItem
-								hidden={vendorStatus === VENDOR_STATUS.ACTIVE || !isAdminOrPalika()}
+								hidden={vendorStatus === VENDOR_STATUS.ACTIVE || isManager()}
 								onClick={() => handlers.changeStatus(true)}
 								style={{ color: 'green' }}
 							>
