@@ -77,25 +77,32 @@ const Wallet = () => {
 
 	return (
 		<>
-			<Row style={{ height: '100vh' }}>
-				<Col className="left-content d-none d-md-block d-lg-bloic">
-					<div className="text-center">
-						<img src={Logo} width="300" alt="rahat logo"></img>
-						<div style={{ maxWidth: '410px' }}>
-							<p className="description">
-								Supporting vulnerable communities with a simple and efficient relief distribution platform.
-							</p>
-						</div>
-					</div>
+			<Row style={{ height: '100vh', overflow: 'hidden' }}>
+				<Col className="left-content d-none d-md-block d-lg-block">
+					<span
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							flexWrap: 'wrap',
+							alignItems: 'center',
+							justifyContent: 'center',
+							marginTop: '350px'
+						}}
+					>
+						<Row style={{ display: 'flex', alignSelf: 'center', alignItems: 'center', justifyItems: 'center' }}>
+							<img src={Logo} width="300" alt="rahat logo"></img>
+						</Row>
+						<Row>
+							<div style={{ maxWidth: '410px' }}>
+								<p className="description">
+									Supporting vulnerable communities with a simple and efficient relief distribution platform.
+								</p>
+							</div>
+						</Row>
+					</span>
 					<p className="text-copyright  d-none d-sm-block">Copyright © 2021 Rumsan | All Rights Reserved.</p>
 				</Col>
 				<Col className="right-content">
-					{/* <p className="text-signup">
-						Haven't registered?{' '}
-						<Link to={`/sign_up`}>
-							<span style={{ color: '#3F9EEB' }}>Sign up</span>
-						</Link>
-					</p> */}
 					<div className=" text-center">
 						<p>
 							<img src="/img/unicef-logo-white.png" width="100" />
@@ -188,7 +195,7 @@ const Wallet = () => {
 							className="d-xs-block d-sm-block d-md-none d-lg-none"
 						/>
 						<br />
-						By signing up you acknowledge the{' '}
+						By signing up you acknowledge the
 						<a href="https://docs.rahat.io/privacy-policy" className="privacy-policy">
 							Privacy Policy
 						</a>
