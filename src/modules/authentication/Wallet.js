@@ -77,7 +77,9 @@ const Wallet = () => {
 
 	return (
 		<>
-			<Row style={{ height: '100vh' }}>
+			{/*For Desktop VIew*/}
+			<div className='d-none d-sm-block'>
+					<Row style={{ height: '100vh' }}>
 				<Col className="left-content">
 					<div className="text-center">
 						<img src={Logo} height="200" width="460" alt="rahat logo"></img>
@@ -186,6 +188,119 @@ const Wallet = () => {
 					</p>
 				</Col>
 			</Row>
+			</div>
+				{/*For Mobile VIew*/}
+				<div className='d-block d-sm-none container'>
+					<Row style={{ height: '100vh' }}>
+				<Col md="12" sm="12" sx="12" className="left-content">
+					<div className="text-center">
+						<img src={Logo} height="125" width="auto" alt="rahat logo"></img>
+						<div>
+							<p className="description-mobile">
+								Supporting vulnerable communities with a simple and efficient relief distribution platform.
+							</p>
+						</div>
+					</div>
+					<p className="text-copyright">Copyright © 2021 Rumsan | All Rights Reserved.</p>
+				</Col>
+				<Col  md="12" sm="12" sx="12"className="right-content-mobile">
+					{/* <p className="text-signup">
+						Haven't registered?{' '}
+						<Link to={`/sign_up`}>
+							<span style={{ color: '#3F9EEB' }}>Sign up</span>
+						</Link>
+					</p> */}
+					<div className=" text-center">
+						<p className="text-title-mobile">Rahat - UNICEF Nepal</p>
+						{!isWalletLogin && !otpLogin && (
+							<div className="mt-4">
+								<Row>
+									<Col>
+										<Card style={{ padding: '20px', width: 'auto' }}>
+											<CardTitle className="text-left">
+												<h5>Sign In</h5>
+											</CardTitle>
+											<p className={`mt-2 ${errMessage ? '' : 'd-none'}`} style={{ color: 'red' }}>
+												{errMessage}
+											</p>
+											<Form>
+												<FormGroup className="mt-2">
+													<Input
+														type="email"
+														name="email"
+														placeholder="Your Email"
+														value={email}
+														onKeyDown={handleEnterKey}
+														onChange={e => setEmail(e.target.value)}
+													/>
+												</FormGroup>
+											</Form>
+											<div className="text-center">
+												<Button
+													color="primary"
+													type="button"
+													size="md"
+													onClick={getOtpAndLogin}
+													style={{ width: 'fit-content' }}
+												>
+													Log In
+												</Button>
+											</div>
+											<div className="mt-2">
+												<p className="mt-2">
+													Do you use Rumsan Wallet? &nbsp;
+													<span type="button" onClick={toggleLogin} style={{ color: '#326481' }}>
+														Click Here
+													</span>
+												</p>
+											</div>
+										</Card>
+									</Col>
+								</Row>
+							</div>
+						)}
+						{isWalletLogin && !otpLogin && <WalletComponent toggleLogin={toggleLogin} />}
+						{otpLogin && (
+							<>
+								<Card style={{ padding: '20px', width: '23rem' }}>
+									<p>Please check your email for code and enter here.</p>
+									<p className={`mt-2 ${errMessage ? '' : 'd-none'}`} style={{ color: 'red' }}>
+										{errMessage}
+									</p>
+									<div className="p-2">
+										<Input className="mt-2 custom-number-input" onChange={handleOtpInput} type="text" name="number" />
+									</div>
+
+									<div className="text-center">
+										<Button
+											type="button"
+											onClick={handleVerify}
+											size="md"
+											style={{ width: '90%', backgroundColor: '#326481' }}
+										>
+											Verify
+										</Button>
+									</div>
+									<p className="mt-4">If you didn't receive a code, Resend</p>
+									<p style={{ color: '#326481' }}>
+										<a href="#">
+											<u onClick={getOtpAndLogin}>Resend OTP</u>
+										</a>
+									</p>
+								</Card>
+							</>
+						)}
+					</div>
+					<p className="text-privacy">
+						By signing up you acknowledge the{' '}
+						<a href="https://docs.rahat.io/privacy-policy" className="privacy-policy">
+							Privacy Policy
+						</a>{' '}
+						.
+					</p>
+				</Col>
+			</Row>
+		</div>
 		</>
 	);
 };

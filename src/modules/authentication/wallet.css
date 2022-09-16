@@ -3,12 +3,21 @@
 	justify-content: center;
 	align-items: center;
 }
+
 .description {
 	font-size: 16px;
 	color: #6b6c72;
 	text-align: justify;
 	margin-left: 50px;
 }
+
+.description-mobile {
+	font-size: 16px;
+	color: #6b6c72;
+	text-align: justify;
+}
+
+
 .right-content {
 	display: flex;
 	justify-content: center;
@@ -16,45 +25,66 @@
 	background-color: #326481;
 	position: relative;
 }
+
+.right-content-mobile {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #326481;
+}
+
 .text-signup {
 	position: absolute;
 	top: 4vh;
 	right: 50px;
 	color: #fff;
 }
+
 .text-title {
 	color: #fff;
 	font-size: 34px;
 }
+
+.text-title-mobile {
+	color: #fff;
+	font-size: 28px;
+}
+
 .qr-card {
 	text-align: center;
 	justify-content: center;
 	height: 180px;
 	background-color: #c4c4c4;
 }
+
 .qr-card-title {
 	color: #6b6c72;
 	margin-bottom: 10px;
 }
+
 .qr-card-button {
 	background-color: #3f9eeb;
 	border-radius: 8px;
 	color: white;
 }
+
 .text-instruction {
 	color: #fff;
 	font-size: 14px;
 }
+
 .text-subheader {
 	color: #fff;
 	font-size: 16px;
 	text-align: left;
 }
+
 .text-tutorial {
 	color: #3f9eeb;
 	font-size: 14px;
 	cursor: pointer;
 }
+
 .text-privacy {
 	color: #fff;
 	position: absolute;
@@ -63,6 +93,7 @@
 	text-align: center;
 	font-size: 12px;
 }
+
 .text-copyright {
 	color: #3f9eeb;
 	position: absolute;
@@ -71,6 +102,15 @@
 	text-align: center;
 	font-size: 12px;
 }
+
+.text-copyright-mobile-view {
+	color: #3f9eeb;
+	bottom: 1vh;
+	width: 100%;
+	text-align: center;
+	font-size: 12px;
+}
+
 .privacy-policy {
 	color: #3f9eeb;
 }
