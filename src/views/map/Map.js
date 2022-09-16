@@ -107,7 +107,7 @@ const Map = ({ height }) => {
 	return (
 		<div>
 			<Card>
-				<CardBody>
+				<CardBody style={{ padding: 5 }}>
 					<div className="map-container" style={{ height, width: '100%' }} ref={mapContainerRef} />
 				</CardBody>
 			</Card>

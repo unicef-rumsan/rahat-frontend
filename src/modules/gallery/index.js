@@ -22,7 +22,9 @@ const Settings = props => {
 					return b.dateupload - a.dateupload;
 				})
 				.map(d => {
+					console.log(d.title);
 					return {
+						description: d.title?.indexOf('_') < 0 ? d.title : null,
 						original: `https://live.staticflickr.com/${d.server}/${d.id}_${d.secret}_b.jpg`,
 						thumbnail: `https://live.staticflickr.com/${d.server}/${d.id}_${d.secret}_m.jpg`
 					};
@@ -44,7 +46,13 @@ const Settings = props => {
 			<MaskLoader message={loading} isOpen={loading !== null} />
 			<Card>
 				<CardBody style={{ minHeight: 300 }}>
-					<ImageGallery items={images} lazyLoad={true} thumbnailPosition="right" />
+					<ImageGallery
+						items={images}
+						lazyLoad={true}
+						thumbnailPosition="right"
+						showPlayButton={!loading}
+						showFullscreenButton={!loading}
+					/>
 				</CardBody>
 			</Card>
 		</>
