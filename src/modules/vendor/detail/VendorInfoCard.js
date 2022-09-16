@@ -57,7 +57,7 @@ export default function VendorInfo(props) {
 								<div className="sub-title">Address</div>
 							</div>
 						</Col>
-						<Col md="4" sm="12">
+						<Col hidden={true} md="4" sm="12">
 							<img
 								src={
 									information.extra_files && information.govt_id_image

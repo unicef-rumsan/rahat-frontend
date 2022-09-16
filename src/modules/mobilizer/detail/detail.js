@@ -31,7 +31,7 @@ import Balance from '../../ui_components/balance';
 import { TOAST, MOBIZ_STATUS } from '../../../constants';
 import ProjectsByStatus from './projectsByStatus';
 import { formatErrorMsg } from '../../../utils';
-import {getBalance} from '../../../blockchain/abi';
+import { getBalance } from '../../../blockchain/abi';
 import MaskLoader from '../../global/MaskLoader';
 import StatusBox from './statusBox';
 
@@ -74,8 +74,8 @@ export default function DetailsForm(props) {
 
 	const fetchTokenAndPackageBalance = useCallback(
 		async wallet_address => {
-			if(!appSettings || !appSettings.agency) return;
-			const {agency} = appSettings;
+			if (!appSettings || !appSettings.agency) return;
+			const { agency } = appSettings;
 			setFetchingBalance(true);
 			const { rahat } = agency.contracts;
 			const etherBalance = await getBalance(wallet_address);
@@ -271,41 +271,33 @@ export default function DetailsForm(props) {
 					<Card>
 						<div className="stat-card-body" style={{ minHeight: 120 }}>
 							<CardTitle className="title" style={{ flexBasis: '70%' }}>
-								Mobilizer Detail
+								{mobilizer ? mobilizer.name : ''}
 							</CardTitle>
 
 							<Row>
 								<Col md="8" sm="8" style={{ marginBottom: '10px' }}>
 									<div style={{ display: 'flex', alignItems: 'center' }}>
-										<img
+										{/* <img
 											src={mobilizer.photo ? `${IPFS_GATEWAY}/ipfs/${mobilizer.photo}` : profilePhoto}
 											alt="user"
 											className="rounded-circle"
 											width="45"
 											height="45"
-										/>
+										/> */}
 										<div style={{ marginLeft: '20px' }}>
-											<p className="card-font-medium">{mobilizer ? mobilizer.name : ''}</p>
-											<div className="sub-title">Name</div>
+											<p className="card-font-medium">{mobilizer ? mobilizer.phone : ''}</p>
+											<div className="sub-title">Phone</div>
 										</div>
 									</div>
 								</Col>
 								<Col md="4" sm="4">
-									{mobilizerStatus ? (
+									<StatusBox mobilizerStatus={MOBIZ_STATUS.ACTIVE} />
+									{/* {mobilizerStatus ? (
 										<StatusBox mobilizerStatus={mobilizerStatus} />
 									) : (
 										<Button color="success" type="button" onClick={handleApproveClick}>
 											Approve
 										</Button>
-									)}
-
-									{/* {mobilizerStatus && (
-										<StatusBox
-											vendorStatus={mobilizerStatus}
-											handleApproveRejectClick={handleApproveRejectClick}
-											handleSwitchChange={handleSwitchChange}
-											loading={loading}
-										/>
 									)} */}
 								</Col>
 							</Row>
@@ -313,7 +305,7 @@ export default function DetailsForm(props) {
 					</Card>
 				</Col>
 				<Col md="5">
-					<Balance
+					{/* <Balance
 						action=""
 						title="Issued"
 						button_name=""
@@ -321,14 +313,14 @@ export default function DetailsForm(props) {
 						package_data={totalPackageBalance}
 						fetching={fetchingBalance}
 						handleIssueToken=""
-					/>
+					/> */}
 				</Col>
 			</Row>
 
-			<MobilizerInfo information={mobilizer} etherBalance={mobilizerEtherBalance}/>
-			<ProjectsByStatus mobilizerProjects={mobilizerProjects} handleApproveReject={handleApproveReject} />
+			<MobilizerInfo information={mobilizer} etherBalance={mobilizerEtherBalance} />
+			{/* <ProjectsByStatus mobilizerProjects={mobilizerProjects} handleApproveReject={handleApproveReject} /> */}
 
-			<Row>
+			<Row hidden={true}>
 				<Col md="12">
 					<Card>
 						<CardBody>

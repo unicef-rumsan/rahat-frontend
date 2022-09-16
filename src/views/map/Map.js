@@ -56,7 +56,7 @@ const Map = ({ height }) => {
 
 		map.on('load', function () {
 			// Add an image to use as a custom marker
-			map.loadImage('/pin.png', function (error, image) {
+			map.loadImage('/img/pin.png', function (error, image) {
 				if (error) throw error;
 				map.addImage('custom-marker', image);
 				// Add a GeoJSON source with multiple points
