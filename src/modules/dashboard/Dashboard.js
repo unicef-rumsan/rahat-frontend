@@ -65,7 +65,7 @@ const Dashboard = () => {
 						</Col>
 						<Col md="4">
 							<StatsCard
-								title="Children Under 5"
+								title="Under 5"
 								subtitle="children"
 								title_color="#80D5AA"
 								icon_color="#80D5AA"
@@ -76,7 +76,7 @@ const Dashboard = () => {
 						<Col md="4">
 							<StatsCard
 								title="Total Impact"
-								subtitle="persons"
+								subtitle="people"
 								title_color="#F49786"
 								icon_color="#F49786"
 								icon_name="fas fa-money-bill-alt"
