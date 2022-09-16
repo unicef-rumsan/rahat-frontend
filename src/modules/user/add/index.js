@@ -65,8 +65,9 @@ const AddUser = () => {
 		console.log(formData.wallet_address)
 		if (!formData?.roles?.length) return addToast('Please select role', TOAST.ERROR);
 		if (!current_user.agency) return addToast('Agency not found', TOAST.ERROR);
-		if (!formData.wallet_address) confirmAndCreateWallet()
+		if (!formData.wallet_address) return confirmAndCreateWallet()
 		if (!isAddress(formData.wallet_address)) return addToast("Invalid Wallet Address", TOAST.ERROR)
+		if (formData.wallet_address) return saveUserDetails()
 		confirmAndCreateWallet();
 		//saveUserDetails();
 		return;
