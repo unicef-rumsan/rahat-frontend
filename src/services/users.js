@@ -155,7 +155,6 @@ export async function updateRole({ userId, payload, rahat, rahat_admin, wallet }
 			wallet_address: wallet_address
 		});
 		if (b_user) {
-			await getEth({ address: wallet_address });
 			const res = await axios({
 				url: `${API.USERS}/${userId}/roles`,
 				method: 'Patch',
@@ -191,7 +190,6 @@ export async function addUser({ payload, rahat, rahat_admin, wallet }) {
 			wallet_address: payload.wallet_address
 		});
 		if (b_user) {
-			await getEth({ address: wallet_address });
 			const res = await axios({
 				url: API.USERS,
 				method: 'Post',
