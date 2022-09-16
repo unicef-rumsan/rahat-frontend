@@ -162,7 +162,7 @@ const Sidebar = props => {
 							}
 						})}
 						<NavItem style={{ marginTop: 100, marginLeft: 40 }}>
-							<img src="/unicef-logo.png" style={{ width: 150 }} />
+							<img src="/img/unicef-logo.png" style={{ width: 150 }} />
 						</NavItem>
 					</Nav>
 				</PerfectScrollbar>
