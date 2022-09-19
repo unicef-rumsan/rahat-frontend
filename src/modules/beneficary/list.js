@@ -12,6 +12,7 @@ import AdvancePagination from '../global/AdvancePagination';
 import { APP_CONSTANTS, TOAST } from '../../constants';
 import { dottedString, renderSingleRole, formatBalanceAndCurrency } from '../../utils';
 import MiniSpinner from '../global/MiniSpinner';
+import { isPalika } from '../../utils/checkRoles';
 
 const { PAGE_LIMIT } = APP_CONSTANTS;
 const SEARCH_OPTIONS = { PHONE: 'phone', NAME: 'name', PROJECT: 'project' };
@@ -249,8 +250,12 @@ const Beneficiary = () => {
 															<img src={displayPic} alt="user" className="rounded-circle" width="45" />
 														</div>
 														<div className="">
-															<h5 className="mb-0 font-16 font-medium">{dottedString(d.name)}</h5>
-															<span>{d.phone ? d.phone : '-'}</span>
+															<h5 className="mb-0 font-16 font-medium">
+																{isPalika() && <Link to={`/beneficiaries/${d._id}`}>{dottedString(d.name)}</Link>}
+															</h5>
+															<span>
+																<Link to={`/beneficiaries/${d._id}`}>{d.phone ? d.phone : '-'}</Link>
+															</span>
 														</div>
 													</div>
 												</td>
