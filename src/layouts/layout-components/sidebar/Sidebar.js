@@ -161,8 +161,12 @@ const Sidebar = props => {
 								);
 							}
 						})}
-						<NavItem style={{ marginTop: 100, marginLeft: 40 }}>
+						<NavItem style={{ marginTop: 40, marginLeft: 40, textAlign: 'center' }}>
 							<img src="/img/unicef-logo.png" style={{ width: 150 }} />
+							<br />
+							{window.location.host === 'palika.np.rahat.io' && (
+								<img src="/img/jaleshwor-logo.png" style={{ marginTop: 20, width: 100 }} />
+							)}
 						</NavItem>
 					</Nav>
 				</PerfectScrollbar>

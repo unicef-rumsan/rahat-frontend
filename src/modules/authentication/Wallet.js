@@ -105,9 +105,18 @@ const Wallet = () => {
 				<Col className="right-content">
 					<div className=" text-center">
 						<p>
-							<img src="/img/unicef-logo-white.png" width="100" />
+							<img
+								src={
+									window.location.host === 'palika.np.rahat.io'
+										? '/img/jaleshwor-logo.png'
+										: '/img/unicef-logo-white.png'
+								}
+								width="100"
+							/>
 							<br />
-							<small style={{ color: 'white' }}>Nepal</small>
+							<small style={{ color: 'white' }}>
+								{window.location.host === 'palika.np.rahat.io' ? 'Jaleshwor Municipality' : 'Nepal'}
+							</small>
 						</p>
 						{!isWalletLogin && !otpLogin && (
 							<div className="mt-4">
@@ -195,10 +204,11 @@ const Wallet = () => {
 							className="d-xs-block d-sm-block d-md-none d-lg-none"
 						/>
 						<br />
-						By signing up you acknowledge the
+						By signing up you acknowledge the&nbsp;
 						<a href="https://docs.rahat.io/privacy-policy" className="privacy-policy">
 							Privacy Policy
 						</a>
+						.
 					</p>
 				</Col>
 			</Row>
