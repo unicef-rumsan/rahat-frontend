@@ -9,6 +9,7 @@ import EthCrypto from 'eth-crypto';
 import WalletService from '../../utils/blockchain/wallet';
 import DataService from '../../services/db';
 import { saveUser, saveUserToken } from '../../utils/sessionManager';
+import { PALIKA_HOST } from '../../constants';
 
 const Wallet = () => {
 	const [errMessage, setErrMessage] = useState('');
@@ -106,16 +107,12 @@ const Wallet = () => {
 					<div className=" text-center">
 						<p>
 							<img
-								src={
-									window.location.host === 'palika.np.rahat.io'
-										? '/img/jaleshwor-logo.png'
-										: '/img/unicef-logo-white.png'
-								}
+								src={window.location.host === PALIKA_HOST ? '/img/jaleshwor-logo.png' : '/img/unicef-logo-white.png'}
 								width="100"
 							/>
 							<br />
 							<small style={{ color: 'white' }}>
-								{window.location.host === 'palika.np.rahat.io' ? 'Jaleshwor Municipality' : 'Nepal'}
+								{window.location.host === PALIKA_HOST ? 'Jaleshwor Municipality' : 'Nepal'}
 							</small>
 						</p>
 						{!isWalletLogin && !otpLogin && (
