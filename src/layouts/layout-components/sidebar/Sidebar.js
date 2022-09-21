@@ -4,6 +4,7 @@ import { Nav, NavItem, Collapse } from 'reactstrap';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import FeatherIcon from 'feather-icons-react';
 
+import { PALIKA_HOST } from '../../../constants';
 import { AppContext } from '../../../contexts/AppSettingsContext';
 
 const Sidebar = props => {
@@ -164,7 +165,7 @@ const Sidebar = props => {
 						<NavItem style={{ marginTop: 40, marginLeft: 40, textAlign: 'center' }}>
 							<img src="/img/unicef-logo.png" style={{ width: 150 }} />
 							<br />
-							{window.location.host === 'palika.np.rahat.io' && (
+							{window.location.host === PALIKA_HOST && (
 								<img src="/img/jaleshwor-logo.png" style={{ marginTop: 20, width: 100 }} />
 							)}
 						</NavItem>
