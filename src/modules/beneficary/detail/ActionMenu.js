@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Toast } from 'reactstrap';
+import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { useToasts } from 'react-toast-notifications';
 
 import { AppContext } from '../../../contexts/AppSettingsContext';

@@ -12,8 +12,6 @@ import { MAX_QR_GEN } from '../../../constants';
 export default function ProjectInfo({ projectDetails }) {
 	const { _id, project_manager, location, description, created_at, serial_index } = projectDetails;
 
-	const handleEditClick = () => History.push(`/edit-project/${_id}`);
-
 	const [qrGenModal, setQrGenModal] = useState(false);
 	const [qrGenData, setQrGenData] = useState({ min: 0, max: 0, projectVersion: 0, amount: null });
 
@@ -89,14 +87,6 @@ export default function ProjectInfo({ projectDetails }) {
 									style={{ borderRadius: '8px', marginRight: '20px', display: 'none' }}
 								>
 									Pre-Generate Qr code
-								</button>
-								<button
-									type="button"
-									onClick={handleEditClick}
-									className="btn waves-effect waves-light btn-info"
-									style={{ borderRadius: '8px' }}
-								>
-									Edit
 								</button>
 							</div>
 						</Col>

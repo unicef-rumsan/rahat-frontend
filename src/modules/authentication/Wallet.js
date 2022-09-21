@@ -9,7 +9,7 @@ import EthCrypto from 'eth-crypto';
 import WalletService from '../../utils/blockchain/wallet';
 import DataService from '../../services/db';
 import { saveUser, saveUserToken } from '../../utils/sessionManager';
-import { PALIKA_HOST } from '../../constants';
+import { PALIKA_HOST, ROLES } from '../../constants';
 
 const Wallet = () => {
 	const [errMessage, setErrMessage] = useState('');
@@ -56,6 +56,10 @@ const Wallet = () => {
 			const isOTPValid = await verifyOTP({ otp, encryptionKey: tempIdentity.publicKey });
 			if (!isOTPValid) {
 				setErrMessage('Invalid OTP. Please enter again');
+				return;
+			}
+			if (window.location.host === PALIKA_HOST && !isOTPValid.user.roles?.includes(ROLES.PALIKA)) {
+				setErrMessage('ERROR: Only Palika officials are allowed in this app!');
 				return;
 			}
 			saveUser(isOTPValid.user);
