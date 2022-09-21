@@ -13,6 +13,7 @@ import { APP_CONSTANTS, TOAST } from '../../constants';
 import { dottedString, renderSingleRole, formatBalanceAndCurrency } from '../../utils';
 import MiniSpinner from '../global/MiniSpinner';
 import { isPalika } from '../../utils/checkRoles';
+import { LogVisit } from '../../services/logVisit';
 
 const { PAGE_LIMIT } = APP_CONSTANTS;
 const SEARCH_OPTIONS = { PHONE: 'phone', NAME: 'name', PROJECT: 'project' };
@@ -159,6 +160,10 @@ const Beneficiary = () => {
 		);
 		//History.push('/add-beneficiary');
 	};
+
+	useEffect(() => {
+		LogVisit('beneficiary');
+	}, []);
 
 	return (
 		<div className="main">

@@ -13,6 +13,7 @@ import { dottedString } from '../../../utils';
 import MiniSpinner from '../../global/MiniSpinner';
 import * as Service from '../../../services/aid';
 import { isAdminOrPalika } from '../../../utils/checkRoles';
+import { LogVisit } from '../../../services/logVisit';
 
 const { PAGE_LIMIT } = APP_CONSTANTS;
 
@@ -138,6 +139,10 @@ const List = () => {
 	useEffect(() => {
 		fetchTotalRecords();
 	}, [fetchTotalRecords]);
+
+	useEffect(() => {
+		LogVisit('project');
+	}, []);
 
 	return (
 		<>

@@ -10,6 +10,7 @@ import Map from '../../views/map/Map';
 import MaskLoader from '../global/MaskLoader';
 
 import { getBeneficiariesSummary } from '../../services/stats';
+import { LogVisit } from '../../services/logVisit';
 
 import BenByWard from './benByWard';
 import BenByGender from './benByGender';
@@ -46,6 +47,10 @@ const Dashboard = () => {
 	};
 
 	useEffect(fetchDashboardStats, []);
+
+	useEffect(() => {
+		LogVisit('dashboard');
+	}, []);
 
 	return (
 		<>
