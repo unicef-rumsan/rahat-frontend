@@ -7,6 +7,7 @@ import { useToasts } from 'react-toast-notifications';
 import { TOAST } from '../../constants';
 import MaskLoader from '../global/MaskLoader';
 import { getPhotos } from '../../services/gallery';
+import { LogVisit } from '../../services/logVisit';
 
 const Settings = props => {
 	const { addToast } = useToasts();
@@ -39,6 +40,10 @@ const Settings = props => {
 
 	useEffect(() => {
 		fetchPhotos();
+	}, []);
+
+	useEffect(() => {
+		LogVisit('photo');
 	}, []);
 
 	return (
