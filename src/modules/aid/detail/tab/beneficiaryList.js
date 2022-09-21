@@ -164,7 +164,6 @@ const List = ({ projectId }) => {
 			const query = { start, limit: PAGE_LIMIT };
 			const data = await beneficiaryByAid(projectId, query);
 			setBenList(data.data);
-			console.log(data.data);
 			fetchBeneficiariesBalances({ beneficiaries: data.data });
 		},
 		[beneficiaryByAid, projectId, fetchBeneficiariesBalances]

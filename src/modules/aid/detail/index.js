@@ -19,6 +19,8 @@ import useProjectCache from '../../../hooks/useProjectCache';
 import MaskLoader from '../../global/MaskLoader';
 
 import CONTRACT from '../../../constants/contracts';
+import ActionMenu from './ActionMenu';
+import NameCard from './NameCard';
 import { getContractByProvider } from '../../../blockchain/abi';
 
 // --------------------------------------------------------------
@@ -106,7 +108,7 @@ export default function Index(props) {
 		totalBudget.request(id, rahat_admin);
 		availableBalance.request(id, rahat_admin);
 		listenChainEvents();
-	}, []);
+	}, [appSettings]);
 
 	//#endregion
 
@@ -119,38 +121,24 @@ export default function Index(props) {
 					<BreadCrumb redirect_path="projects" root_label="Projects" current_label="Details" />
 				</Col>
 
-				<Col md="3">
-					{projectDetails && projectDetails.campaignId && (
-						<>
-							<Tooltip placement="right" isOpen={toolTipOpen} toggle={toggleToolTip} target="viewCampaignFundraiser">
-								{projectDetails.campaignTitle}
-							</Tooltip>
-							<button
-								id="viewCampaignFundraiser"
-								onClick={handleCampaignClick}
-								type="button"
-								className="btn waves-effect waves-light btn-outline-info"
-								style={{ borderRadius: '8px', minWidth: '12px' }}
-							>
-								View Campaign
-							</button>
-						</>
-					)}
+				<Col md="3" className="text-right pt-4">
+					<ActionMenu projectDetails={projectDetails} />
 				</Col>
 			</Row>
 			<Row>
 				<Col md="7">
 					{projectDetails && (
-						<DetailsCard
-							title="Project Details"
-							button_name="Generate QR Code"
-							name="Project Name"
-							name_value={projectDetails.name}
-							status={projectDetails.status}
-							total="Project Budget"
-							total_value={totalBudget.value}
-							handleStatusChange={handleStatusChange}
-						/>
+						<NameCard projectInfo={projectDetails} total_value={totalBudget.value} />
+						// <DetailsCard
+						// 	title="Project Details"
+						// 	button_name="Generate QR Code"
+						// 	name="Project Name"
+						// 	name_value={projectDetails.name}
+						// 	status={projectDetails.status}
+						// 	total="Project Budget"
+						// 	total_value={totalBudget.value}
+						// 	handleStatusChange={handleStatusChange}
+						// />
 					)}
 					{projectDetails && <ProjectInfo projectDetails={projectDetails} />}
 				</Col>
