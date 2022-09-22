@@ -1,5 +1,6 @@
 import { ethers } from 'ethers';
 const NETWORK_URL = process.env.REACT_APP_BLOCKCHAIN_NETWORK;
+const WEBSOCKET_URL = process.env.REACT_APP_BLOCKCHAIN_WEBSOCKET;
 
 export const getAbi = contractName => {
 	const contractJson = require(`../blockchain/build/${contractName}`);
@@ -24,6 +25,12 @@ export const getContract = async (contractAddress, contractName) => {
 	const abi = await getAbi(contractName);
 	const { signer } = await getSigner();
 	return new ethers.Contract(contractAddress, abi, signer);
+};
+
+export const getContractByProviderWS = (contractAddress, contractName) => {
+	const abi = getAbi(contractName);
+	const provider = new ethers.providers.WebSocketProvider(WEBSOCKET_URL);
+	return new ethers.Contract(contractAddress, abi, provider);
 };
 
 export const getContractByProvider = (contractAddress, contractName) => {
