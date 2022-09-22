@@ -16,6 +16,7 @@ import UploadList from './uploadList';
 import AdvancePagination from '../../../global/AdvancePagination';
 import MaskLoader from '../../../global/MaskLoader';
 import MiniSpinner from '../../../global/MiniSpinner';
+import { isPalika } from '../../../../utils/checkRoles';
 
 const { PAGE_LIMIT, BULK_BENEFICIARY_LIMIT } = APP_CONSTANTS;
 
@@ -163,7 +164,6 @@ const List = ({ projectId }) => {
 			const query = { start, limit: PAGE_LIMIT };
 			const data = await beneficiaryByAid(projectId, query);
 			setBenList(data.data);
-			console.log(data.data);
 			fetchBeneficiariesBalances({ beneficiaries: data.data });
 		},
 		[beneficiaryByAid, projectId, fetchBeneficiariesBalances]
@@ -374,7 +374,7 @@ const List = ({ projectId }) => {
 									<td>{(currentPage - 1) * PAGE_LIMIT + i + 1}</td>
 									<td>
 										<Link style={{ color: '#2b7ec1' }} to={`/beneficiaries/${d._id}`}>
-											{d.name}
+											{isPalika() ? d.name : 'Xxxxx Xxxx'}
 										</Link>
 									</td>
 									<td>{d.address || '-'}</td>

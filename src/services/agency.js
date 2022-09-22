@@ -6,6 +6,16 @@ import { getUserToken } from '../utils/sessionManager';
 
 const access_token = getUserToken();
 
+export async function updateDefaultProject(agencyId, projectId) {
+	return axios.put(
+		`${API.AGENCY}/${agencyId}`,
+		{ default_project: projectId },
+		{
+			headers: { access_token: access_token }
+		}
+	);
+}
+
 export function deployAgencyToken(agencyId, payload) {
 	return new Promise((resolve, reject) => {
 		axios

@@ -1,6 +1,7 @@
 const API_SERVER = process.env.REACT_APP_API_SERVER;
 
 module.exports = {
+	PALIKA_HOST: process.env.REACT_APP_PALIKA_HOST,
 	CURRENCY: {
 		NP_RUPEES: 'NPR'
 	},

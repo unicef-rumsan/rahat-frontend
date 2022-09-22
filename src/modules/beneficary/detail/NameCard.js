@@ -3,6 +3,7 @@ import { Card, CardTitle, Col, Row, Button } from 'reactstrap';
 
 import '../../../assets/css/project.css';
 import displayPic from '../../../assets/images/users/user_avatar.svg';
+import { isPalika } from '../../../utils/checkRoles';
 
 const IPFS_GATEWAY = process.env.REACT_APP_IPFS_GATEWAY;
 
@@ -16,7 +17,7 @@ export default function DetailsCard(props) {
 					<Row>
 						<Col>
 							<CardTitle className="title" style={{ flexBasis: '70%' }}>
-								{benInfo.name || 'Beneficiary'}
+								{isPalika() ? benInfo.name || 'Beneficiary' : benInfo.name?.substring(0, 1) + 'xxxxxxx Xxxxx'}
 							</CardTitle>
 						</Col>
 						<Col>
