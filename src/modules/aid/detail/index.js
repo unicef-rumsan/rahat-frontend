@@ -21,9 +21,10 @@ import MaskLoader from '../../global/MaskLoader';
 import CONTRACT from '../../../constants/contracts';
 import ActionMenu from './ActionMenu';
 import NameCard from './NameCard';
-import { getContractByProvider } from '../../../blockchain/abi';
+import { getContractByProviderWS } from '../../../blockchain/abi';
 
 // --------------------------------------------------------------
+let AdminContract;
 
 export default function Index(props) {
 	const { id } = props.match.params;
@@ -93,14 +94,14 @@ export default function Index(props) {
 
 	useEffect(fetchProjectDetails, []);
 
-	const listenChainEvents = async () => {
+	const listenChainEvents = useCallback(async () => {
 		const { rahat_admin } = appSettings.agency.contracts;
-		const AdminContract = await getContractByProvider(rahat_admin, CONTRACT.RAHATADMIN);
+		AdminContract = AdminContract || (await getContractByProviderWS(rahat_admin, CONTRACT.RAHATADMIN));
 		AdminContract.on('ProjectERC20BudgetUpdated', a => {
 			totalBudget.request(id, rahat_admin);
 			availableBalance.request(id, rahat_admin);
 		});
-	};
+	}, []);
 
 	useEffect(() => {
 		if (!appSettings?.agency?.contracts) return;
@@ -108,6 +109,7 @@ export default function Index(props) {
 		totalBudget.request(id, rahat_admin);
 		availableBalance.request(id, rahat_admin);
 		listenChainEvents();
+		return () => AdminContract?.removeAllListeners();
 	}, [appSettings]);
 
 	//#endregion
