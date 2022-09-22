@@ -28,6 +28,7 @@ import displayPic from '../../assets/images/users/user_avatar.svg';
 import AdvancePagination from '../global/AdvancePagination';
 import { APP_CONSTANTS } from '../../constants';
 import { dottedString } from '../../utils';
+import { LogVisit } from '../../services/logVisit';
 
 const { PAGE_LIMIT } = APP_CONSTANTS;
 const SEARCH_OPTIONS = { PHONE: 'phone', NAME: 'name' };
@@ -128,6 +129,10 @@ const Vendor = () => {
 	useEffect(() => {
 		fetchTotalRecords();
 	}, [fetchTotalRecords]);
+
+	useEffect(() => {
+		LogVisit('vendor');
+	}, []);
 
 	return (
 		<div className="main">

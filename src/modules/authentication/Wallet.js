@@ -9,6 +9,7 @@ import EthCrypto from 'eth-crypto';
 import WalletService from '../../utils/blockchain/wallet';
 import DataService from '../../services/db';
 import { saveUser, saveUserToken } from '../../utils/sessionManager';
+import { PALIKA_HOST, ROLES } from '../../constants';
 
 const Wallet = () => {
 	const [errMessage, setErrMessage] = useState('');
@@ -55,6 +56,10 @@ const Wallet = () => {
 			const isOTPValid = await verifyOTP({ otp, encryptionKey: tempIdentity.publicKey });
 			if (!isOTPValid) {
 				setErrMessage('Invalid OTP. Please enter again');
+				return;
+			}
+			if (window.location.host === PALIKA_HOST && !isOTPValid.user.roles?.includes(ROLES.PALIKA)) {
+				setErrMessage('ERROR: Only Palika officials are allowed in this app!');
 				return;
 			}
 			saveUser(isOTPValid.user);
@@ -105,9 +110,14 @@ const Wallet = () => {
 				<Col className="right-content">
 					<div className=" text-center">
 						<p>
-							<img src="/img/unicef-logo-white.png" width="100" />
+							<img
+								src={window.location.host === PALIKA_HOST ? '/img/jaleshwor-logo.png' : '/img/unicef-logo-white.png'}
+								width="100"
+							/>
 							<br />
-							<small style={{ color: 'white' }}>Nepal</small>
+							<small style={{ color: 'white' }}>
+								{window.location.host === PALIKA_HOST ? 'Jaleshwor Municipality' : 'Nepal'}
+							</small>
 						</p>
 						{!isWalletLogin && !otpLogin && (
 							<div className="mt-4">
@@ -195,10 +205,11 @@ const Wallet = () => {
 							className="d-xs-block d-sm-block d-md-none d-lg-none"
 						/>
 						<br />
-						By signing up you acknowledge the
+						By signing up you acknowledge the&nbsp;
 						<a href="https://docs.rahat.io/privacy-policy" className="privacy-policy">
 							Privacy Policy
 						</a>
+						.
 					</p>
 				</Col>
 			</Row>

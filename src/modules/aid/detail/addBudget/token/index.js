@@ -67,11 +67,8 @@ const Token = ({ projectId }) => {
 		}
 	}, [addProjectBudget, addToast, appSettings.agency, inputTokens, projectId, wallet, history]);
 
-	// useEffect(() => {
-	// 	submitProjectBudget();
-	// }, [isVerified, submitProjectBudget]);
-
 	useEffect(() => {
+		if (!appSettings?.agency?.contracts) return;
 		const { rahat_admin } = appSettings.agency.contracts;
 		totalBudget.request(projectId, rahat_admin);
 		availableBalance.request(projectId, rahat_admin);
