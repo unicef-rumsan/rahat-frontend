@@ -16,11 +16,17 @@ import { useHistory } from 'react-router-dom';
 import * as Service from '../../../services/beneficiary';
 import useBeneficiaryCache from '../../../hooks/useBeneficiaryCache';
 
+import CONTRACT from '../../../constants/contracts';
 import BeneficiaryInfo from './BeneficiaryInfoCard';
 import ProjectSelector from '../../ui_components/projects/ProjectSelector';
 import BeneficiaryActions from './ActionMenu';
 import NameCard from './NameCard';
 import TokenInfoCard from './TokenInfoCard';
+import TransactionList from './TransactionList';
+
+import { getContractByProviderWS } from '../../../blockchain/abi';
+
+let RahatContract;
 
 const BenefDetails = ({ params }) => {
 	const { id } = params;
@@ -114,6 +120,18 @@ const BenefDetails = ({ params }) => {
 	//#endregion
 
 	//#region UseEffects
+
+	const listenChainEvents = async () => {
+		const { agency } = appSettings;
+		if (!agency || !agency.contracts) return;
+		const { rahat } = appSettings.agency.contracts;
+		RahatContract = RahatContract || (await getContractByProviderWS(rahat, CONTRACT.RAHAT));
+		RahatContract.on('IssuedERC20', a => {
+			beneficiaryBalance.request(basicInfo.phone, rahat);
+			beneficiaryTotalIssued.request(basicInfo.phone, rahat);
+		});
+	};
+
 	const fetchBeneficiaryDetails = useCallback(async () => {
 		const { agency } = appSettings;
 		if (!agency || !agency.contracts) return;
@@ -135,6 +153,11 @@ const BenefDetails = ({ params }) => {
 	useEffect(() => {
 		fetchBeneficiaryDetails();
 	}, [fetchBeneficiaryDetails]);
+
+	useEffect(() => {
+		listenChainEvents();
+		return () => RahatContract?.removeAllListeners();
+	}, [basicInfo]);
 	//#endregion
 
 	return (
@@ -207,6 +230,7 @@ const BenefDetails = ({ params }) => {
 			{basicInfo && <BeneficiaryInfo basicInfo={basicInfo} extras={extras} />}
 
 			<ProjectInvovled handleAddBtnClick={handleProjectSwitch} showAddBtn={true} projects={benProjectList} />
+			{basicInfo.phone && <TransactionList phone={basicInfo.phone} />}
 		</>
 	);
 };

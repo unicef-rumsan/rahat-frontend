@@ -14,10 +14,10 @@ export default (apiFunc, field, props) => {
 			const result = await apiFunc(...args);
 			let dataToCache = {};
 			dataToCache[field] = result;
+			setValue(result);
 			await DataService.saveBeneficiary(props.id, dataToCache);
 			if (props.callback) props.callback(result);
 			setError(null);
-			setValue(result);
 		} catch (err) {
 			setError(err.message || 'Unexpected Error!');
 		} finally {
