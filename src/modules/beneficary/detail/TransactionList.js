@@ -2,7 +2,7 @@ import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { Card, CardTitle, Table, Row, Col } from 'reactstrap';
 import GrowSpinner from '../../global/GrowSpinner';
 import { AppContext } from '../../../contexts/AppSettingsContext';
-import { listTransactionsByAddress, listBeneficiariesTxs } from '../../../services/ExplorerService';
+import { listBeneficiaryTxs } from '../../../services/ExplorerService';
 import { truncateEthAddress, truncateText } from '../../../utils';
 import moment from 'moment';
 
@@ -16,8 +16,7 @@ const TransactionList = ({ phone }) => {
 		const { agency } = appSettings;
 		if (!agency || !agency.contracts) return;
 		showLoading(true);
-		console.log(phone);
-		let data = await listBeneficiariesTxs(agency.contracts.rahat, phone);
+		let data = await listBeneficiaryTxs(agency.contracts.rahat, phone);
 		setTransactions(data);
 		showLoading(false);
 	}, []);
