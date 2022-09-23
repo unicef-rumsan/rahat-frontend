@@ -1,20 +1,23 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useContext, useState, useCallback, useEffect } from 'react';
 import { Card, CardTitle, Table, Row, Col } from 'reactstrap';
 import GrowSpinner from '../../global/GrowSpinner';
-import { listTransactionsByAddress } from '../../../services/ExplorerService';
-import { truncateEthAddress, truncateText } from '../../../utils';
+import { AppContext } from '../../../contexts/AppSettingsContext';
+import { listVendorTxs } from '../../../services/ExplorerService';
+import { truncateText } from '../../../utils';
 import moment from 'moment';
 
 const EXPLORER_URL = process.env.REACT_APP_BLOCKCHAIN_EXPLORER;
 const TransactionList = ({ address }) => {
+	const { appSettings } = useContext(AppContext);
 	const [loading, showLoading] = useState(false);
 	const [transactions, setTransactions] = useState([]);
 
 	const getTxs = useCallback(async () => {
-		//TODO: change address
+		const { agency } = appSettings;
+		if (!agency || !agency.contracts) return;
 		showLoading(true);
-		let { data } = await listTransactionsByAddress('0x1E824Fb719b45383ACb232832A0Cc9a323D65bFc');
-		setTransactions(data.result);
+		let data = await listVendorTxs(agency.contracts.rahat, address);
+		setTransactions(data);
 		showLoading(false);
 	}, []);
 
@@ -28,7 +31,7 @@ const TransactionList = ({ address }) => {
 				<div className="stat-card-body" style={{ minHeight: 120 }}>
 					<CardTitle className="title">
 						<Row>
-							<Col md="6">Transaction History</Col>
+							<Col md="6">Transaction History (Blockchain)</Col>
 							<Col md="6"></Col>
 						</Row>
 					</CardTitle>
@@ -40,8 +43,8 @@ const TransactionList = ({ address }) => {
 								<tr className="border-0">
 									<th className="border-0">Date</th>
 									<th className="border-0">Transaction Hash</th>
-									<th className="border-0">From</th>
-									<th className="border-0">Value</th>
+									<th className="border-0">Beneficiary</th>
+									<th className="border-0">Amount</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -51,16 +54,16 @@ const TransactionList = ({ address }) => {
 											<tr key={i}>
 												<td>{moment.unix(tx.timeStamp).format('YYYY-MM-DD HH:mm')}</td>
 												<td>
-													<a href={EXPLORER_URL + '/tx/' + tx.hash} target="_blank" rel="noopener noreferrer">
-														{truncateText(tx.hash)}
+													<a
+														href={EXPLORER_URL + '/tx/' + tx.transactionHash}
+														target="_blank"
+														rel="noopener noreferrer"
+													>
+														{truncateText(tx.transactionHash)}
 													</a>
 												</td>
-												<td>
-													<a href={EXPLORER_URL + '/address/' + tx.from} target="_blank" rel="noopener noreferrer">
-														{truncateEthAddress(tx.from)}
-													</a>
-												</td>
-												<td>{tx.value}</td>
+												<td>{tx.beneficiary}</td>
+												<td>{tx.amount}</td>
 											</tr>
 										);
 									})

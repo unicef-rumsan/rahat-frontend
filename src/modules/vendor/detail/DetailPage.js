@@ -179,7 +179,7 @@ const Index = ({ params }) => {
 						}}
 						showAddBtn={true}
 					/>
-					{/* <TransactionList address={basicInfo.wallet_address} /> */}
+					{basicInfo.wallet_address && <TransactionList address={basicInfo.wallet_address} />}
 				</>
 			)}
 		</>
