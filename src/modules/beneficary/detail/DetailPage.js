@@ -22,6 +22,7 @@ import ProjectSelector from '../../ui_components/projects/ProjectSelector';
 import BeneficiaryActions from './ActionMenu';
 import NameCard from './NameCard';
 import TokenInfoCard from './TokenInfoCard';
+import TransactionList from './TransactionList';
 
 import { getContractByProviderWS } from '../../../blockchain/abi';
 
@@ -229,6 +230,7 @@ const BenefDetails = ({ params }) => {
 			{basicInfo && <BeneficiaryInfo basicInfo={basicInfo} extras={extras} />}
 
 			<ProjectInvovled handleAddBtnClick={handleProjectSwitch} showAddBtn={true} projects={benProjectList} />
+			{basicInfo.phone && <TransactionList phone={basicInfo.phone} />}
 		</>
 	);
 };
