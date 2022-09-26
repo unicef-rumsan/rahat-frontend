@@ -17,7 +17,7 @@ const issueBudget = lazy(() => import('../modules/beneficary/detail/issue'));
 // Institutions
 const InstitutionList = lazy(() => import('../modules/institution'));
 const InstitutionDetails = lazy(() => import('../modules/institution/detail/index'));
-const AddFsp = lazy(() => import('../modules/institution/detail/addFsp'));
+const AddFsp = lazy(() => import('../modules/institution/addFsp'));
 
 // Misc
 const Dashboard = lazy(() => import('../modules/dashboard/Dashboard'));
@@ -268,7 +268,7 @@ let AppRoutes = [
 		component: UserDetails
 	},
 	{
-		path: '/institutions/addFsp',
+		path: '/institutions/add',
 		name: 'Add Fsp',
 		icon: 'dollar-sign',
 		component: AddFsp,
@@ -279,7 +279,7 @@ let AppRoutes = [
 		name: 'Financial Institution',
 		component: InstitutionDetails
 	},
-	
+
 	{
 		path: '/institutions',
 		name: 'Financial Institutions',
@@ -287,7 +287,7 @@ let AppRoutes = [
 		component: InstitutionList,
 		showInSidebar: true
 	},
-	
+
 	{
 		path: '/onboards',
 		name: 'Onboards',
