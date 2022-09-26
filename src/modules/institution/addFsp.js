@@ -1,17 +1,20 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { Card, CardBody, Row, Col, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useToasts } from 'react-toast-notifications';
-import { AppContext } from '../../../contexts/AppSettingsContext';
-import { History } from '../../../utils/History';
-import FspSelector from '../../global/FspSelector';
-import GrowSpinner from '../../../modules/global/GrowSpinner';
-import { addFsp } from '../../../services/fsp';
-import { getProjectFromLS } from '../../../utils/checkProject';
-
+import { AppContext } from '../../contexts/AppSettingsContext';
+import { History } from '../../utils/History';
+import FspSelector from '../global/FspSelector';
+import GrowSpinner from '../global/GrowSpinner';
+import SelectWrapper from '../global/SelectWrapper';
+import { addFsp } from '../../services/fsp';
+import { getProjectFromLS } from '../../utils/checkProject';
+import * as AidService from '../../services/aid';
 const AddFsp = params => {
 	const { loading } = useContext(AppContext);
 	const [selectorFsp] = useState('');
 	const { addToast } = useToasts();
+	const [projectList, setProjectList] = useState([]);
+	const [selectedProjects, setSelectedProjects] = useState('');
 	const [formData, setFormData] = useState({
 		name: '',
 		account_number: '',
@@ -23,16 +26,20 @@ const AddFsp = params => {
 	const handleInputChange = e => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+	const handleProjectChange = data => {
+		const values = data.map(d => d.value);
+		setSelectedProjects(values.toString());
+	};
+
 
 	const handleFormSubmit = async e => {
 		e.preventDefault();
-		const projectId = getProjectFromLS();
-		formData.project = projectId;
+		formData.project = selectedProjects;
 		try {
-			const response = await addFsp(projectId, formData);
+			const response = await addFsp(selectedProjects, formData);
 			if (response.status === 200) {
 				addToast('Fsp Added Successfully', { appearance: 'success', autoDismiss: true });
-				History.push('/projects/current');
+				History.push('/institutions');
 			}
 		} catch (error) {
 			console.log(error);
@@ -52,6 +59,22 @@ const AddFsp = params => {
 		};
 		setFormData(bankValue);
 	};
+	const loadProjects = useCallback(async () => {
+		const projects = await AidService.listAid({ start: 0, limit: 50 });
+		if (projects && projects.data.length) {
+			const select_options = projects.data.map(p => {
+				return {
+					label: p.name,
+					value: p._id
+				};
+			});
+			setProjectList(select_options);
+		}
+	}, []);
+
+	useEffect(() => {
+		loadProjects();
+	}, [loadProjects]);
 	return (
 		<div>
 			<Row>
@@ -60,6 +83,16 @@ const AddFsp = params => {
 						<CardBody>
 							<p className="page-heading mb-5">Add New FSP</p>
 							<Form onSubmit={handleFormSubmit}>
+								<FormGroup>
+									<Label>Project <span className="text-danger">*</span></Label>
+									<SelectWrapper
+										multi={true}
+										onChange={handleProjectChange}
+										maxMenuHeight={150}
+										data={projectList}
+										placeholder="--Select Project--"
+									/>
+								</FormGroup>
 								<Row>
 									<Col lg={4} md={12}>
 										<FormGroup>

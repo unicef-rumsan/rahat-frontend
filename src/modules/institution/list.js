@@ -164,12 +164,12 @@ const Institution = () => {
 							</Col>
 							<Col md="2">
 								<div>
-									
-									<Link to="/institutions/addFsp" >
+
+									<Link to="/institutions/add" >
 										<Button className="btn" color="info">
-										Add New
+											Add New
 										</Button>
-										</Link>
+									</Link>
 								</div>
 							</Col>
 						</Row>
@@ -246,7 +246,7 @@ const Institution = () => {
 							);
 					}}
 				>
-				
+
 				</Form>
 			</Modal>
 			<br />
