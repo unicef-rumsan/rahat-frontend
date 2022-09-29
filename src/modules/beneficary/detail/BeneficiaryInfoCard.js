@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardTitle, Col, Row } from 'reactstrap';
+import { Card, CardTitle, Col, Row, Label, Input, FormGroup } from 'reactstrap';
 
 import '../../../assets/css/project.css';
 import IdImgPlaceholder from '../../../assets/images/id-icon-1.png';
@@ -19,7 +19,7 @@ export default function BeneficiaryInfo({ basicInfo, extras }) {
 						</CardTitle>
 					</div>
 					<Row>
-						<Col>
+						<Col md="6" sm="6" lg="4" xs="6">
 							<div className="card-data">
 								<p className="card-font-medium">{basicInfo.address || '-'}</p>
 								<div className="sub-title">Address</div>
@@ -50,7 +50,7 @@ export default function BeneficiaryInfo({ basicInfo, extras }) {
 								<div className="sub-title">Number of family member (Adult)</div>
 							</div> */}
 						</Col>
-						<Col>
+						<Col md="6" sm="6" lg="4" xs="6">
 							<div className="card-data">
 								<p className="card-font-medium">10</p>
 								<div className="sub-title">Ward</div>
@@ -81,15 +81,41 @@ export default function BeneficiaryInfo({ basicInfo, extras }) {
 								<div className="sub-title">Number of family member(Child)</div>
 							</div> */}
 						</Col>
-						<Col>
-							<img
+						<Col md="3" sm="12" lg="4" xs="12">
+							{/* <img
 								src={basicInfo.govt_id_image ? `${IPFS_GATEWAY}/ipfs/${basicInfo.govt_id_image}` : IdImgPlaceholder}
 								alt="certificate"
 								width="90%"
 								height="60%"
 								className="card-data"
-							/>
-							<div className="card-data ">
+							/> */}
+							<div>
+								<Col>	
+						<CardTitle className="title"  style={{ marginLeft:"-16px" ,  whiteSpace:"nowrap" }}>
+							Category of Household :
+						</CardTitle>
+								</Col>			
+						<FormGroup check>
+       					   <Label check>
+        				    <Input style={{marginTop:"7px"}} type="checkbox" />
+          					<p style={{whiteSpace:"nowrap" , fontWeight:"500"}}>Family depends on daily wages</p> 
+          				   </Label>
+								</FormGroup>
+								<FormGroup check>
+       					   <Label check>
+        				    <Input style={{marginTop:"7px"}} type="checkbox" />
+          					  <p style={{whiteSpace:"nowrap" , fontWeight:"500"}}>Family does not own any land</p>
+          				   </Label>
+								</FormGroup>
+								<FormGroup check>
+       					   <Label check>
+        				    <Input style={{marginTop:"7px"}} type="checkbox" />
+          					<p style={{whiteSpace:"nowrap" , fontWeight:"500"}}>Family has person with disability</p>
+          				   </Label>
+      					</FormGroup>
+							</div>
+						
+							<div className="card-data mt-5">
 								<p className="card-font-medium">{moment(extras.created_at).format('MMM Do YYYY, hh:mm A') || '-'}</p>
 								<div className="sub-title">Registration Date</div>
 							</div>
