@@ -164,9 +164,12 @@ const Institution = () => {
 							</Col>
 							<Col md="2">
 								<div>
-									<Button onClick={() => toggle()} className="btn" color="info">
-										Add New
-									</Button>
+
+									<Link to="/institutions/add" >
+										<Button className="btn" color="info">
+											Add New
+										</Button>
+									</Link>
 								</div>
 							</Col>
 						</Row>
@@ -243,37 +246,7 @@ const Institution = () => {
 							);
 					}}
 				>
-					<ModalHeader toggle={toggle}>
-						<div>
-							<h3>Add Institution</h3>
-						</div>
-					</ModalHeader>
-					<ModalBody>
-						<div className="form-item">
-							<label htmlFor="name">Name</label>
-							<br />
-							<Input name="name" type="text" placeholder="Full Name" className="form-field" required />
-						</div>
-						<br />
-						<div className="form-item">
-							<label htmlFor="phone">Phone</label>
-							<br />
-							<Input name="phone" type="text" placeholder="Contact Number" className="form-field" required />
-						</div>
-						<br />
-						<div className="form-item">
-							<label htmlFor="address">Address</label>
-							<br />
-							<Input name="address" type="text" placeholder="Address" className="form-field" required />
-						</div>
-						<br />
-					</ModalBody>
-					<ModalFooter>
-						<Button color="primary">Submit</Button>
-						<Button color="secondary" onClick={toggle}>
-							Cancel
-						</Button>
-					</ModalFooter>
+
 				</Form>
 			</Modal>
 			<br />
