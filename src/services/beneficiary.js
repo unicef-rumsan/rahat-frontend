@@ -257,3 +257,13 @@ export async function beneficiaryReport(params) {
 	});
 	return data;
 }
+
+export async function getBeneficiaryWards(params) {
+	const { data } = await axios({
+		url: API.BENEFICARIES + `/wards`,
+		method: 'get',
+		headers: { access_token },
+		params
+	});
+	return data;
+}
