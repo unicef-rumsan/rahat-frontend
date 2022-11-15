@@ -12,11 +12,13 @@ import AdvancePagination from '../global/AdvancePagination';
 import { APP_CONSTANTS, TOAST } from '../../constants';
 import { dottedString, renderSingleRole, formatBalanceAndCurrency } from '../../utils';
 import MiniSpinner from '../global/MiniSpinner';
+import SelectWrapper from '../global/SelectWrapper';
 import { isPalika } from '../../utils/checkRoles';
 import { LogVisit } from '../../services/logVisit';
+import { getBeneficiaryWards } from '../../services/beneficiary';
 
 const { PAGE_LIMIT } = APP_CONSTANTS;
-const SEARCH_OPTIONS = { PHONE: 'phone', NAME: 'name', PROJECT: 'project' };
+const SEARCH_OPTIONS = { PHONE: 'phone', NAME: 'name', PROJECT: 'project', WARD: 'ward' };
 
 const Beneficiary = () => {
 	const { addToast } = useToasts();
@@ -32,6 +34,8 @@ const Beneficiary = () => {
 		searchBy: 'phone'
 	});
 	const [selectedProject, setSelectedProject] = useState('');
+	const [availableWards, setAvailableWards] = useState([]);
+	const [selectedWard, setSelectedWard] = useState(null);
 
 	const { listBeneficiary, projectList, getBeneficiariesBalances, getBenfPackageBalances } = useContext(
 		BeneficiaryContext
@@ -57,6 +61,7 @@ const Beneficiary = () => {
 				searchBy: SEARCH_OPTIONS.PHONE
 			});
 		}
+
 		setSearchValue('');
 		setSelectedProject('');
 		fetchList({ start: 0, limit: PAGE_LIMIT });
@@ -75,6 +80,7 @@ const Beneficiary = () => {
 			setSelectedProject(value);
 			return fetchList({ start: 0, limit: PAGE_LIMIT, projectId: value });
 		}
+
 		fetchList({ start: 0, limit: PAGE_LIMIT });
 	};
 
@@ -132,12 +138,12 @@ const Beneficiary = () => {
 	//useEffect(fetchProjectList, []);
 
 	const getQueryParams = useCallback(() => {
-		const params = {};
+		const params = { ward: selectedWard };
 		if (filter.searchBy === SEARCH_OPTIONS.PHONE) params.phone = searchValue;
 		if (filter.searchBy === SEARCH_OPTIONS.NAME) params.name = searchValue;
 		if (filter.searchBy === SEARCH_OPTIONS.PROJECT) params.projectId = selectedProject;
 		return params;
-	}, [filter.searchBy, searchValue, selectedProject]);
+	}, [filter.searchBy, searchValue, selectedProject, selectedWard]);
 
 	const onPageChanged = useCallback(
 		async paginationData => {
@@ -146,11 +152,12 @@ const Beneficiary = () => {
 			setCurrentPage(currentPage);
 			let start = (currentPage - 1) * pageLimit;
 			const query = { start, limit: PAGE_LIMIT, ...params };
-			const { data } = await listBeneficiary(query);
+			const { data, total } = await listBeneficiary(query);
 			setBenfList(data);
+			setTotalRecords(total);
 			fetchBeneficiariesBalances({ beneficiaries: data });
 		},
-		[getQueryParams, listBeneficiary, fetchBeneficiariesBalances]
+		[getQueryParams, listBeneficiary, fetchBeneficiariesBalances, selectedWard]
 	);
 
 	const handleAddClick = () => {
@@ -161,9 +168,28 @@ const Beneficiary = () => {
 		//History.push('/add-beneficiary');
 	};
 
+
+	const fetchBeneficiaryWards = async () => {
+		const wards = await getBeneficiaryWards();
+		setAvailableWards(wards)
+	}
+
+	const handleWardFilter = e => {
+		let { value } = e.target;
+		if (value === '') {
+			setSelectedWard(null);
+			return;
+		}
+		setSelectedWard(value)
+	};
+
 	useEffect(() => {
 		LogVisit('beneficiary');
 	}, []);
+
+	useEffect(() => {
+		fetchBeneficiaryWards()
+	}, [])
 
 	return (
 		<div className="main">
@@ -179,6 +205,29 @@ const Beneficiary = () => {
 										display: 'flex'
 									}}
 								>
+									{
+										availableWards.length != 0 ? (
+											<CustomInput
+												type="select"
+												id="wardSelect"
+												name="selectWard"
+												onChange={handleWardFilter}
+												style={{ width: 'auto', marginRight: '5px' }}
+												placeholder='Wards'
+											>
+												<option value=''>
+													--Select Ward--
+												</option>
+												{availableWards.map((e, i) => (
+													<option key={i} value={e}>
+														{e}
+													</option>
+												))}
+
+											</CustomInput>
+										) : (<></>)
+									}
+
 									<CustomInput
 										type="select"
 										id="exampleCustomSelect"
