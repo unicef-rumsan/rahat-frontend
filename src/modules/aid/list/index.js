@@ -208,7 +208,6 @@ const List = () => {
 								<th className="border-0">Location</th>
 								<th className="border-0">Project Manager</th>
 								<th className="border-0">Created Date</th>
-								<th className="border-0">Status</th>
 								<th className="border-0">Balance</th>
 								<th className="border-0">Action</th>
 							</tr>
@@ -225,7 +224,6 @@ const List = () => {
 												{d.project_manager ? `${d.project_manager.name.first} ${d.project_manager.name.last}` : '-'}
 											</td>
 											<td>{moment(d.created_at).format('MMM Do YYYY')}</td>
-											<td>{d.status === 'closed' ? 'COMPLETED' : d.status.toUpperCase()}</td>
 											<td>
 												{fetchingBalances ? (
 													<MiniSpinner />
