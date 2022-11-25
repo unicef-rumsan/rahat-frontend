@@ -112,7 +112,7 @@ const Wallet = () => {
 						<p>
 							<img
 								src={window.location.host === PALIKA_HOST ? '/img/jaleshwor-logo.png' : '/img/unicef-logo-white.png'}
-								width="100"
+								width="160"
 							/>
 							<br />
 							<small style={{ color: 'white' }}>
