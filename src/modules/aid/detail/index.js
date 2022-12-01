@@ -95,19 +95,19 @@ export default function Index(props) {
 	useEffect(fetchProjectDetails, []);
 
 	const listenChainEvents = useCallback(async () => {
-		const { rahat_admin } = appSettings.agency.contracts;
+		const { rahat_admin, rahat } = appSettings.agency.contracts;
 		AdminContract = AdminContract || (await getContractByProviderWS(rahat_admin, CONTRACT.RAHATADMIN));
 		AdminContract.on('ProjectERC20BudgetUpdated', a => {
 			totalBudget.request(id, rahat_admin);
-			availableBalance.request(id, rahat_admin);
+			availableBalance.request(id, rahat);
 		});
 	}, []);
 
 	useEffect(() => {
 		if (!appSettings?.agency?.contracts) return;
-		const { rahat_admin } = appSettings.agency.contracts;
+		const { rahat_admin, rahat } = appSettings.agency.contracts;
 		totalBudget.request(id, rahat_admin);
-		availableBalance.request(id, rahat_admin);
+		availableBalance.request(id, rahat);
 		listenChainEvents();
 		return () => AdminContract?.removeAllListeners();
 	}, [appSettings]);

@@ -172,16 +172,17 @@ export const AidContextProvider = ({ children }) => {
 	const issueBenfToken = useCallback(
 		async (payload, wallet, contracts) => {
 			changeIsverified(false);
-			const { rahat } = contracts;
+			const { rahat, rahat_registry } = contracts;
+			await Service.registerBeneficiary(wallet, payload.phone, rahat_registry);
 			return Service.issueBeneficiaryToken(wallet, payload, rahat);
 		},
 		[changeIsverified]
 	);
 	const sendTokenIssuedSms = useCallback(async (phone, token) => {
-		return SmsService.sendTokenIssuedSms({ phone:phone.toString(), token:token.toString() });
+		return null; //SmsService.sendTokenIssuedSms({ phone: phone.toString(), token: token.toString() });
 	}, []);
 	const sendPackageIssuedSms = useCallback(async (phone, packageName) => {
-		return SmsService.sendPackageIssuedSms({ phone:phone.toString(), packageName });
+		return null; //SmsService.sendPackageIssuedSms({ phone: phone.toString(), packageName });
 	}, []);
 
 	const suspendBeneficiaryToken = useCallback(

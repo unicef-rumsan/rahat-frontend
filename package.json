@@ -52,6 +52,7 @@
 		"ts-jest": "^27.0.7"
 	},
 	"dependencies": {
+		"@ethersproject/experimental": "^5.7.0",
 		"add": "^2.0.6",
 		"apexcharts": "^3.28.3",
 		"axios": "^0.21.1",

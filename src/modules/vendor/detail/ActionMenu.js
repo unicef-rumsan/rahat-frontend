@@ -28,7 +28,7 @@ export default function ActionMenu({
 		},
 		async changeStatus(status) {
 			const result = await confirm({
-				title: 'Suspend Beneficiary',
+				title: 'Suspend Vendor',
 				message: `This will disable vendor and cannot charge from Vendor App. Are you sure?`,
 				confirmColor: 'danger',
 				cancelText: 'Cancel',

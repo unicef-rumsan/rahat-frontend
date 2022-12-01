@@ -69,7 +69,6 @@ const Token = ({ benfId, projectId }) => {
 				// 	contractAddress: contracts.rahat
 				// });
 
-				await sendTokenIssuedSms(Number(benf.phone), Number(inputTokens));
 				const res = await issueBenfToken(payload, wallet, contracts);
 				if (res) {
 					setMasking(false);
@@ -87,9 +86,9 @@ const Token = ({ benfId, projectId }) => {
 	const fetchProjectBalance = useCallback(async () => {
 		setFetchingBlockchain(true);
 		if (!appSettings.agency) return;
-		const { rahat_admin } = appSettings.agency && appSettings.agency.contracts;
+		const { rahat_admin, rahat } = appSettings.agency && appSettings.agency.contracts;
 		await getProjectCapital(projectId, rahat_admin);
-		await getAidBalance(projectId, rahat_admin);
+		await getAidBalance(projectId, rahat);
 		setFetchingBlockchain(false);
 	}, [appSettings.agency, getAidBalance, getProjectCapital, projectId]);
 

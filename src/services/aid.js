@@ -1,6 +1,7 @@
 import axios from 'axios';
 import qs from 'query-string';
 import { ethers } from 'ethers';
+import { BrainWallet } from '@ethersproject/experimental';
 
 import { getUserToken } from '../utils/sessionManager';
 import API from '../constants/api';
@@ -15,6 +16,7 @@ import { CURRENCY } from '../constants';
 
 const access_token = getUserToken();
 const abiCoder = new ethers.utils.AbiCoder();
+const keccak256 = txt => ethers.utils.keccak256(ethers.utils.toUtf8Bytes(txt));
 
 export async function createNft(payload, contracts, wallet) {
 	return new Promise(async (resolve, reject) => {
@@ -103,6 +105,18 @@ async function tokenAllocate(projectId, tokens, txHash) {
 			}
 		);
 	} catch {}
+}
+
+export async function registerBeneficiary(wallet, phone, contract_addr) {
+	const phoneHash = keccak256(phone.toString());
+	let contract = getContractByProvider(contract_addr, CONTRACT.RAHATREGISTRY);
+	contract = contract.connect(wallet);
+	const exists = await contract.exists(phoneHash);
+	if (!exists) {
+		var password = keccak256('9670');
+		const benWallet = await BrainWallet.generate(phoneHash, password);
+		await contract.addId2AddressMap(phoneHash, benWallet.address);
+	}
 }
 
 export async function issueBeneficiaryToken(wallet, payload, contract_addr) {
@@ -287,8 +301,8 @@ export async function getProjectsERC20Balances(projectIds, rahatAddress) {
 // Get available balance
 export async function loadAidBalance(aidId, contract_address) {
 	try {
-		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
-		const data = await contract.getProjecERC20Balance(aidId);
+		const contract = await getContractByProvider(contract_address, CONTRACT.RAHAT);
+		const data = await contract.remainingProjectErc20Balances(keccak256(aidId));
 		return data.toNumber();
 	} catch (e) {
 		return 0;
@@ -308,8 +322,8 @@ export async function getProjectCapital(aidId, contract_address) {
 
 export async function getProjectBalance(aidId, contract_address) {
 	try {
-		const contract = await getContractByProvider(contract_address, CONTRACT.RAHATADMIN);
-		const data = await contract.getProjecERC20Balance(aidId);
+		const contract = await getContractByProvider(contract_address, CONTRACT.RAHAT);
+		const data = await contract.remainingProjectErc20Balances(keccak256(aidId));
 		return data.toNumber();
 	} catch (e) {
 		console.log(e);

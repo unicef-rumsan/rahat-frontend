@@ -69,9 +69,9 @@ const Token = ({ projectId }) => {
 
 	useEffect(() => {
 		if (!appSettings?.agency?.contracts) return;
-		const { rahat_admin } = appSettings.agency.contracts;
+		const { rahat_admin, rahat } = appSettings.agency.contracts;
 		totalBudget.request(projectId, rahat_admin);
-		availableBalance.request(projectId, rahat_admin);
+		availableBalance.request(projectId, rahat);
 	}, []);
 
 	return (

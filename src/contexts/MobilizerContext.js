@@ -21,8 +21,8 @@ export const MobilizerContextProvider = ({ children }) => {
 	const { wallet, appSettings, changeIsverified } = useContext(AppContext);
 
 	async function getAvailableBalance(proejctId, rahatAdminContractAddr) {
-		const { rahat_admin } = appSettings.agency.contracts;
-		return AidService.loadAidBalance(proejctId, rahat_admin);
+		const { rahat_admin, rahat } = appSettings.agency.contracts;
+		return AidService.loadAidBalance(proejctId, rahat);
 	}
 
 	async function listAid() {
@@ -134,11 +134,9 @@ export const MobilizerContextProvider = ({ children }) => {
 		return Service.getMobilizersIssuedPackages(contract_addr, wallet_address);
 	}, []);
 
-	const getTotalMobilizerIssuedTokens = useCallback((contract_addr, wallet_address,projectId) => {
-		return Service.getTotalMobilizerIssuedTokens(contract_addr, wallet_address,projectId);
+	const getTotalMobilizerIssuedTokens = useCallback((contract_addr, wallet_address, projectId) => {
+		return Service.getTotalMobilizerIssuedTokens(contract_addr, wallet_address, projectId);
 	}, []);
-
-	
 
 	const getMobilizerPackageBalance = useCallback((contract_addr, wallet_address) => {
 		return Service.getMobilizerPackageBalance(contract_addr, wallet_address);

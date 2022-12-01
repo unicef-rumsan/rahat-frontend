@@ -57,8 +57,8 @@ export const BC = {
 	async changeVendorStatus(vendorAddress, isActive, { contractAddress, wallet }) {
 		const contract = await RahatContract(contractAddress, wallet);
 		if (isActive) {
-			getEth({ address: vendorAddress });
-			return contract.grantRole(vendorRole, vendorAddress);
+			//getEth({ address: vendorAddress });
+			return contract.addVendor(vendorAddress);
 		} else return contract.revokeRole(vendorRole, vendorAddress);
 	},
 
