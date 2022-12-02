@@ -21,7 +21,7 @@ module.exports = {
 		FETCH_LIMIT: 100,
 		PAGE_LIMIT: 10
 	},
-	ROLES: { ADMIN: 'Admin', MANAGER: 'Manager', MOBILIZER: 'Mobilizer', PALIKA: 'Palika' },
+	ROLES: { ADMIN: 'Admin', MANAGER: 'Manager', MOBILIZER: 'Mobilizer', PALIKA: 'Palika', DONOR: 'Donor' },
 	DEFAULT_TOKEN: {
 		NAME: 'Ether',
 		SYMBOL: 'ETH'
