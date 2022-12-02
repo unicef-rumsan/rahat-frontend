@@ -19,7 +19,7 @@ export async function dashboardStats() {
 			headers: { access_token }
 		});
 		return res.data;
-	} catch { }
+	} catch {}
 }
 
 export function verifyToken(token) {
@@ -101,7 +101,7 @@ export async function listUsers(params) {
 			params
 		});
 		return res.data;
-	} catch { }
+	} catch {}
 }
 
 export async function listUsersByRole(role) {
@@ -114,7 +114,7 @@ export async function listUsersByRole(role) {
 			}
 		});
 		return res.data;
-	} catch { }
+	} catch {}
 }
 
 export async function getUserById(userId) {
@@ -127,7 +127,7 @@ export async function getUserById(userId) {
 			}
 		});
 		return res.data;
-	} catch { }
+	} catch {}
 }
 
 export async function updateUser(userId, payload) {
@@ -182,22 +182,29 @@ export async function addUser({ payload, rahat, rahat_admin, wallet }) {
 	try {
 		const { phone, email, wallet_address } = payload;
 		await checkExistingUser({ phone, email, wallet_address });
-		const b_user = await saveRoleToBlockchain({
-			role: payload.roles[0],
-			rahat,
-			rahat_admin,
-			wallet,
-			wallet_address: payload.wallet_address
+		// const b_user = await saveRoleToBlockchain({
+		// 	role: payload.roles[0],
+		// 	rahat,
+		// 	rahat_admin,
+		// 	wallet,
+		// 	wallet_address: payload.wallet_address
+		// });
+		// if (b_user) {
+		// 	const res = await axios({
+		// 		url: API.USERS,
+		// 		method: 'Post',
+		// 		data: payload,
+		// 		headers: { access_token }
+		// 	});
+		// 	return res.data;
+		// }
+		const res = await axios({
+			url: API.USERS,
+			method: 'Post',
+			data: payload,
+			headers: { access_token }
 		});
-		if (b_user) {
-			const res = await axios({
-				url: API.USERS,
-				method: 'Post',
-				data: payload,
-				headers: { access_token }
-			});
-			return res.data;
-		}
+		return res.data;
 	} catch (err) {
 		throw err;
 	}
@@ -238,5 +245,5 @@ export async function verifyOTP(payload) {
 			data: payload
 		});
 		return res.data;
-	} catch { }
+	} catch {}
 }
